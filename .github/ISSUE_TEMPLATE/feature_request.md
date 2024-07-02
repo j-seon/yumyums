@@ -2,7 +2,7 @@
 name: Feature request
 about: 새로운 내용을 개발을 할 때 사용해주세요.
 title: ''
-labels: ''
+labels: "\U0001F4BBFeature"
 assignees: ''
 
 ---
