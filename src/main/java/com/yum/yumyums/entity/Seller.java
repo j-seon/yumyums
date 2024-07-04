@@ -15,6 +15,18 @@ public class Seller {
     @Column(length = 50)
     private String id;
 
-    //TODO 나머지 컬럼들 만들어야 합니다.
+	@Column(name = "passwerd_hash", nullable = false, length = 100)
+	private String password;
 
+	@Column(nullable = false, length = 100)
+	private String sellerNum;
+
+	@Column(nullable = false, length = 50)
+	private String masterName;
+
+	@Column(length = 100)
+	private String email;
+
+	@Column(length = 100)
+	private String phone;
 }
