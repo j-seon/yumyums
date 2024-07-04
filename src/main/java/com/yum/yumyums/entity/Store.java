@@ -1,4 +1,4 @@
-package com.yum.yumyums.Entity;
+package com.yum.yumyums.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
