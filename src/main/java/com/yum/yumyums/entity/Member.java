@@ -1,5 +1,6 @@
-package com.yum.yumyums.Entity;
+package com.yum.yumyums.entity;
 
+import com.yum.yumyums.enums.Gender;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -23,8 +24,9 @@ public class Member {
     @Column(length = 50, nullable = false)
     private String birth;
 
-    @Column(length = 50, nullable = false)
-    private String gender;
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "varchar(50)", nullable = false)
+    private Gender gender;
 
     @Column(length  = 100, nullable = false)
     private String email;
