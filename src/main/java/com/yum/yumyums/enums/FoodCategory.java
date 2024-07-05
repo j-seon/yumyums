@@ -1,5 +1,19 @@
 package com.yum.yumyums.enums;
 
 public enum FoodCategory {
-	한식,일식,중식,양식,분식,디저트
+	KOREAN_FOOD("KOR"),
+	JAPANESE_FOOD("JPN"),
+	CHINESE_FOOD("CHN"),
+	WESTERN_FOOD("WESTERN"),
+	SNACK("SNACK"),
+	DESSERT("DESSERT");
+
+	private final String massage;
+	FoodCategory(String massage) {
+		this.massage = massage;
+	}
+
+	public String getMassage() {
+		return massage;
+	}
 }

@@ -1,5 +1,7 @@
 package com.yum.yumyums.enums;
 
 public enum FilterCategory {
-    음식분류, 가격대, 인원
+    FOOD_CATEGORY, //음식 분류
+    PRICE_RANGE, // 가격대
+    HEAD_COUNT, // 인원
 }
