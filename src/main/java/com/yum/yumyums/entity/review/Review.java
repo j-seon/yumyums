@@ -1,6 +1,6 @@
 package com.yum.yumyums.entity.review;
 
-import com.yum.yumyums.entity.order.OrderDetail;
+import com.yum.yumyums.entity.orders.OrdersDetail;
 import com.yum.yumyums.entity.user.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -15,11 +15,11 @@ public class Review {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "order_detail_id", nullable = false)
-    private OrderDetail orderDetail;
+    @JoinColumn(name = "orders_detail_id", nullable = false)
+    private OrdersDetail orderDetail;
 
     @ManyToOne
-    @JoinColumn(name = "order_member_id", nullable = false)
+    @JoinColumn(name = "orders_member_id", nullable = false)
     private Member member;
 
     @Column(nullable = false)

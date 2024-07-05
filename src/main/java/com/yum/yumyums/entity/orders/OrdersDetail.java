@@ -1,21 +1,21 @@
-package com.yum.yumyums.entity.order;
+package com.yum.yumyums.entity.orders;
 
 import com.yum.yumyums.entity.seller.Menu;
 import jakarta.persistence.*;
 import lombok.Getter;
 
 @Entity
-@Table(name = "order_detail")
+@Table(name = "orders_detail")
 @Getter
-public class OrderDetail {
+public class OrdersDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false)
-    private Order order;
+    @JoinColumn(name = "orders_id", nullable = false)
+    private Orders orders;
 
     @ManyToOne
     @JoinColumn(name = "menu_id", nullable = false)

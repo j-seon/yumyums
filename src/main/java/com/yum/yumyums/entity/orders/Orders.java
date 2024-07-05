@@ -1,13 +1,13 @@
-package com.yum.yumyums.entity.order;
+package com.yum.yumyums.entity.orders;
 
 import com.yum.yumyums.entity.seller.Store;
 import jakarta.persistence.*;
 import lombok.Getter;
 
 @Entity
-@Table(name = "order")
+@Table(name = "orders")
 @Getter
-public class Order {
+public class Orders {
 
     @Id
     @Column(length = 50)

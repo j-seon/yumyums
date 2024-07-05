@@ -1,8 +1,8 @@
 package com.yum.yumyums.entity.user;
 
-import com.yum.yumyums.entity.user.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Table(name = "point_list")
@@ -17,15 +17,22 @@ public class PointList {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Column(columnDefinition = "DEFAULT 100", nullable = false)
+
+    @ColumnDefault("100")
+    @Column(nullable = false)
     private int point;
 
-    @Column(columnDefinition = "TEXT DEFAULT '가입 축하 선물'")
+
+    @ColumnDefault("'가입 축하 선물'")
     private String content;
 
-    @Column(columnDefinition = "DEFAULT 100", nullable = false)
+
+    @ColumnDefault("100")
+    @Column(nullable = false)
     private int changePoint;
 
-    @Column(columnDefinition = "DEFAULT true", nullable = false)
+
+    @ColumnDefault("true")
+    @Column(nullable = false)
     private boolean isPlus;
 }
