@@ -1,7 +1,7 @@
 package com.yum.yumyums.entity;
 
 import com.yum.yumyums.enums.Busy;
-import com.yum.yumyums.enums.Category;
+import com.yum.yumyums.enums.FoodCategory;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -30,16 +30,16 @@ public class Store {
 
 	@Enumerated(EnumType.STRING)
 	@Column(columnDefinition = "varchar(50)", nullable = false)
-	private Category category;
+	private FoodCategory category;
 
 	@Column(columnDefinition = "TEXT")
 	private String content;
 
 	@Column(nullable = false)
-	private int open_time;
+	private int openTime;
 
 	@Column(nullable = false)
-	private int close_time;
+	private int closeTime;
 
 	@Enumerated(EnumType.STRING)
 	@Column(columnDefinition = "varchar(50) DEFAULT 'CLEAR'", nullable = false)

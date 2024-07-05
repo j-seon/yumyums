@@ -1,6 +1,5 @@
 package com.yum.yumyums.entity;
 
-import com.yum.yumyums.enums.Category;
 import com.yum.yumyums.enums.FilterCategory;
 import jakarta.persistence.*;
 import lombok.Getter;
