@@ -1,5 +1,7 @@
-package com.yum.yumyums.entity;
+package com.yum.yumyums.entity.review;
 
+import com.yum.yumyums.entity.order.OrderDetail;
+import com.yum.yumyums.entity.user.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 

@@ -1,26 +1,26 @@
-package com.yum.yumyums.entity;
+package com.yum.yumyums.entity.order;
 
+import com.yum.yumyums.entity.seller.Menu;
 import jakarta.persistence.*;
 import lombok.Getter;
 
 @Entity
-@Table(name = "cart")
+@Table(name = "order_detail")
 @Getter
-public class Cart {
+public class OrderDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
 
     @ManyToOne
     @JoinColumn(name = "menu_id", nullable = false)
     private Menu menu;
 
-    @Column(columnDefinition = "DEFAULT 1", nullable = false)
-    private int menuCount;
+    //TODO 나머지 칼럼 추가해야합니다
 
 }

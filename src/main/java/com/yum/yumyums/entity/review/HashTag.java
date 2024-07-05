@@ -1,25 +1,21 @@
-package com.yum.yumyums.entity;
+package com.yum.yumyums.entity.review;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 
 @Entity
-@Table(name = "reply")
+@Table(name = "hashtag")
 @Getter
-public class Reply {
+public class HashTag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "review_id", nullable = false)
     private Review review;
 
-    @ManyToOne
-    @JoinColumn(name = "seller_id", nullable = false)
-    private Seller seller;
-
-    @Column(columnDefinition = "TEXT")
+    @Column(nullable = false, length = 10)
     private String content;
 }

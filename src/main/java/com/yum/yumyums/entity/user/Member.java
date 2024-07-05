@@ -1,4 +1,4 @@
-package com.yum.yumyums.entity;
+package com.yum.yumyums.entity.user;
 
 import com.yum.yumyums.enums.Gender;
 import jakarta.persistence.*;

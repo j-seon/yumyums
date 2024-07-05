@@ -1,9 +1,8 @@
-package com.yum.yumyums.entity;
+package com.yum.yumyums.entity.order;
 
+import com.yum.yumyums.entity.seller.Store;
 import jakarta.persistence.*;
 import lombok.Getter;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "order")

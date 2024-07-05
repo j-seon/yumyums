@@ -1,5 +1,6 @@
-package com.yum.yumyums.entity;
+package com.yum.yumyums.entity.seller;
 
+import com.yum.yumyums.entity.seller.Seller;
 import com.yum.yumyums.enums.Busy;
 import com.yum.yumyums.enums.FoodCategory;
 import jakarta.persistence.*;
