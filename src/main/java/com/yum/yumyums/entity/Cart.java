@@ -20,8 +20,7 @@ public class Cart {
     @JoinColumn(name = "menu_id", nullable = false)
     private Menu menu;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "DEFAULT 1", nullable = false)
     private int menuCount;
-    //디폴트 1 설정해야함
 
 }

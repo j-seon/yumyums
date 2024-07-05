@@ -20,6 +20,6 @@ public class OrderDetail {
     @JoinColumn(name = "menu_id", nullable = false)
     private Menu menu;
 
-    //나머지 칼럼 추가해야합니다
+    //TODO 나머지 칼럼 추가해야합니다
 
 }

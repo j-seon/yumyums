@@ -21,6 +21,6 @@ public class Order {
     @Column(name = "total_price", nullable = false)
     private int totalPrice;
 
-    //나머지 칼럼 추가해야합니다
+    //TODO 나머지 칼럼 추가해야합니다
 
 }

@@ -1,12 +1,10 @@
 package com.yum.yumyums.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 
 
 @Entity
-@Data
 @Table(name = "seller")
 @Getter
 public class Seller {

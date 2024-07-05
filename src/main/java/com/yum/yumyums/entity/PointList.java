@@ -16,15 +16,15 @@ public class PointList {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Column(nullable = false)
-    private int point = 100;
+    @Column(columnDefinition = "DEFAULT 100", nullable = false)
+    private int point;
 
-    @Column(columnDefinition = "TEXT")
-    private String content = "가입 축하 선물";
+    @Column(columnDefinition = "TEXT DEFAULT '가입 축하 선물'")
+    private String content;
 
-    @Column(nullable = false)
-    private int changePoint = 100;
+    @Column(columnDefinition = "DEFAULT 100", nullable = false)
+    private int changePoint;
 
-    @Column(nullable = false)
-    private boolean isPlus = true;
+    @Column(columnDefinition = "DEFAULT true", nullable = false)
+    private boolean isPlus;
 }
