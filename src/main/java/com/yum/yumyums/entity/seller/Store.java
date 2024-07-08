@@ -20,7 +20,7 @@ public class Store {
     @JoinColumn(name = "seller_id")
     private Seller seller;
 
-	@Column(name = "passwerd_hash", nullable = false)
+	@Column(name = "password_hash", nullable = false)
 	private String password;
 
 	@Column(nullable = false, length = 50)

@@ -13,7 +13,7 @@ public class Seller {
     @Column(length = 50)
     private String id;
 
-	@Column(name = "passwerd_hash", nullable = false, length = 100)
+	@Column(name = "password_hash", nullable = false, length = 100)
 	private String password;
 
 	@Column(nullable = false, length = 100)
