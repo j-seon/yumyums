@@ -2,11 +2,12 @@ package com.yum.yumyums.entity.seller;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 
 @Entity
 @Table(name = "menu")
-@Getter
+@Getter @Setter
 public class Menu {
 
     @Id

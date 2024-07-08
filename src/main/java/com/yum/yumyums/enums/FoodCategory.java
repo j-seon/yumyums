@@ -6,7 +6,8 @@ public enum FoodCategory {
 	CHINESE_FOOD("CHN"),
 	WESTERN_FOOD("WESTERN"),
 	SNACK("SNACK"),
-	DESSERT("DESSERT");
+	DESSERT("DESSERT"),
+	ETC("ETC");
 
 	private final String massage;
 	FoodCategory(String massage) {

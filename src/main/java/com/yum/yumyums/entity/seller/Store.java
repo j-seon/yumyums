@@ -5,11 +5,12 @@ import com.yum.yumyums.enums.Busy;
 import com.yum.yumyums.enums.FoodCategory;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 
 @Entity
 @Table(name = "store")
-@Getter
+@Getter @Setter
 public class Store {
 
     @Id
@@ -43,7 +44,7 @@ public class Store {
 	private int close_time;
 
 	@Enumerated(EnumType.STRING)
-	@Column(columnDefinition = "varchar(50) DEFAULT 'CLEAR'", nullable = false)
+	@Column(columnDefinition = "varchar(50) DEFAULT 'SPACIOUS'", nullable = false)
 	private Busy busy;
 
 
