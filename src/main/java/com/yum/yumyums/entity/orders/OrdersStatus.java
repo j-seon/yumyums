@@ -1,6 +1,5 @@
 package com.yum.yumyums.entity.orders;
 
-import com.yum.yumyums.enums.Busy;
 import com.yum.yumyums.enums.FoodState;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,15 +13,15 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 
 @Entity
-@Table(name = "order_status")
+@Table(name = "orders_status")
 @Getter
-public class OrderStatus {
+public class OrdersStatus {
 
 	//주문한 회원ID
 	@Id
-	@JoinColumn(name = "order_id")
+	@JoinColumn(name = "orders_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int orderId;
+	private int ordersId;
 	
 	//주문상태
 	@Enumerated(EnumType.STRING)

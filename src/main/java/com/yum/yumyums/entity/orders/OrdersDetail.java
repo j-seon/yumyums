@@ -16,8 +16,8 @@ public class OrdersDetail {
 
     //주문ID
     @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false)
-    private Order order;
+    @JoinColumn(name = "orders_id", nullable = false)
+    private Orders orders;
 
     //메뉴 ID
     @ManyToOne

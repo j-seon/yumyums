@@ -16,7 +16,7 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "orders_detail_id", nullable = false)
-    private OrdersDetail orderDetail;
+    private OrdersDetail ordersDetail;
 
     @ManyToOne
     @JoinColumn(name = "orders_member_id", nullable = false)

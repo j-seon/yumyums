@@ -11,9 +11,9 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 
 @Entity
-@Table(name = "order_member")
+@Table(name = "orders_member")
 @Getter
-public class OrderMember {
+public class OrdersMember {
 
 	//주문한 회원ID
 	@Id
@@ -27,6 +27,6 @@ public class OrderMember {
     
     //주문ID
     @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false)
-    private Order order;
+    @JoinColumn(name = "orders_id", nullable = false)
+    private Orders orders;
 }
