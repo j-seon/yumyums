@@ -1,4 +1,4 @@
-package com.yum.yumyums.entity.seller;
+package com.yum.yumyums.enums;
 
 public enum PayType {
 	DOUTCH, //각자 먹은 것

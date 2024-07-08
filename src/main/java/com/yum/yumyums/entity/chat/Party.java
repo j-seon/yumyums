@@ -1,6 +1,6 @@
 package com.yum.yumyums.entity.chat;
 
-import com.yum.yumyums.entity.seller.PayType;
+import com.yum.yumyums.enums.PayType;
 import com.yum.yumyums.entity.seller.Store;
 import jakarta.persistence.*;
 import lombok.Getter;
