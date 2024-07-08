@@ -14,10 +14,6 @@ public class Party {
 	private String id;
 
 	@ManyToOne
-	@JoinColumn(name = "chat_id")
-	private Chat chat;
-
-	@ManyToOne
 	@JoinColumn(name = "shore_id")
 	private Store store;
 
