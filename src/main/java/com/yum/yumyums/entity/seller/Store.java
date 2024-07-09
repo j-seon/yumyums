@@ -38,10 +38,10 @@ public class Store {
 	private String content;
 
 	@Column(nullable = false)
-	private int open_time;
+	private int openTime;
 
 	@Column(nullable = false)
-	private int close_time;
+	private int closeTime;
 
 	@Enumerated(EnumType.STRING)
 	@Column(columnDefinition = "varchar(50) DEFAULT 'SPACIOUS'", nullable = false)
