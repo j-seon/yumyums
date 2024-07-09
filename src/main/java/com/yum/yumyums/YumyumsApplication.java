@@ -11,4 +11,5 @@ public class YumyumsApplication {
 		SpringApplication.run(YumyumsApplication.class, args);
 	}
 
+
 }
