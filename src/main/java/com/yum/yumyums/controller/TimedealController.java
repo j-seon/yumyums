@@ -1,2 +1,7 @@
-package com.yum.yumyums.controller;public class TimedealController {
+package com.yum.yumyums.controller;
+
+import org.springframework.stereotype.Controller;
+
+@Controller
+public class TimedealController {
 }

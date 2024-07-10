@@ -1,2 +1,7 @@
-package com.yum.yumyums.controller.chat;public class ChatController {
+package com.yum.yumyums.controller;
+
+import org.springframework.stereotype.Controller;
+
+@Controller
+public class ChatController {
 }

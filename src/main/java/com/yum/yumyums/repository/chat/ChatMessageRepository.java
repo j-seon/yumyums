@@ -1,2 +1,7 @@
-package com.yum.yumyums.repository.chat;public interface ChatMessageRepository {
+package com.yum.yumyums.repository.chat;
+
+import com.yum.yumyums.entity.chat.ChatMessage;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ChatMessageRepository extends JpaRepository<ChatMessage, Integer> {
 }
