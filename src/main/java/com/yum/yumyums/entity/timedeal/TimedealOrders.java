@@ -12,7 +12,10 @@ import java.time.LocalDateTime;
 @Setter
 public class TimedealOrders {
     @Id
+    private int id;
+
     @OneToOne
+    @MapsId
     @JoinColumn(name = "timedeal_id")
     private Timedeal timedeal;
 

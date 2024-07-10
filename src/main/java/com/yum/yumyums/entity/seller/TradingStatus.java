@@ -10,7 +10,10 @@ import lombok.Setter;
 @Setter
 public class TradingStatus {
     @Id
+    private int id;
+
     @OneToOne
+    @MapsId
     @JoinColumn(name = "store_id")
     private Store store;
 
