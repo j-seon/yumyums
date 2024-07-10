@@ -1,0 +1,23 @@
+
+<body>
+<form action="/ref/update" method="post" name="updateForm">
+    <input type="hidden" name="id" th:value="${refUpdate.id}">
+    <label>writer: <input type="text" name="refWriter" th:value="${refUpdate.refWriter}" readonly></label> <br>
+    <label>pass: <input type="text" name="refPass" id="refPass" placeholder="설정한 비밀번호 입력"></label> <br>
+    <label>title: <input type="text" name="refTitle" th:value="${refUpdate.refTitle}"></label> <br>
+    <label>contents: <textarea name="refContents" cols="30" rows="10" th:text="${refUpdate.refContents}"></textarea></label> <br>
+    <input type="hidden" name="refHits" th:value="${refUpdate.refHits}">
+    <input type="button" value="글수정" onclick="refUpdate()">
+</form>
+<script th:inline="javascript">
+    const refUpdate = () => {
+        const pass = [[${refUpdate.refPass}]];
+        const inputPass = document.getElementById("refPass").value;
+        if(pass == inputPass){
+            document.updateForm.submit();
+        } else {
+            alert("비밀번호가 일치하지 않습니다.")
+        }
+    }
+</script>
+</body>

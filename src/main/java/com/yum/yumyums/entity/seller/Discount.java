@@ -11,7 +11,10 @@ public class Discount {
 
 
     @Id
+    private int id;
+
     @OneToOne
+    @MapsId
     @JoinColumn(name = "menu_id")
     private Menu menu;
 

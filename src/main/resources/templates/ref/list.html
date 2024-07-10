@@ -1,0 +1,26 @@
+
+<body>
+    <table border="">
+        <tr>
+            <th>id</th>
+            <th>title</th>
+            <th>writer</th>
+            <th>date</th>
+            <th>hits</th>
+        </tr>
+        <tr th:each="ref : ${refList}">
+            <td th:text="${ref.id}"></td>
+            <td><a th:href="@{|/ref/detail/${ref.id}|}" th:text="${ref.refTitle}"></a></td>
+            <td th:text="${ref.refWriter}"></td>
+            <td th:text="*{#temporals.format(ref.refCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="${ref.refHits}"></td>
+        </tr>
+    </table>
+    <button onclick="saveReq()">글 작성</button>
+</body>
+<script>
+    const saveReq = () => {
+        location.href= "/ref/save";
+    }
+
+</script>
