@@ -13,7 +13,6 @@ public interface SearchRepository extends JpaRepository<Store, Long> {
 
 
 	// TODO searchStores를 진행할 때, 거리가 맞는 것들만 뽑아서 검색해야 함.
-	// TODO Group By를 하든 다른 처리를 하든 해서 중복없애기
 	@Query("SELECT s FROM Store s LEFT JOIN Menu m " +
 			"ON s.id = m.store.id " +
 			"WHERE s.name LIKE %:searchValue% " +
