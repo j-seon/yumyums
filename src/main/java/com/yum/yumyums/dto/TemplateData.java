@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class TemplateData {
-    String category, service, message, url;
+    String viewPath, message, url;
 }
