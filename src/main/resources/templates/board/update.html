@@ -1,0 +1,58 @@
+
+<body>
+<form name="updateForm">
+    <input type="hidden" name="id" id="id" th:value="${boardUpdate.id}">
+    <label>writer: <input type="text" name="boardWriter" th:value="${boardUpdate.boardWriter}" readonly></label> <br>
+    <label>pass: <input type="text" name="boardPass" id="boardPass" placeholder="설정한 비밀번호 입력"></label> <br>
+    <label>title: <input type="text" name="boardTitle" th:value="${boardUpdate.boardTitle}"></label> <br>
+    <label>contents: <textarea name="boardContents" cols="30" rows="10" th:text="${boardUpdate.boardContents}"></textarea></label> <br>
+    <input type="hidden" name="boardHits" th:value="${boardUpdate.boardHits}">
+    <input type="submit" value="글수정">
+</form>
+<script th:inline="javascript">
+    document.updateForm.addEventListener('submit', function(event) {
+
+        event.preventDefault();
+
+        const id = document.getElementById('id').value;
+        const boardWriter = document.updateForm.boardWriter.value;
+        const boardPass = document.updateForm.boardPass.value;
+        const boardTitle = document.updateForm.boardTitle.value;
+        const boardContents = document.updateForm.boardContents.value;
+
+        const requestData = {
+            id: id,
+            boardWriter: boardWriter,
+            boardPass: boardPass,
+            boardTitle: boardTitle,
+            boardContents: boardContents
+        }
+        console.log('Request Data:', requestData);
+
+        fetch(`/board/${id}` , {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestData)
+        })
+        .then(response => {
+            if (response.ok) {
+            return response.headers.get('Location'); // Location 헤더에서 리디렉션 URL을 가져옴
+            } else {
+                throw new Error('Error: 수정 실패');
+            }
+        })
+        .then(location => {
+            if (location) {
+                window.location.href = location; // 상세 페이지로 리디렉션
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    });
+
+
+</script>
+</body>
