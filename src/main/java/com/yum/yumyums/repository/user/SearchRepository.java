@@ -1,5 +1,6 @@
 package com.yum.yumyums.repository.user;
 
+import com.yum.yumyums.entity.seller.Menu;
 import com.yum.yumyums.entity.seller.Store;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,4 +20,7 @@ public interface SearchRepository extends JpaRepository<Store, Long> {
 			"OR s.category LIKE %:searchValue% " +
 			"OR m.name LIKE %:searchValue%")
 	List<Store> findStores(@Param("searchValue") String searchValue);
+
+	// SELECT m FROM Menu m WHERE m.name LIKE %:searchValue%
+	List<Menu> findByNameLike(String searchValue);
 }
