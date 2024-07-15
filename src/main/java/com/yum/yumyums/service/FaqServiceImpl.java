@@ -20,7 +20,24 @@ public class FaqServiceImpl implements FaqService {
     public List<FaqDTO> findAll() {
         List<FaqDTO> returnDto =  new ArrayList<>();;
         // TODO Auto-generated method stub
-        List<Faq> findAll= faqRepository.findAll();
+        List<Faq> findAll = faqRepository.findAll();
+        for (Faq findEntity :  findAll) {
+            returnDto.add(findEntity.EntityToDto());
+        }
+        return returnDto;
+    }
+
+    @Override
+    public List<String> findDistinctCategories() {
+        return faqRepository.findDistinctCategories();
+    }
+
+    @Override
+    public List<FaqDTO> findByCategory(String category) {
+        System.out.println("findByCategory sssssss: "+category);
+        List<FaqDTO> returnDto =  new ArrayList<>();;
+
+        List<Faq> findAll = faqRepository.findByCategory(category);
         for (Faq findEntity :  findAll) {
             returnDto.add(findEntity.EntityToDto());
         }

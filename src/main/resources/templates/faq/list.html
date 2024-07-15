@@ -1,24 +1,59 @@
 
 <body>
-    <table border="">
-        <tr>
-            <th>id</th>
-            <th>title</th>
-            <th>writer</th>
-            <th>date</th>
-            <th>hits</th>
-        </tr>
-        <tr th:each="faq : ${faqList}">
-            <td th:text="${faq.id}"></td>
-            <td th:text="${faq.title}"></td>
-            <td th:text="${faq.category}"></td>
-        </tr>
-    </table>
-    <button onclick="saveReq()">글 작성</button>
-</body>
-<script>
-    const saveReq = () => {
-        location.href= "/board/save";
-    }
 
-</script>
+
+
+
+    <div class="container-fluid fruite py-5">
+        <div class="container py-5">
+            <div class="col-lg-4 text-start">
+                <h1>YumYums FAQ페이지입니다.</h1>
+            </div>
+            <div class="tab-class text-center">
+                <div class="row ">
+
+                    <ul class="nav nav-pills d-inline-flex text-center mb-5">
+                        <!--nav items-->
+
+                        <li class="nav-item" th:each="categories : ${categories}">
+                            <a class="d-flex m-2 py-2 bg-light rounded-pill " data-bs-toggle="pill" >
+                                <span class="text-dark" style="width: 125px;"><div th:text="${categories}"></div></span>
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="tab-content">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+<!-- Google Web Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap" rel="stylesheet">
+
+<!-- Icon Font Stylesheet -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+<!-- Libraries Stylesheet -->
+<link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+<link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+
+<!-- Customized Bootstrap Stylesheet -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Template Stylesheet -->
+<link href="css/style.css" rel="stylesheet">
+<link href="css/faq/faq.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+
+<script src="js/faq/faq.js"></script>
+
+

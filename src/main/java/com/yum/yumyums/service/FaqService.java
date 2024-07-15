@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface FaqService {
     List<FaqDTO> findAll();
-
-
+    List<String> findDistinctCategories();
+    List<FaqDTO> findByCategory(String category);
 }
