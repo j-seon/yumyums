@@ -6,6 +6,8 @@ import com.yum.yumyums.repository.seller.SellerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class SellerServiceImpl implements SellerService {
@@ -15,6 +17,18 @@ public class SellerServiceImpl implements SellerService {
     public void save(SellerDTO sellerDTO) {
         Seller seller = Seller.toSaveEntity(sellerDTO);
         sellerRepository.save(seller);
+    }
+
+    @Override
+    public SellerDTO findById(String id) {
+        Optional<Seller> optionalSeller = sellerRepository.findById(id);
+        if(optionalSeller.isPresent()){
+            Seller seller = optionalSeller.get();
+            SellerDTO sellerDTO = SellerDTO.toSellerDTO(seller);
+            return sellerDTO;
+        }else{
+            return null;
+        }
     }
 
 }

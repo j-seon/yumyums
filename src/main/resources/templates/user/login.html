@@ -1,0 +1,29 @@
+<h2>로그인</h2>
+<div>
+  <h3>일반회원 로그인</h3>
+  <form action="/member/login" id="memberLogin" method="post">
+    <div class="form-item">
+      <label class="form-label my-3" for="memberId">아이디<sup>*</sup></label>
+      <input type="text" class="form-control" id="memberId" name="id">
+    </div>
+    <div class="form-item">
+      <label class="form-label my-3" for="memberPassword">비밀번호 <sup>*</sup></label>
+      <input type="password" class="form-control" name="password" id="memberPassword" placeholder="비밀번호 입력">
+    </div>
+    <button type="submit" form="memberLogin" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">로그인</button>
+  </form>
+</div>
+<div>
+  <h3>판매자 로그인</h3>
+  <form action="/seller/login" id="sellerLogin" method="post">
+    <div class="form-item">
+      <label class="form-label my-3" for="sellerId">아이디<sup>*</sup></label>
+      <input type="text" class="form-control" id="sellerId" name="id">
+    </div>
+    <div class="form-item">
+      <label class="form-label my-3" for="sellerPassword">비밀번호 <sup>*</sup></label>
+      <input type="password" class="form-control" name="password" id="sellerPassword" placeholder="비밀번호 입력">
+    </div>
+    <button type="submit" form="sellerLogin" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">로그인</button>
+  </form>
+</div>
