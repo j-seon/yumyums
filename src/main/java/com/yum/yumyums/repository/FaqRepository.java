@@ -8,10 +8,10 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface FaqRepository extends JpaRepository<Faq, Integer> {
+    //카테고리 종류 추출
     @Query("SELECT DISTINCT category FROM Faq ")
     List<String> findDistinctCategories();
 
-//    List<Faq> findByCategory(String category);
-    @Query("SELECT f FROM Faq f WHERE f.category = :category")
+    //카테고리 별로 검색
     List<Faq> findByCategory(@Param("category") String category);
 }
