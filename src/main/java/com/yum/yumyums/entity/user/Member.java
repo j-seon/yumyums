@@ -3,12 +3,13 @@ package com.yum.yumyums.entity.user;
 import com.yum.yumyums.enums.Gender;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "member")
-@Getter
+@Getter @Setter
 public class Member {
 
     @Id
