@@ -1,4 +1,4 @@
-package com.yum.yumyums.board.controller;
+package com.yum.yumyums.reference.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

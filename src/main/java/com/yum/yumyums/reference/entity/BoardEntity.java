@@ -1,6 +1,6 @@
-package com.yum.yumyums.board.entity;
+package com.yum.yumyums.reference.entity;
 
-import com.yum.yumyums.board.dto.BoardDTO;
+import com.yum.yumyums.reference.dto.BoardDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
