@@ -22,7 +22,7 @@ public class MemberController {
     회원 상세정보 - GET : /member/id
     회원 상세정보 수정 페이지 - GET : /member/id/update
     회원 상세정보 수정 등록  - PUT : /member/id
-    회원 상세정보 수정 등록  - PUT : /member/id/withdraw
+    회원 탈퇴  - PUT : /member/id/withdraw
     */
 
     private final MemberService memberService;

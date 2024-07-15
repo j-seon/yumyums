@@ -1,0 +1,53 @@
+
+<body>
+<!-- Checkout Page Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <h1 class="mb-4">판매자회원 가입</h1>
+        <form action="/seller" method="post" id="sellerSaveForm">
+            <div class="row g-5">
+                <div class="col-md-12 col-lg-6 col-xl-7">
+
+                    <div class="form-item">
+                        <label class="form-label my-3" for="id">아이디<sup>*</sup></label>
+                        <input type="text" class="form-control" id="id" name="id">
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="password">비밀번호 <sup>*</sup></label>
+                        <input type="password" class="form-control" name="password" id="password" placeholder="비밀번호 입력">
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="passwordChk">비밀번호 확인<sup>*</sup></label>
+                        <input type="password" class="form-control" name="passwordChk" id="passwordChk" placeholder="비밀번호 입력" disabled>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="masterName">대표자명<sup>*</sup></label>
+                        <input type="text" class="form-control" id="masterName" name="masterName">
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="sellerNum">사업자등록번호<sup>*</sup></label>
+                        <input type="text" class="form-control" name="sellerNum" id="sellerNum">
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="phone">연락처<sup>*</sup></label>
+                        <input type="text" class="form-control" name="phone" id="phone">
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="email">이메일 주소<sup>*</sup></label>
+                        <input type="email" class="form-control" id="email" name="email">
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="emailChk">이메일 인증<sup>*</sup></label>
+                        <input type="text" class="form-control" id="emailChk" name="emailChk" disabled>
+                    </div>
+
+                </div>
+                <div class="row g-4 text-center align-items-center justify-content-center pt-4">
+                    <button type="submit" form="sellerSaveForm" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">판매자 가입</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Checkout Page End -->
+</body>
