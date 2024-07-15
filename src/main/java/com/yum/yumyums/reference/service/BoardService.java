@@ -1,8 +1,8 @@
-package com.yum.yumyums.board.service;
+package com.yum.yumyums.reference.service;
 
-import com.yum.yumyums.board.dto.BoardDTO;
-import com.yum.yumyums.board.entity.BoardEntity;
-import com.yum.yumyums.board.repository.BoardRepository;
+import com.yum.yumyums.reference.dto.BoardDTO;
+import com.yum.yumyums.reference.entity.BoardEntity;
+import com.yum.yumyums.reference.repository.BoardRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
