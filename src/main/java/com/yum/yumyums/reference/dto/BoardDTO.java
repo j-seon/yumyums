@@ -1,6 +1,6 @@
-package com.yum.yumyums.board.dto;
+package com.yum.yumyums.reference.dto;
 
-import com.yum.yumyums.board.entity.BoardEntity;
+import com.yum.yumyums.reference.entity.BoardEntity;
 import lombok.*;
 
 import java.time.LocalDateTime;

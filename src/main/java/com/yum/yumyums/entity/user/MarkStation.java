@@ -12,7 +12,7 @@ public class MarkStation {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int markStationId;
+    private int id;
 
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)

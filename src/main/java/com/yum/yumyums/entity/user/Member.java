@@ -49,7 +49,7 @@ public class Member {
     public static Member toSaveEntity(MemberDTO memberDTO){
         Member member = new Member();
 
-        member.setId(memberDTO.getId());
+        member.setId(memberDTO.getMemberId());
         member.setPassword(memberDTO.getPassword());
         member.setName(memberDTO.getName());
         member.setBirth(memberDTO.getBirth());

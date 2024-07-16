@@ -14,7 +14,7 @@ public class MarkStationDTO {
 
     public static MarkStationDTO toMarkStationDTO(MarkStation markStation){
         MarkStationDTO markStationDTO = new MarkStationDTO();
-        markStationDTO.setMarkStationId(markStation.getMarkStationId());
+        markStationDTO.setMarkStationId(markStation.getId());
         markStationDTO.setMember(markStation.getMember());
         markStationDTO.setStationId(markStation.getStationId());
         markStationDTO.setMemo(markStation.getMemo());

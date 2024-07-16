@@ -1,4 +1,4 @@
-package com.yum.yumyums.board.entity;
+package com.yum.yumyums.reference.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
