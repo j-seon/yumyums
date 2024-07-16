@@ -1,0 +1,74 @@
+
+<body>
+<!-- Checkout Page Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <h1 class="mb-4">일반회원 가입</h1>
+        <form action="/member" method="post" id="memberSaveForm">
+            <div class="row g-5">
+                <div class="col-md-12 col-lg-6 col-xl-7">
+
+                    <div class="form-item">
+                        <label class="form-label my-3" for="memberId">아이디<sup>*</sup></label>
+                        <input type="text" class="form-control" id="memberId" name="memberId">
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="password">비밀번호 <sup>*</sup></label>
+                        <input type="password" class="form-control" name="password" id="password" placeholder="비밀번호 입력">
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="passwordChk">비밀번호 확인<sup>*</sup></label>
+                        <input type="password" class="form-control" name="password" id="passwordChk" placeholder="비밀번호 입력" disabled>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="name">이름<sup>*</sup></label>
+                        <input type="text" class="form-control" id="name" name="name">
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="birth">생년월일<sup>*</sup></label>
+                        <input type="date" class="form-control" id="birth" name="birth">
+                    </div>
+                    <div class="form-item">
+                        <div><span>성별</span></div>
+                        <div class="row">
+                            <div class="col-md-12 col-lg-6">
+                                <div class="form-item w-100">
+                                    <label class="form-label my-3" for="male">남자</label>
+                                    <input type="radio" class="form-control" name="gender" id="male" value="M">
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-6">
+                                <div class="form-item w-100">
+                                    <label class="form-label my-3" for="female">여자</label>
+                                    <input type="radio" class="form-control" name="gender" id="female" value="F">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="phone">연락처<sup>*</sup></label>
+                        <input type="text" class="form-control" name="phone" id="phone">
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="email">이메일 주소<sup>*</sup></label>
+                        <input type="email" class="form-control" id="email" name="email">
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="emailChk">이메일 인증<sup>*</sup></label>
+                        <input type="text" class="form-control" id="emailChk" name="emailChk" disabled>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="email">자주가는 지역</label>
+                        <input type="text" class="form-control" name="memo" value="학원(강남역)" readonly>
+                        <input type="hidden" class="form-control" name="stationId" value="0222">
+                    </div>
+                </div>
+                <div class="row g-4 text-center align-items-center justify-content-center pt-4">
+                    <button type="submit" form="memberSaveForm" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">회원 가입</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Checkout Page End -->
+</body>

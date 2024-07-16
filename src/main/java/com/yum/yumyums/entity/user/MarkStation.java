@@ -1,5 +1,6 @@
 package com.yum.yumyums.entity.user;
 
+import com.yum.yumyums.dto.user.MarkStationDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +10,7 @@ import lombok.Setter;
 @Setter
 public class MarkStation {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
@@ -21,4 +23,12 @@ public class MarkStation {
 
     @Column(length = 50)
     private String memo;
+
+    public static MarkStation toSaveEntity(MarkStationDTO markStationDTO){
+        MarkStation markStation = new MarkStation();
+        markStation.setMember(markStationDTO.getMember());
+        markStation.setStationId(markStationDTO.getStationId());
+        markStation.setMemo(markStationDTO.getMemo());
+        return markStation;
+    }
 }
