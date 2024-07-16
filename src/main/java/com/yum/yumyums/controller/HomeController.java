@@ -1,5 +1,5 @@
 
-package com.yum.yumyums.reference.controller;
+package com.yum.yumyums.controller;
 
 
 import com.yum.yumyums.dto.TemplateData;
