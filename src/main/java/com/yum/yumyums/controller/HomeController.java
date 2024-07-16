@@ -1,8 +1,7 @@
-
 package com.yum.yumyums.controller;
 
-
 import com.yum.yumyums.dto.TemplateData;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +17,16 @@ public class HomeController {
     public String join(Model model, TemplateData templateData) {
         templateData.setViewPath("user/join");
         return "template";
+    }
+    @GetMapping("/login")
+    public String login(Model model, TemplateData templateData){
+        templateData.setViewPath("user/login");
+        return "template";
+    }
+    @GetMapping("logout")
+    public String logout(HttpSession session){
+        session.invalidate();
+        return "redirect:/";
     }
 
     @GetMapping("/inc/alert")
