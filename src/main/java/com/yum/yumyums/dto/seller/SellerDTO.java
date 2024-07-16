@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SellerDTO {
 
-    private String id;
+    private String sellerId;
     private String password;
     private String sellerNum;
     private String masterName;
@@ -20,7 +20,7 @@ public class SellerDTO {
 
     public static SellerDTO toSellerDTO(Seller seller){
         SellerDTO sellerDTO = new SellerDTO();
-        sellerDTO.setId(seller.getId());
+        sellerDTO.setSellerId(seller.getId());
         sellerDTO.setPassword(seller.getPassword());
         sellerDTO.setSellerNum(seller.getSellerNum());
         sellerDTO.setMasterName(seller.getMasterName());

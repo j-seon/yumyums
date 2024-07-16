@@ -34,7 +34,7 @@ public class Seller {
 	public static Seller toSaveEntity(SellerDTO sellerDTO){
 		Seller seller = new Seller();
 
-		seller.setId(sellerDTO.getId());
+		seller.setId(sellerDTO.getSellerId());
 		seller.setPassword(sellerDTO.getPassword());
 		seller.setSellerNum(sellerDTO.getSellerNum());
 		seller.setMasterName(sellerDTO.getMasterName());
