@@ -1,6 +1,6 @@
-package com.yum.yumyums.board.repository;
+package com.yum.yumyums.reference.repository;
 
-import com.yum.yumyums.board.entity.BoardEntity;
+import com.yum.yumyums.reference.entity.BoardEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

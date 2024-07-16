@@ -1,8 +1,8 @@
-package com.yum.yumyums.board.controller;
+package com.yum.yumyums.reference.controller;
 
-import com.yum.yumyums.board.dto.BoardDTO;
+import com.yum.yumyums.reference.dto.BoardDTO;
 import com.yum.yumyums.dto.TemplateData;
-import com.yum.yumyums.board.service.BoardService;
+import com.yum.yumyums.reference.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

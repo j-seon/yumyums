@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class MemberDTO {
 
-    private String id;
+    private String memberId;
     private String password;
     private String name;
     private LocalDate birth;
@@ -26,7 +26,7 @@ public class MemberDTO {
 
     public static MemberDTO toMemberDTO(Member member) {
         MemberDTO memberDTO = new MemberDTO();
-        memberDTO.setId(member.getId());
+        memberDTO.setMemberId(member.getId());
         memberDTO.setPassword(member.getPassword());
         memberDTO.setName(member.getName());
         memberDTO.setBirth(member.getBirth());
