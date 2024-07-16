@@ -3,15 +3,18 @@ package com.yum.yumyums.service.user;
 import com.yum.yumyums.entity.seller.Menu;
 import com.yum.yumyums.entity.seller.Store;
 import com.yum.yumyums.repository.user.SearchRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class SearchServiceImpl implements SearchService {
-	@Autowired
-	private SearchRepository searchRepository;
+
+	private final SearchRepository searchRepository;
+
+	public SearchServiceImpl(SearchRepository searchRepository) {
+		this.searchRepository = searchRepository;
+	}
 
 	@Override
 	public List<Menu> findMenus(String searchValue) {
