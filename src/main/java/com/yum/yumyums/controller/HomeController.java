@@ -33,4 +33,34 @@ public class HomeController {
     public String alert(){
         return "inc/alert";
     }
+
+    @GetMapping("/stationUpdate")
+    public String stataionUpdate(){
+
+        return "redirect:/";
+    }
+
+/*    @GetMapping("/s")
+    public String sshowChatPage(Model model, TemplateData templateData) {
+        templateData.setViewPath("chat/list");
+
+        String accessKey = "2b0f47ca-9506-4b14-8a1c-7c6245ad3cde"; // 발급받은 accessKey
+
+        try {
+            WebClient webClient = WebClient.create("https://t-data.seoul.go.kr/apig/apiman-gateway/tapi/TaimsKsccDvSubwayStationGeom/1.0");
+            String response = webClient.get()
+                    .uri(uriBuilder -> uriBuilder.queryParam("apikey", accessKey).build())
+                    .accept(MediaType.APPLICATION_JSON)
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+
+            System.out.println(response);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return "template";
+    }*/
+
 }
