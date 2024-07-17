@@ -1,15 +1,19 @@
 package com.yum.yumyums.entity.user;
 
+import com.yum.yumyums.dto.user.MemberDTO;
 import com.yum.yumyums.enums.Gender;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "member")
-@Getter @Setter
 public class Member {
 
     @Id
@@ -22,8 +26,8 @@ public class Member {
     @Column(length = 50, nullable = false)
     private String name;
 
-    @Column(length = 50, nullable = false)
-    private String birth;
+    @Column(nullable = false)
+    private LocalDate birth;
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "varchar(50)", nullable = false)
@@ -35,9 +39,24 @@ public class Member {
     @Column(length = 100)
     private String phone;
 
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", nullable = false)
+    @CreationTimestamp
+    @Column(nullable = false)
     private LocalDateTime joinTime;
 
     @Column(nullable = false)
     private boolean isActive;
+
+    public static Member toSaveEntity(MemberDTO memberDTO){
+        Member member = new Member();
+
+        member.setId(memberDTO.getMemberId());
+        member.setPassword(memberDTO.getPassword());
+        member.setName(memberDTO.getName());
+        member.setBirth(memberDTO.getBirth());
+        member.setGender(memberDTO.getGender());
+        member.setEmail(memberDTO.getEmail());
+        member.setPhone(memberDTO.getPhone());
+        member.setActive(true);
+        return member;
+    }
 }

@@ -1,15 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Index</title>
 </head>
 <body>
     <button onclick="goRef()">참고용</button>
-</body>
+
+    <!--세션에 loginUser가 null이 아니라면 (값이 있다면) -->
+    <th:block th:if="${session.loginUser != null}">
+        <a href="/logout">로그아웃</a>
+    </th:block>
+
+    <!--세션에 loginUser가 null이 아닌게 아니라면 (값이 없다면)-->
+    <th:block th:unless="${session.loginUser != null}">
+        <a href="/join">회원가입</a>
+        <a href="/login">로그인</a>
+    </th:block>
+
+    <th:block th:if="${session.loginType} eq 'm'">
+        <span th:text="|${session.loginUser.name} 회원님|"></span>
+        <ul>
+            <li>멤버메뉴1</li>
+            <li>멤버메뉴2</li>
+            <li>멤버메뉴3</li>
+        </ul>
+    </th:block>
+
+    <th:block th:if="${session.loginType} eq 's'">
+        <span th:text="|${session.loginUser.masterName} 판매자님|"></span>
+        <ul>
+            <li>판매자메뉴1</li>
+            <li>판매자메뉴2</li>
+            <li>판매자메뉴3</li>
+        </ul>
+    </th:block>
 <script>
     const goRef = () => {
         location.href= "/board";
     }
 </script>
+</body>
 </html>

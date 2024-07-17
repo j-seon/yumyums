@@ -1,0 +1,142 @@
+
+<body>
+<!-- Checkout Page Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <h1 class="mb-4">일반회원 가입</h1>
+        <form action="/member" method="post" id="memberSaveForm">
+            <div class="row g-5">
+                <div class="col-md-12 col-lg-6 col-xl-7">
+
+                    <div class="form-item">
+                        <label class="form-label my-3" for="memberId">아이디<sup>*</sup></label>
+                        <input type="text" class="form-control" id="memberId" name="memberId">
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="password">비밀번호 <sup>*</sup></label>
+                        <input type="password" class="form-control" name="password" id="password" placeholder="비밀번호 입력">
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="passwordChk">비밀번호 확인<sup>*</sup></label>
+                        <input type="password" class="form-control" name="password" id="passwordChk" placeholder="비밀번호 입력" disabled>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="name">이름<sup>*</sup></label>
+                        <input type="text" class="form-control" id="name" name="name">
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="birth">생년월일<sup>*</sup></label>
+                        <input type="date" class="form-control" id="birth" name="birth">
+                    </div>
+                    <div class="form-item">
+                        <div><span>성별</span></div>
+                        <div class="row">
+                            <div class="col-md-12 col-lg-6">
+                                <div class="form-item w-100">
+                                    <label class="form-label my-3" for="male">남자</label>
+                                    <input type="radio" class="form-control" name="gender" id="male" value="M">
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-6">
+                                <div class="form-item w-100">
+                                    <label class="form-label my-3" for="female">여자</label>
+                                    <input type="radio" class="form-control" name="gender" id="female" value="F">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="phone">연락처<sup>*</sup></label>
+                        <input type="text" class="form-control" name="phone" id="phone">
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="email">이메일 주소<sup>*</sup></label>
+                        <input type="email" class="form-control" id="email" name="email">
+                        <div class="btn-secondary border-secondary py-1 px-2 w-20 pointer" onclick="sendEmail(this.previousElementSibling);">메일 보내기</div>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="emailChk">이메일 인증<sup>*</sup></label>
+                        <input type="text" class="form-control" id="emailChk" name="emailChk" placeholder="숫자 6자리 입력" onkeyup="checkEmail(event, this);" disabled>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="email">자주가는 지역</label>
+                        <input type="text" class="form-control" name="memo" value="학원(강남역)" readonly>
+                        <input type="hidden" class="form-control" name="stationId" value="0222">
+                    </div>
+                </div>
+                <div class="row g-4 text-center align-items-center justify-content-center pt-4">
+                    <button id="joinButton" type="submit" form="memberSaveForm" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary" disabled>회원 가입</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Checkout Page End -->
+</body>
+
+
+
+
+
+<script>
+    const sendEmail = (emailInput) => {
+      const email = emailInput.value.trim();
+      console.log(email);
+
+      $.ajax({
+        type: 'POST',
+        url: '/email/send',
+        data: { email: email },
+        success: function(response) {
+          alert('이메일이 전송되었습니다.');
+          const emailChk = document.getElementById('emailChk');
+          emailInput.readOnly = true;
+          emailChk.disabled = false;
+        },
+        error: function(xhr, status, error) {
+          alert('이메일 전송 실패');
+        }
+      });
+    };
+
+    const checkEmail = (e, emailChkInput) => {
+        const emailCode = emailChkInput.value.trim();
+        const emailInput = document.getElementById('email');
+        const email = emailInput.value.trim();
+        console.log("isNan", isNaN(e.key))
+
+        // 숫자가 아닌 경우 입력 막기
+        if (isNaN(e.key) && e.key !== 'Backspace' && e.key !== 'Delete') {
+            emailChkInput.value = emailCode.slice(0, emailCode.length - 1);
+            return;
+        }
+
+        // 6자리 이상이면 6자리까지만 남김
+        if (emailCode.length > 6) {
+            emailChkInput.value = emailCode.slice(0, 6);
+        }
+
+        // 6자리 숫자 검사 통과 시 AJAX 요청 실행
+        console.log(emailCode)
+        console.log(emailChkInput)
+        $.ajax({
+            type: 'POST',
+            url: '/email/check',
+            data: {
+              email: email,
+              emailCode: emailCode
+            },
+            success: function(response) {
+              // 포커스 해제 후 disabled 설정
+              emailChkInput.blur();
+              emailChkInput.disabled = true;
+              const joinButton = document.getElementById('joinButton');
+              joinButton.disabled = false;
+            },
+            error: function(xhr, status, error) {
+              // 에러 처리
+            }
+          });
+    }
+
+</script>
