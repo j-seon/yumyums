@@ -3,6 +3,7 @@ package com.yum.yumyums.vo;
 import jakarta.servlet.http.HttpSession;
 import lombok.Getter;
 
+// 세션에 들어가는 상수 정보값들을 저장하고 세션의 정보체크를 돕는 클래스
 @Getter
 public class SessionUtil {
 	public static final String MEMBER_ID_SESSION_ATTRIBUTE_NAME = "email";

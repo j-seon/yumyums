@@ -2,6 +2,7 @@ package com.yum.yumyums.vo;
 
 import java.util.Base64;
 
+// base64기반으로 쌍방향 암호화를 시키는 클래스 (비밀번호에선 사용X)
 public class SecureUtil {
 	private static final Base64Util base64Util = new Base64Util();
 
