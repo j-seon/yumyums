@@ -43,7 +43,7 @@ public class SellerController {
     @PostMapping("/login")
     public String sellerLogin(HttpServletRequest request, SellerDTO sellerDTO, Model model, TemplateData templateData){
         HttpSession session = request.getSession();
-        String sellerId = sellerDTO.getId();
+        String sellerId = sellerDTO.getSellerId();
         String sellerPw = sellerDTO.getPassword();
 
         SellerDTO seller = sellerService.findById(sellerId);

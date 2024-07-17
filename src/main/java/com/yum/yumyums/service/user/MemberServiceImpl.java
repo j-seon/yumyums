@@ -1,7 +1,5 @@
 package com.yum.yumyums.service.user;
 
-import com.yum.yumyums.board.dto.BoardDTO;
-import com.yum.yumyums.board.entity.BoardEntity;
 import com.yum.yumyums.dto.user.MarkStationDTO;
 import com.yum.yumyums.dto.user.MemberDTO;
 import com.yum.yumyums.entity.user.MarkStation;

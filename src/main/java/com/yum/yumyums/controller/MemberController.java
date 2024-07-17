@@ -49,7 +49,7 @@ public class MemberController {
     @PostMapping("/login")
     public String memberLogin(HttpServletRequest request, MemberDTO memberDTO, Model model, TemplateData templateData){
         HttpSession session = request.getSession();
-        String memberId = memberDTO.getId();
+        String memberId = memberDTO.getMemberId();
         String memberPw = memberDTO.getPassword();
         System.out.println(memberId +" : "+memberDTO);
 
