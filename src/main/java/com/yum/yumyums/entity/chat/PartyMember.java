@@ -13,11 +13,11 @@ public class PartyMember {
 	private Long id;
 
 	@ManyToOne
-	@Column(name = "party_id", nullable = false)
+	@JoinColumn(name = "party_id", nullable = false)
 	private Party party;
 
 	@ManyToOne
-	@Column(name = "member_id", nullable = false)
+	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
 
 	@Column(columnDefinition = "boolean DEFAULT false", nullable = false)
