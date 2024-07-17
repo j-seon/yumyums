@@ -1,11 +1,15 @@
 package com.yum.yumyums.entity.seller;
 
-import com.yum.yumyums.entity.seller.Seller;
+import com.yum.yumyums.dto.seller.SellerDTO;
+import com.yum.yumyums.dto.seller.StoreDTO;
+import com.yum.yumyums.entity.chat.PartyMember;
 import com.yum.yumyums.enums.Busy;
 import com.yum.yumyums.enums.FoodCategory;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 
 @Entity
@@ -46,6 +50,21 @@ public class Store {
 	@Enumerated(EnumType.STRING)
 	@Column(columnDefinition = "varchar(50) DEFAULT 'SPACIOUS'", nullable = false)
 	private Busy busy;
+
+	public StoreDTO entityToDto() {
+		StoreDTO storeDTO = new StoreDTO();
+		storeDTO.setId(this.id);
+		storeDTO.setSellerDTO(SellerDTO.toSellerDTO(this.seller));
+		storeDTO.setName(this.name);
+		storeDTO.setAddress(this.address);
+		storeDTO.setCategory(this.category);
+		storeDTO.setContent(this.content);
+		storeDTO.setOpenTime(this.openTime);
+		storeDTO.setCloseTime(this.closeTime);
+		storeDTO.setBusy(this.busy);
+
+		return storeDTO;
+	}
 
 
 }

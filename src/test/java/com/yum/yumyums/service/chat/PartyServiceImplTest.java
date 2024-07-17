@@ -27,7 +27,7 @@ class PartyServiceImplTest {
 		member.setId(memberId);
 
 	    //when
-		String url = partyService.generateInviteUrlByPartyId(member.getId());
+		String url = partyService.generateInviteUrl(member.getId());
 
 	    //then
 		assertThat(url).isEqualTo(SITE_LINK.getUrl() + encryptMemberId);

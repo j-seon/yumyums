@@ -1,25 +1,24 @@
 package com.yum.yumyums.service.chat;
 
 import com.yum.yumyums.dto.chat.PartyDTO;
-import com.yum.yumyums.entity.chat.Party;
-import com.yum.yumyums.entity.user.Member;
+import com.yum.yumyums.dto.user.MemberDTO;
 
 public interface PartyService {
 
-	public String generateInviteUrlByPartyId(String memberId);
+	//URL 관련
+	String generateInviteUrl(String partyId);
+	String getPartyIdByInviteUrlParam(String urlParam);
 
-	public String getPartyIdByInviteUrlParam(String param);
+	// 파티 관리 (생성,삭제,추가)
+	String createParty(PartyDTO partyDTO, MemberDTO memberDTO);
+	String addMemberToParty(String partyId, MemberDTO memberDTO);
+	String deleteMemberToParty(String partyId, MemberDTO memberDTO);
 
-	// TODO 무슨값을 파라미터로 넘길지 고민해보기. 만약 파티라면 파티의 값은 어떻게 가져옴?
-	public Party addMemberToParty(Party partyId, Member member, String param);
+	//select
+	PartyDTO findParty(String partyId);
+	PartyDTO findPartyByMemberId(MemberDTO memberDTO);
 
-	public Party deleteMemberToParty(Party partyId, Member member);
-
-	boolean isMemberInActiveParty(String memberId);
-
-	PartyDTO findParty(String memberId);
-
-	PartyDTO createParty(PartyDTO partyDTO, String memberId);
-
-	boolean isPartyMember(String memberId, String partyId);
+	//검증 (DB 데이터 확인)
+	boolean isMemberInActiveParty(MemberDTO memberDTO);
+	boolean isPartyMember(String partyId, MemberDTO memberDTO);
 }

@@ -1,5 +1,6 @@
 package com.yum.yumyums.entity.chat;
 
+import com.yum.yumyums.dto.chat.PartyDTO;
 import com.yum.yumyums.enums.PayType;
 import com.yum.yumyums.entity.seller.Store;
 import com.yum.yumyums.enums.RandomType;
@@ -7,8 +8,12 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 public class Party {
 	@Id
 	@Column(length = 50)
@@ -27,5 +32,24 @@ public class Party {
 	private RandomType randomType;
 
 	@Column(columnDefinition = "boolean DEFAULT true", nullable = false)
-	private boolean isActive = true;
+	private boolean isActive;
+
+	@OneToMany(mappedBy = "party")
+	private List<PartyMember> partyMembers;
+
+	public PartyDTO entityToDto() {
+		PartyDTO partyDTO = new PartyDTO();
+		partyDTO.setId(id);
+		partyDTO.setStoreDTO(store.entityToDto());
+		partyDTO.setPayType(payType);
+		partyDTO.setRandomType(randomType);
+		partyDTO.setActive(isActive);
+		partyDTO.setPartyMemberDTOs(
+				partyMembers.stream()
+						.map(PartyMember::entityToDto)
+						.collect(Collectors.toList())
+		);
+
+		return partyDTO;
+	}
 }
