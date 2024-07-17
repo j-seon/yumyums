@@ -5,6 +5,8 @@ import com.yum.yumyums.dto.user.MarkStationDTO;
 import com.yum.yumyums.dto.user.MemberDTO;
 import com.yum.yumyums.service.user.MarkStationService;
 import com.yum.yumyums.service.user.MemberService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,6 +43,27 @@ public class MemberController {
         memberService.save(memberDTO, markStationDTO);
 
         return "redirect:/";
+
+    }
+
+    @PostMapping("/login")
+    public String memberLogin(HttpServletRequest request, MemberDTO memberDTO, Model model, TemplateData templateData){
+        HttpSession session = request.getSession();
+        String memberId = memberDTO.getMemberId();
+        String memberPw = memberDTO.getPassword();
+        System.out.println(memberId +" : "+memberDTO);
+
+        MemberDTO member = memberService.findById(memberId);
+        if(member != null && member.getPassword().equals(memberPw)){
+            session.setAttribute("loginUser",member);
+            session.setAttribute("loginType", "m");
+            return "redirect:/";
+        }else{
+            templateData.setMessage("아이디 또는 비밀번호가 일치하지 않습니다.");
+            templateData.setUrl("/login");
+            model.addAttribute("templateData", templateData);
+            return "/inc/alert";
+        }
 
     }
 
