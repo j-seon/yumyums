@@ -21,20 +21,20 @@ public class Station {
     @Column(length = 50, nullable = false)
     private String line;
 
-    @Column(length = 100, nullable = false)
-    private String convx;
+    @Column(nullable = false)
+    private double convX;
 
-    @Column(length = 100, nullable = false)
-    private String convy;
+    @Column(nullable = false)
+    private double convY;
 
     public static Station dtoToEntity(StationDTO stationDTO){
         Station station = new Station();
 
-        station.setId(stationDTO.getStationId());
-        station.setName(stationDTO.getName());
-        station.setLine(stationDTO.getLine());
-        station.setConvx(stationDTO.getConvx());
-        station.setConvy(stationDTO.getConvy());
+        station.setId(stationDTO.getOutStnNum());
+        station.setName(stationDTO.getStnKrNm());
+        station.setLine(stationDTO.getLineNm());
+        station.setConvX(Double.parseDouble(stationDTO.getConvX()));
+        station.setConvY(Double.parseDouble(stationDTO.getConvY()));
         return station;
     }
 }
