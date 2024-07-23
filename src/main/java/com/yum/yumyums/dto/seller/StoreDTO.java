@@ -14,20 +14,20 @@ import java.util.stream.Collectors;
 @Data
 public class StoreDTO {
 
-    private int id;
-    private SellerDTO sellerDTO;
-    private String password;
-    private String name;
-    private String address;
-    private FoodCategory category;
-    private String content;
+    private int storeId;
+    private SellerDTO sellerDTO = null;
+    private String password = null;
+    private String name = null;
+    private String address = null;
+    private FoodCategory category = null;
+    private String content = null;
     private int openTime;
     private int closeTime;
-    private Busy busy;
+    private Busy busy = Busy.CROWDED;
 
     public Store dtoToEntity() {
         Store store = new Store();
-        store.setId(id);
+        store.setId(storeId);
         store.setSeller(Seller.toSaveEntity(sellerDTO));
         store.setName(name);
         store.setAddress(address);

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class SearchServiceImpl implements SearchService {
+public class  SearchServiceImpl implements SearchService {
 
 	private final SearchRepository searchRepository;
 

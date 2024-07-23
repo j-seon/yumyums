@@ -1,44 +1,64 @@
 package com.yum.yumyums.dto.chat;
 
-import com.yum.yumyums.dto.FaqDTO;
 import com.yum.yumyums.dto.seller.StoreDTO;
 import com.yum.yumyums.entity.chat.Party;
 import com.yum.yumyums.entity.chat.PartyMember;
 import com.yum.yumyums.enums.PayType;
 import com.yum.yumyums.enums.RandomType;
-import jakarta.mail.Part;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.Data;
 
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
 public class PartyDTO {
 
-    private String id;
-    private StoreDTO storeDTO;
-    private PayType payType;
+    private String id = null;
+    private StoreDTO storeDTO = null;
+    private PayType payType = null;
     private RandomType randomType;
-    private boolean isActive;
-    private List<PartyMemberDTO> partyMemberDTOs;
+    private boolean isActive = true;
+    private List<PartyMemberDTO> partyMemberDTOs = new ArrayList<PartyMemberDTO>();
+
+
 
     public Party dtoToEntity() {
-        Party party = new Party();
-        party.setId(this.id);
-        party.setStore(this.storeDTO.dtoToEntity());
-        party.setPayType(this.payType);
+        Party party = Party.createParty(id, storeDTO.dtoToEntity(), payType);
         party.setRandomType(this.randomType);
         party.setActive(this.isActive);
-        party.setPartyMembers(
-                partyMemberDTOs.stream()
-                .map(PartyMemberDTO::entityToDto)
-                .collect(Collectors.toList())
-        );
 
+        // 파티멤버 저장
+        List<PartyMember> partyMembers = new ArrayList<PartyMember>();
+        for (PartyMemberDTO partyMemberDTO : partyMemberDTOs) {
+            PartyMember partyMember = partyMemberDTO.dtoToEntity();
+            partyMembers.add(partyMember);
+        }
         return party;
     }
 
+    public boolean isValidForInsert() {
+        return id != null
+                && storeDTO != null
+                && storeDTO.getName() != null
+                && payType != null;
+    }
+
+    // 연관관계 메소드
+    public void addPartyMember(PartyMemberDTO partyMemberDTO) {
+        partyMemberDTOs.add(partyMemberDTO);
+        partyMemberDTO.setPartyDTO(this);
+    }
+
+    public void setPartyMembersByPartyMemberList(List<PartyMember> partyMembers) {
+        for (PartyMember partyMember : partyMembers) {
+            partyMemberDTOs.add(partyMember.entityToDto());
+        }
+    }
+
+    // 조회 로직
+    public int getPartyMemberCount() {
+        return partyMemberDTOs.size();
+    }
 }

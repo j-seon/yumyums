@@ -7,15 +7,16 @@ public interface PartyService {
 
 	//URL 관련
 	String generateInviteUrl(String partyId);
-	String getPartyIdByInviteUrlParam(String urlParam);
+	String getPartyIdByInviteUrlParam(String encryptedPartyID);
 
-	// 파티 관리 (생성,삭제,추가)
+	//파티 관리 (생성,삭제,추가)
 	String createParty(PartyDTO partyDTO, MemberDTO memberDTO);
-	String addMemberToParty(String partyId, MemberDTO memberDTO);
-	String deleteMemberToParty(String partyId, MemberDTO memberDTO);
+	String addMemberToParty(String encryptedPartyID, MemberDTO memberDTO, boolean isPartyLeader);
+	String deleteParty(String encryptedPartyID, MemberDTO memberDTO);
+	String deleteMemberToParty(String encryptedPartyID, MemberDTO memberDTO);
 
 	//select
-	PartyDTO findParty(String partyId);
+	PartyDTO findParty(String encryptedPartyID);
 	PartyDTO findPartyByMemberId(MemberDTO memberDTO);
 
 	//검증 (DB 데이터 확인)

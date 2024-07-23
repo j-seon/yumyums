@@ -53,7 +53,7 @@ public class Store {
 
 	public StoreDTO entityToDto() {
 		StoreDTO storeDTO = new StoreDTO();
-		storeDTO.setId(this.id);
+		storeDTO.setStoreId(this.id);
 		storeDTO.setSellerDTO(SellerDTO.toSellerDTO(this.seller));
 		storeDTO.setName(this.name);
 		storeDTO.setAddress(this.address);
