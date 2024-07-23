@@ -28,31 +28,30 @@ public class PartyController {
 
 	private final PartyService partyService;
 
-	//파티 검색
-	@GetMapping("/{id}")
-	public String findById(@PathVariable String id) {
-		System.out.println(partyService.findParty(id));
-		return "redirect:/";
-	}
-
 	// 파티 홈페이지 조회
-	@GetMapping("/")
-	public String getPartyHomePage(final HttpServletRequest request, Model model, TemplateData templateData) {
-		HttpSession session = request.getSession();
+	@GetMapping
+	public String getPartyHomePage(final HttpServletRequest request, Model model, TemplateData templateData, @RequestParam(required = false) String targetPage) {
+//		HttpSession session = request.getSession();
+//
+//		//소비자 회원으로 로그인중이지 않다면
+//		if (!isLoginAsMember(session)) {
+//			return "redirect:/login"; // 로그인 페이지로 이동
+//		}
 
-		//소비자 회원으로 로그인중이지 않다면
-		if (!isLoginAsMember(session)) {
-			return "redirect:/login"; // 로그인 페이지로 이동
+		if(targetPage != null) {
+			templateData.setViewPath("party/" + targetPage);
+			model.addAttribute("templateData",templateData);
+			return "template";
 		}
 
 		// 파티 홈페이지 리턴
-		templateData.setViewPath("chat/party_home");
+		templateData.setViewPath("party/party_home");
 		model.addAttribute("templateData",templateData);
 		return "template";
 	}
 
 	//파티 생성
-	@PostMapping("/")
+	@PostMapping
 	public String createParty(final HttpServletRequest request, PartyDTO partyDTO) {
 		HttpSession session = request.getSession();
 		MemberDTO memberDTO = (MemberDTO) session.getAttribute(MEMBER_DTO_SESSION_ATTRIBUTE_NAME);
@@ -85,30 +84,33 @@ public class PartyController {
 		return "redirect:/party/" + partyId;
 	}
 
+	//파티 검색
+	@GetMapping("/{encryptedPartyID}")
+	public String findById(@PathVariable String encryptedPartyID, final HttpServletRequest request, Model model,  TemplateData templateData) {
+		HttpSession session = request.getSession();
 
-//	//파티 조회
-//	@GetMapping("/${partyId}")
-//	public String getParty(final HttpServletRequest request, @RequestParam("partyId") String partyId) {
-//		HttpSession session = request.getSession();
-//		String memberId = (String) session.getAttribute(MEMBER_DTO_SESSION_ATTRIBUTE_NAME);
-//
-//		//소비자 회원으로 로그인중이지 않다면
-//		if (!isLoginAsMember(session)) {
-//			return "redirect:/login"; // 로그인 페이지로 이동
-//		}
-//
-//		//파티원이 아니라면
-////		if(!partyService.isPartyMember(memberId, partyId)) {
-////			return null; //TODO 수정: 파티초대 페이지로 이동
-////		}
-//
-//		//TODO 파티조회 로직 추가
-//
-//		//TODO 파티id로 조회하여 PartyDTO-안에List<PartyMemberDTO>넣기- 가져와 모델에 저장
-//
-//		return null; //파티 조회 페이지로
-//	}
-//
+		//소비자 회원으로 로그인중이지 않다면
+		if (!isLoginAsMember(session)) {
+			return "redirect:/login"; // 로그인 페이지로 이동
+		}
+
+		//회원, 파티 정보값 가져오기
+		MemberDTO memberDTO = (MemberDTO) session.getAttribute(MEMBER_DTO_SESSION_ATTRIBUTE_NAME);
+		PartyDTO partyDTO = partyService.findParty(encryptedPartyID);
+		model.addAttribute("PartyDTO", partyDTO);
+
+		//파티원이 아니라면
+		if(!partyService.isPartyMember(encryptedPartyID, memberDTO)) {
+			templateData.setViewPath("party/join_party");
+			model.addAttribute("templateData", templateData);
+			return "template"; //파티초대 페이지로 이동
+		}
+
+		templateData.setViewPath("party/party_detail");
+		model.addAttribute("templateData", templateData);
+		return "template"; //파티상세 페이지로 이동
+	}
+
 //
 //	//파티에 회원추가 (파티초대)
 //	@PostMapping("/${partyId}")

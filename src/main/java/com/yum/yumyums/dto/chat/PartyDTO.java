@@ -7,10 +7,8 @@ import com.yum.yumyums.enums.PayType;
 import com.yum.yumyums.enums.RandomType;
 import lombok.Data;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 public class PartyDTO {
@@ -20,7 +18,7 @@ public class PartyDTO {
     private PayType payType = null;
     private RandomType randomType;
     private boolean isActive = true;
-    private List<PartyMemberDTO> partyMemberDTOs = new ArrayList<PartyMemberDTO>();
+    private List<PartyMemberDTO> partyMemberDTOs = new ArrayList<>();
 
 
 
@@ -30,7 +28,7 @@ public class PartyDTO {
         party.setActive(this.isActive);
 
         // 파티멤버 저장
-        List<PartyMember> partyMembers = new ArrayList<PartyMember>();
+        List<PartyMember> partyMembers = new ArrayList<>();
         for (PartyMemberDTO partyMemberDTO : partyMemberDTOs) {
             PartyMember partyMember = partyMemberDTO.dtoToEntity();
             partyMembers.add(partyMember);
