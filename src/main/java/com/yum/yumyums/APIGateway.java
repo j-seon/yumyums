@@ -1,5 +1,7 @@
 package com.yum.yumyums;
 
+import com.yum.yumyums.dto.seller.StoreDTO;
+import com.yum.yumyums.service.seller.StoreService;
 import com.yum.yumyums.service.user.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -15,9 +17,14 @@ public class APIGateway {
 	// 호출해야하는 메소드를 생성하고 서비스의 메소드를 return (아래는 예시)
 
 	private final MemberService memberService;
+	private final StoreService storeService;
 
 	public boolean isValidMember(String memberId) {
 		return memberService.isValidMember(memberId);
+	}
+
+	public StoreDTO findStoreDtoByStoreName(String storeName) {
+		return storeService.findByName(storeName);
 	}
 
 }

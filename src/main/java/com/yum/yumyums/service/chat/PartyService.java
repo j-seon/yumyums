@@ -10,7 +10,7 @@ public interface PartyService {
 	String getPartyIdByInviteUrlParam(String encryptedPartyID);
 
 	//파티 관리 (생성,삭제,추가)
-	String createParty(PartyDTO partyDTO, MemberDTO memberDTO);
+	String createParty(PartyDTO partyDTO, MemberDTO memberDTO, String storeName);
 	String addMemberToParty(String encryptedPartyID, MemberDTO memberDTO, boolean isPartyLeader);
 	String deleteParty(String encryptedPartyID, MemberDTO memberDTO);
 	String deleteMemberToParty(String encryptedPartyID, MemberDTO memberDTO);

@@ -3,6 +3,8 @@ package com.yum.yumyums.controller;
 import com.yum.yumyums.dto.TemplateData;
 import com.yum.yumyums.dto.chat.PartyDTO;
 import com.yum.yumyums.dto.user.MemberDTO;
+import com.yum.yumyums.enums.PayType;
+import com.yum.yumyums.enums.RandomType;
 import com.yum.yumyums.service.chat.PartyService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -31,17 +33,30 @@ public class PartyController {
 	// 파티 홈페이지 조회
 	@GetMapping
 	public String getPartyHomePage(final HttpServletRequest request, Model model, TemplateData templateData, @RequestParam(required = false) String targetPage) {
-//		HttpSession session = request.getSession();
-//
-//		//소비자 회원으로 로그인중이지 않다면
-//		if (!isLoginAsMember(session)) {
-//			return "redirect:/login"; // 로그인 페이지로 이동
-//		}
+		HttpSession session = request.getSession();
 
+		//소비자 회원으로 로그인중이지 않다면
+		if (!isLoginAsMember(session)) {
+			return "redirect:/login"; // 로그인 페이지로 이동
+		}
+
+		//파티를 모델에 추가
+		PartyDTO partyDTO = new PartyDTO();
+		String storeName = "";
+		model.addAttribute("partyDTO", partyDTO);
+		model.addAttribute("storeName", storeName);
+
+
+		//넘어가려는 페이지가 존재한다면 (인덱스에서 뭔가 해서 넘어왔다면)
 		if(targetPage != null) {
+
+			// 이넘 값을 모델에 추가
+			model.addAttribute("payTypes", PayType.values());
+			model.addAttribute("randomTypes", RandomType.values());
+
 			templateData.setViewPath("party/" + targetPage);
 			model.addAttribute("templateData",templateData);
-			return "template";
+			return "template"; //파티
 		}
 
 		// 파티 홈페이지 리턴
@@ -52,14 +67,12 @@ public class PartyController {
 
 	//파티 생성
 	@PostMapping
-	public String createParty(final HttpServletRequest request, PartyDTO partyDTO) {
+	public String createParty(final HttpServletRequest request, Model model, PartyDTO partyDTO, String storeName) {
 		HttpSession session = request.getSession();
 		MemberDTO memberDTO = (MemberDTO) session.getAttribute(MEMBER_DTO_SESSION_ATTRIBUTE_NAME);
 
-		//파티의 정보값이 올바르지 않다면
-		if(!partyDTO.isValidForInsert()) {
-			return "redirect:/party/"; // 파티 인덱스로 이동
-		}
+		System.out.println(partyDTO);
+		System.out.println(storeName);
 
 		//소비자 회원으로 로그인중이지 않다면
 		if (!isLoginAsMember(session)) {
@@ -72,16 +85,16 @@ public class PartyController {
 			return "redirect:/party/" + existPartyDTO.getId(); // 해당 파티 상세페이지로 이동
 		}
 
-		String partyId = null;
 		//파티 생성
-		try {
-			partyId = partyService.createParty(partyDTO, memberDTO);
-		} catch(Exception e) {
-			// 파티생성에 실패했다면
-			return "redirect:/party/";
+		String encryptedPartyID = partyService.createParty(partyDTO, memberDTO, storeName);
+
+		// 파티생성에 실패했다면
+		if(encryptedPartyID == null) {
+			model.addAttribute("partyDTO", new PartyDTO());
+			return "redirect:/party";
 		}
 
-		return "redirect:/party/" + partyId;
+		return "redirect:/party/" + encryptedPartyID;
 	}
 
 	//파티 검색

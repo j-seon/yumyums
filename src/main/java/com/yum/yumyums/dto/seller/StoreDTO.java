@@ -1,5 +1,6 @@
 package com.yum.yumyums.dto.seller;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.yum.yumyums.dto.chat.PartyDTO;
 import com.yum.yumyums.entity.chat.PartyMember;
 import com.yum.yumyums.entity.seller.Seller;
@@ -40,4 +41,8 @@ public class StoreDTO {
         return store;
     }
 
+    @JsonGetter("categoryKorName")
+    public String getCategoryKorName() {
+        return category.getKorName();
+    }
 }

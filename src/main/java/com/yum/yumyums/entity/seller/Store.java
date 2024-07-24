@@ -1,5 +1,6 @@
 package com.yum.yumyums.entity.seller;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.yum.yumyums.dto.seller.SellerDTO;
 import com.yum.yumyums.dto.seller.StoreDTO;
 import com.yum.yumyums.entity.chat.PartyMember;
@@ -28,7 +29,7 @@ public class Store {
 	@Column(name = "password_hash", nullable = false)
 	private String password;
 
-	@Column(nullable = false, length = 50)
+	@Column(nullable = false, length = 50, unique = true)
 	private String name;
 
 	@Column(nullable = false, length = 100)
@@ -65,6 +66,5 @@ public class Store {
 
 		return storeDTO;
 	}
-
 
 }

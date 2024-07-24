@@ -36,13 +36,6 @@ public class PartyDTO {
         return party;
     }
 
-    public boolean isValidForInsert() {
-        return id != null
-                && storeDTO != null
-                && storeDTO.getName() != null
-                && payType != null;
-    }
-
     // 연관관계 메소드
     public void addPartyMember(PartyMemberDTO partyMemberDTO) {
         partyMemberDTOs.add(partyMemberDTO);

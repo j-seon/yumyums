@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Entity
 @Getter @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Party {
 	@Id
 	@Column(length = 50)

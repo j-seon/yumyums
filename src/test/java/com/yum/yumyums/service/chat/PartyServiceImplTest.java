@@ -131,7 +131,8 @@ class PartyServiceImplTest {
 	public void createParty() {
 		//TODO : 테스트코드 다시 작성 필요
 		//when
-		String resultPartyID = partyService.createParty(partyDTO, memberDTO);
+		String storeName = "홍길동 김밥";
+		String resultPartyID = partyService.createParty(partyDTO, memberDTO, storeName);
 
 		//then
 		assertNotNull(resultPartyID);

@@ -2,6 +2,7 @@ package com.yum.yumyums.service.chat;
 
 import com.yum.yumyums.APIGateway;
 import com.yum.yumyums.dto.chat.PartyDTO;
+import com.yum.yumyums.dto.seller.StoreDTO;
 import com.yum.yumyums.dto.user.MemberDTO;
 import com.yum.yumyums.entity.chat.Party;
 import com.yum.yumyums.entity.chat.PartyMember;
@@ -14,7 +15,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.yum.yumyums.enums.FixUrl.SITE_LINK;
@@ -49,9 +49,13 @@ public class PartyServiceImpl implements PartyService {
 	// [관리] 파티방 생성 + 파티에 인원 추가
 	@Override
 	@Transactional
-	public String createParty(PartyDTO partyDTO, MemberDTO memberDTO) {
+	public String createParty(PartyDTO partyDTO, MemberDTO memberDTO, String storeName) {
+		//storeDTO 넣기
+		StoreDTO storeDTO = apiGateway.findStoreDtoByStoreName(storeName);
+		partyDTO.setStoreDTO(storeDTO);
 		//PK 생성
-
+		String partyId = PKGenerator.generatePK();
+		partyDTO.setId(partyId);
 
 		//방 생성
 		String encryptedPartyID = createPartyRoom(partyDTO);
@@ -59,8 +63,9 @@ public class PartyServiceImpl implements PartyService {
 		//파티장을 멤버에 추가
 		String insertPartyMemberValuePartyId = addMemberToParty(encryptedPartyID, memberDTO, true);
 
+
 		//정상 저장여부 체크
-		if(insertPartyMemberValuePartyId != encryptedPartyID) {
+		if(!insertPartyMemberValuePartyId.equals(encryptedPartyID)) {
 			throw new RuntimeException("파티 생성 중, 파티 리더를 DB에 저장하는데 실패했습니다.");
 		}
 		 return encryptedPartyID;
@@ -92,6 +97,7 @@ public class PartyServiceImpl implements PartyService {
 				.orElseThrow(() ->
 						new RuntimeException("존재하지 않는 파티에 접근 - 파티 ID: " + partyId));
 				//orElseThrow = 값이 있다면 값을 반환, 없다면 예외를 던짐
+
 
 		//PartyMember 생성
 		Member member = Member.toSaveEntity(memberDTO);
