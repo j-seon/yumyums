@@ -16,8 +16,8 @@ public interface PartyService {
 	String deleteMemberToParty(String encryptedPartyID, MemberDTO memberDTO);
 
 	//select
+	String findEncryptedPartyIDByMemberId(MemberDTO memberDTO);
 	PartyDTO findParty(String encryptedPartyID);
-	PartyDTO findPartyByMemberId(MemberDTO memberDTO);
 
 	//검증 (DB 데이터 확인)
 	boolean isMemberInActiveParty(MemberDTO memberDTO);

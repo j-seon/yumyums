@@ -143,16 +143,24 @@ public class PartyServiceImpl implements PartyService {
 		return partyDTO;
 	}
 
-	// [select] 회원id로 파티 찾아주기
+	// [select] 회원id로 파티 찾아, 암호화된 파티 아이디 돌려주기
 	@Override
-	public PartyDTO findPartyByMemberId(MemberDTO memberDTO) {
-		return null;
+	public String findEncryptedPartyIDByMemberId(MemberDTO memberDTO) {
+		Party party = partyRepository.findActivePartyByMemberId(memberDTO.getMemberId());
+		if(party == null) {
+			return null;
+		}
+		return SecureUtil.calcEncrypt(party.getId());
 	}
 
 	// [검증] 파티가 존재하는 회원인지 조회
 	@Override
 	public boolean isMemberInActiveParty(MemberDTO memberDTO) {
-		return false;
+		Party party = partyRepository.findActivePartyByMemberId(memberDTO.getMemberId());
+		if(party == null) {
+			return false;
+		}
+		return true;
 	}
 
 	// [검증] 해당 파티에 소속돼있는 회원인지 조회

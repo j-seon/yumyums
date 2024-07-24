@@ -34,30 +34,43 @@ public class PartyController {
 	@GetMapping
 	public String getPartyHomePage(final HttpServletRequest request, Model model, TemplateData templateData, @RequestParam(required = false) String targetPage) {
 		HttpSession session = request.getSession();
+		MemberDTO memberDTO = (MemberDTO) session.getAttribute(MEMBER_DTO_SESSION_ATTRIBUTE_NAME);
 
 		//소비자 회원으로 로그인중이지 않다면
 		if (!isLoginAsMember(session)) {
 			return "redirect:/login"; // 로그인 페이지로 이동
 		}
 
-		//파티를 모델에 추가
-		PartyDTO partyDTO = new PartyDTO();
-		String storeName = "";
-		model.addAttribute("partyDTO", partyDTO);
-		model.addAttribute("storeName", storeName);
+		// 이미 파티에 소속돼있다면
+		System.out.println("파티 소속돼있는지 검사하는중~");
+		String encryptedPartyID = partyService.findEncryptedPartyIDByMemberId(memberDTO);
+		System.out.println("검사 완료됐다리 : " + encryptedPartyID);
+		if (encryptedPartyID != null) {
+			System.out.println("소속됐다리! 이제 페이지 이동!!");
+			System.out.println("이동할 페이지 : " + "redirect:/party/" + encryptedPartyID);
+			return "redirect:/party/" + encryptedPartyID; // 해당 파티 상세페이지로 이동
+		}
 
 
 		//넘어가려는 페이지가 존재한다면 (인덱스에서 뭔가 해서 넘어왔다면)
 		if(targetPage != null) {
+			if(targetPage.equals("create_party")) {
+				//파티 생성을 위한 변수들 저장
+				PartyDTO partyDTO = new PartyDTO();
+				String storeName = "";
+				model.addAttribute("partyDTO", partyDTO);
+				model.addAttribute("storeName", storeName);
 
-			// 이넘 값을 모델에 추가
-			model.addAttribute("payTypes", PayType.values());
-			model.addAttribute("randomTypes", RandomType.values());
+				// 페이지에 값을 띄우기위한 이넘 값을 모델에 추가
+				model.addAttribute("payTypes", PayType.values());
+				model.addAttribute("randomTypes", RandomType.values());
+			}
 
 			templateData.setViewPath("party/" + targetPage);
 			model.addAttribute("templateData",templateData);
-			return "template"; //파티
+			return "template"; //연관된 페이지로 이동 (파티 들어가기 or 파티 만들기)
 		}
+
 
 		// 파티 홈페이지 리턴
 		templateData.setViewPath("party/party_home");
@@ -71,18 +84,9 @@ public class PartyController {
 		HttpSession session = request.getSession();
 		MemberDTO memberDTO = (MemberDTO) session.getAttribute(MEMBER_DTO_SESSION_ATTRIBUTE_NAME);
 
-		System.out.println(partyDTO);
-		System.out.println(storeName);
-
 		//소비자 회원으로 로그인중이지 않다면
 		if (!isLoginAsMember(session)) {
 			return "redirect:/login"; // 로그인 페이지로 이동
-		}
-
-		// 이미 파티에 소속돼있다면
-		if (partyService.isMemberInActiveParty(memberDTO)) {
-			PartyDTO existPartyDTO = partyService.findPartyByMemberId(memberDTO);
-			return "redirect:/party/" + existPartyDTO.getId(); // 해당 파티 상세페이지로 이동
 		}
 
 		//파티 생성
@@ -110,14 +114,14 @@ public class PartyController {
 		//회원, 파티 정보값 가져오기
 		MemberDTO memberDTO = (MemberDTO) session.getAttribute(MEMBER_DTO_SESSION_ATTRIBUTE_NAME);
 		PartyDTO partyDTO = partyService.findParty(encryptedPartyID);
-		model.addAttribute("PartyDTO", partyDTO);
+		model.addAttribute("partyDTO", partyDTO);
 
 		//파티원이 아니라면
-		if(!partyService.isPartyMember(encryptedPartyID, memberDTO)) {
-			templateData.setViewPath("party/join_party");
-			model.addAttribute("templateData", templateData);
-			return "template"; //파티초대 페이지로 이동
-		}
+//		if(!partyService.isPartyMember(encryptedPartyID, memberDTO)) {
+//			templateData.setViewPath("party/join_party");
+//			model.addAttribute("templateData", templateData);
+//			return "template"; //파티초대 페이지로 이동
+//		}
 
 		templateData.setViewPath("party/party_detail");
 		model.addAttribute("templateData", templateData);
