@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -18,11 +20,29 @@ public class MemberDTO {
     private String password;
     private String name;
     private LocalDate birth;
-    private Gender gender;
+    private String gender;
     private String email;
     private String phone;
     private LocalDateTime joinTime;
     private boolean isActive;
+   /* private List<MarkStationDTO> markStations;*/
+
+    public static MemberDTO entityToDto(Member member) {
+        MemberDTO memberDTO = new MemberDTO();
+        memberDTO.setMemberId(member.getId());
+        memberDTO.setPassword(member.getPassword());
+        memberDTO.setName(member.getName());
+        memberDTO.setBirth(member.getBirth());
+        memberDTO.setGender(String.valueOf(member.getGender()));
+        memberDTO.setEmail(member.getEmail());
+        memberDTO.setPhone(member.getPhone());
+        memberDTO.setJoinTime(member.getJoinTime());
+        memberDTO.setActive(member.isActive());
+/*        memberDTO.setMarkStations(member.getMarkStations().stream()
+                .map(MarkStationDTO::entityToDto)
+                .collect(Collectors.toList()));*/
+        return memberDTO;
+    }
 
     public static MemberDTO toMemberDTO(Member member) {
         MemberDTO memberDTO = new MemberDTO();
@@ -30,11 +50,13 @@ public class MemberDTO {
         memberDTO.setPassword(member.getPassword());
         memberDTO.setName(member.getName());
         memberDTO.setBirth(member.getBirth());
-        memberDTO.setGender(member.getGender());
+        memberDTO.setGender(String.valueOf(member.getGender()));
         memberDTO.setEmail(member.getEmail());
         memberDTO.setPhone(member.getPhone());
         memberDTO.setJoinTime(member.getJoinTime());
         memberDTO.setActive(member.isActive());
         return memberDTO;
     }
+
+
 }

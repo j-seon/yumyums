@@ -1,5 +1,6 @@
 package com.yum.yumyums.entity.user;
 
+import com.yum.yumyums.dto.user.MarkStationDTO;
 import com.yum.yumyums.dto.user.MemberDTO;
 import com.yum.yumyums.enums.Gender;
 import jakarta.persistence.*;
@@ -9,6 +10,9 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -46,17 +50,21 @@ public class Member {
     @Column(nullable = false)
     private boolean isActive;
 
-    public static Member toSaveEntity(MemberDTO memberDTO){
+    public static Member dtoToEntity(MemberDTO memberDTO){
         Member member = new Member();
 
         member.setId(memberDTO.getMemberId());
         member.setPassword(memberDTO.getPassword());
         member.setName(memberDTO.getName());
         member.setBirth(memberDTO.getBirth());
-        member.setGender(memberDTO.getGender());
+        member.setGender(Gender.valueOf(memberDTO.getGender()));
         member.setEmail(memberDTO.getEmail());
         member.setPhone(memberDTO.getPhone());
-        member.setActive(true);
+        member.setJoinTime(memberDTO.getJoinTime());
+        member.setActive(memberDTO.isActive());
         return member;
     }
+
+
+
 }

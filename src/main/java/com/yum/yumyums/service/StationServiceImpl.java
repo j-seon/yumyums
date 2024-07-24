@@ -4,7 +4,6 @@ import com.yum.yumyums.dto.StationDTO;
 import com.yum.yumyums.entity.Station;
 import com.yum.yumyums.repository.StationRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
@@ -21,6 +20,56 @@ public class StationServiceImpl implements StationService{
     private final StationRepository stationRepository;
 
 
+    /*
+
+ HttpURLConnection를 사용하는 전통적인 코딩방식.
+ 그러나 비동기 방식을 위하여 WebClient를 채택했기 때문에, 위처럼 스트림API 방식으로 코딩한다.
+@Override
+public List<Station> getAndSaveStations() {
+    List<Station> stations = new ArrayList<>();
+
+    try {
+        URL url = new URL("https://api.example.com/stations");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+
+        int responseCode = connection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            // 응답 데이터를 파싱하여 StationDTO 리스트 생성
+            List<StationDTO> stationDTOs = parseStationDTOs(response.toString());
+
+            // StationDTO를 Station 엔티티로 변환
+            stations = stationDTOs.stream()
+                    .map(Station::dtoToEntity)
+                    .collect(Collectors.toList());
+
+            // 엔티티 리스트를 데이터베이스에 저장
+            stations = stationRepository.saveAll(stations);
+        } else {
+            // 에러 처리
+            System.err.println("HTTP 요청 실패: " + responseCode);
+        }
+    } catch (IOException e) {
+        // 예외 처리
+        e.printStackTrace();
+    }
+
+    return stations;
+}
+
+private List<StationDTO> parseStationDTOs(String responseBody) {
+    // 응답 데이터를 파싱하여 StationDTO 리스트 생성
+    // (구현 생략)
+}
+*/
     @Override
     public List<Station> getAndSaveStations() {
 
@@ -39,56 +88,16 @@ public class StationServiceImpl implements StationService{
         return stationRepository.saveAllAndFlush(stations);
     }
 
-    /*
-
-     HttpURLConnection를 사용하는 전통적인 코딩방식.
-     그러나 비동기 방식을 위하여 WebClient를 채택했기 때문에, 위처럼 스트림API 방식으로 코딩한다.
     @Override
-    public List<Station> getAndSaveStations() {
-        List<Station> stations = new ArrayList<>();
+    public List<StationDTO> searchStations(String keyword) {
+        List<Station> stations = stationRepository.findByNameContaining(keyword);
 
-        try {
-            URL url = new URL("https://api.example.com/stations");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
+        return stations.stream()
+                .map(StationDTO::entityToDto)
+                .collect(Collectors.toList());
 
-            int responseCode = connection.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String inputLine;
-                StringBuilder response = new StringBuilder();
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
-
-                // 응답 데이터를 파싱하여 StationDTO 리스트 생성
-                List<StationDTO> stationDTOs = parseStationDTOs(response.toString());
-
-                // StationDTO를 Station 엔티티로 변환
-                stations = stationDTOs.stream()
-                        .map(Station::dtoToEntity)
-                        .collect(Collectors.toList());
-
-                // 엔티티 리스트를 데이터베이스에 저장
-                stations = stationRepository.saveAll(stations);
-            } else {
-                // 에러 처리
-                System.err.println("HTTP 요청 실패: " + responseCode);
-            }
-        } catch (IOException e) {
-            // 예외 처리
-            e.printStackTrace();
-        }
-
-        return stations;
     }
 
-    private List<StationDTO> parseStationDTOs(String responseBody) {
-        // 응답 데이터를 파싱하여 StationDTO 리스트 생성
-        // (구현 생략)
-    }
-    */
 
 
 }
