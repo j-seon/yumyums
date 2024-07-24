@@ -1,6 +1,6 @@
 package com.yum.yumyums.controller;
 
-import com.yum.yumyums.service.EmailService;
+import com.yum.yumyums.service.user.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ public class EmailController {
         try {
             String emailCode = emailService.createEmailCode();
             emailService.sendEmail(email, emailCode);
-            emailService.holdEmailCode(email, emailCode);
+            emailService.cacheEmailCode(email, emailCode);
             return ResponseEntity.ok().build();
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

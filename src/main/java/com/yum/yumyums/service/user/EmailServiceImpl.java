@@ -1,6 +1,5 @@
 package com.yum.yumyums.service.user;
 
-import com.yum.yumyums.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -16,7 +15,7 @@ public class EmailServiceImpl implements EmailService {
 
 
     private final JavaMailSender mailSender;
-    private final Map<String, String> codeHolder = new HashMap<>();
+    private final Map<String, String> cashedCodeStorage = new HashMap<>();
 
 
     @Override
@@ -39,23 +38,21 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void holdEmailCode(String email, String emailCode) {
+    public void cacheEmailCode(String email, String emailCode) {
         //이메일과 인증번호를 메모리 내 Map에 저장
-        codeHolder.put(email, emailCode);
-        System.out.println(codeHolder);
+        cashedCodeStorage.put(email, emailCode);
     }
 
     @Override
     public boolean isEmailCodeValid(String email, String emailCode) {
         // Map에 저장된 인증번호와 비교
-        String holdedCode = codeHolder.get(email);
-
-        return holdedCode!=null && holdedCode.equals(emailCode) ;
+        String cachedCode = cashedCodeStorage.get(email);
+        return cachedCode!=null && cachedCode.equals(emailCode) ;
     }
 
     @Override
     public void removeCodeHolder(String email) {
         // 번호 인증 후 Map에서 삭제
-         codeHolder.remove(email);
+        cashedCodeStorage.remove(email);
     }
 }
