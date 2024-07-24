@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface StationRepository extends JpaRepository<Station, String> {
-    /*List<Station> saveAll(List<Station> stations);*/
+    List<Station> findByNameContaining(String keyword);
 }

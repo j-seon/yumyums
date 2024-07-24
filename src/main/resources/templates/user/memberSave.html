@@ -1,67 +1,72 @@
 
-<body>
 <!-- Checkout Page Start -->
 <div class="container-fluid py-5">
     <div class="container py-5">
         <h1 class="mb-4">일반회원 가입</h1>
         <form action="/member" method="post" id="memberSaveForm">
-            <div class="row g-5">
+            <div class="row g-5 justify-content-center">
                 <div class="col-md-12 col-lg-6 col-xl-7">
-
                     <div class="form-item">
                         <label class="form-label my-3" for="memberId">아이디<sup>*</sup></label>
-                        <input type="text" class="form-control" id="memberId" name="memberId">
+                        <input type="text" class="form-control" id="memberId" name="memberDTO.memberId">
                     </div>
                     <div class="form-item">
                         <label class="form-label my-3" for="password">비밀번호 <sup>*</sup></label>
-                        <input type="password" class="form-control" name="password" id="password" placeholder="비밀번호 입력">
+                        <input type="password" class="form-control" name="memberDTO.password" id="password" placeholder="비밀번호 입력">
                     </div>
                     <div class="form-item">
                         <label class="form-label my-3" for="passwordChk">비밀번호 확인<sup>*</sup></label>
-                        <input type="password" class="form-control" name="password" id="passwordChk" placeholder="비밀번호 입력" disabled>
+                        <input type="password" class="form-control" name="passwordChk" id="passwordChk" placeholder="비밀번호 입력" disabled>
                     </div>
                     <div class="form-item">
                         <label class="form-label my-3" for="name">이름<sup>*</sup></label>
-                        <input type="text" class="form-control" id="name" name="name">
+                        <input type="text" class="form-control" id="name" name="memberDTO.name">
                     </div>
                     <div class="form-item">
                         <label class="form-label my-3" for="birth">생년월일<sup>*</sup></label>
-                        <input type="date" class="form-control" id="birth" name="birth">
+                        <input type="date" class="form-control" id="birth" name="memberDTO.birth">
                     </div>
                     <div class="form-item">
-                        <div><span>성별</span></div>
                         <div class="row">
                             <div class="col-md-12 col-lg-6">
-                                <div class="form-item w-100">
-                                    <label class="form-label my-3" for="male">남자</label>
-                                    <input type="radio" class="form-control" name="gender" id="male" value="M">
+                                <div class="form-check w-100">
+                                    <label class="form-check-label my-3" for="male">남자</label>
+                                    <input type="radio" class="form-check-input my-3" name="memberDTO.gender" id="male" value="M" checked>
                                 </div>
                             </div>
                             <div class="col-md-12 col-lg-6">
-                                <div class="form-item w-100">
-                                    <label class="form-label my-3" for="female">여자</label>
-                                    <input type="radio" class="form-control" name="gender" id="female" value="F">
+                                <div class="form-check w-100">
+                                    <label class="form-check-label my-3" for="female">여자</label>
+                                    <input type="radio" class="form-check-input my-3" name="memberDTO.gender" id="female" value="F">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="form-item">
                         <label class="form-label my-3" for="phone">연락처<sup>*</sup></label>
-                        <input type="text" class="form-control" name="phone" id="phone">
+                        <input type="text" class="form-control" name="memberDTO.phone" id="phone">
                     </div>
-                    <div class="form-item">
-                        <label class="form-label my-3" for="email">이메일 주소<sup>*</sup></label>
-                        <input type="email" class="form-control" id="email" name="email">
-                        <div class="btn-secondary border-secondary py-1 px-2 w-20 pointer" onclick="sendEmail(this.previousElementSibling);">메일 보내기</div>
+                    <div class="form-item mt-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <label class="form-label my-3" for="email">이메일 주소<sup>*</sup></label>
+                            <button type="button" id="sendEmailBtn" class="btn btn-secondary py-1 px-2 w-20" onclick="sendEmail();">메일 보내기</button>
+                        </div>
+                        <input type="email" class="form-control" id="email" name="memberDTO.email">
                     </div>
                     <div class="form-item">
                         <label class="form-label my-3" for="emailChk">이메일 인증<sup>*</sup></label>
                         <input type="text" class="form-control" id="emailChk" name="emailChk" placeholder="숫자 6자리 입력" onkeyup="checkEmail(event, this);" disabled>
                     </div>
-                    <div class="form-item">
-                        <label class="form-label my-3" for="email">자주가는 지역</label>
-                        <input type="text" class="form-control" name="memo" value="학원(강남역)" readonly>
-                        <input type="hidden" class="form-control" name="stationId" value="0222">
+
+                    <div class="form-item mt-3" id="markStations">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <label class="form-label my-3">자주가는 지역 (최대 3개)</label>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary py-1 px-2 w-20" onclick="modalBtnClick(event);">
+                                지역 추가
+                            </button>
+                        </div>
+
                     </div>
                 </div>
                 <div class="row g-4 text-center align-items-center justify-content-center pt-4">
@@ -72,14 +77,16 @@
     </div>
 </div>
 <!-- Checkout Page End -->
-</body>
+<th:block  th:replace="/user/addStation"></th:block>
 
 
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 
 <script>
-    const sendEmail = (emailInput) => {
+
+    const sendEmail = () => {
+      const emailInput = document.getElementById('email');
       const email = emailInput.value.trim();
       console.log(email);
 
@@ -117,8 +124,6 @@
         }
 
         // 6자리 숫자 검사 통과 시 AJAX 요청 실행
-        console.log(emailCode)
-        console.log(emailChkInput)
         $.ajax({
             type: 'POST',
             url: '/email/check',
@@ -131,7 +136,9 @@
               emailChkInput.blur();
               emailChkInput.disabled = true;
               const joinButton = document.getElementById('joinButton');
+              const sendEmailBtn = document.getElementById('sendEmailBtn');
               joinButton.disabled = false;
+              sendEmailBtn.disabled = true;
             },
             error: function(xhr, status, error) {
               // 에러 처리
@@ -139,4 +146,64 @@
           });
     }
 
+    const modalBtnClick = (e) => {
+        stationArr = document.getElementsByClassName('markStation');
+
+
+        if(stationArr.length >= 3){
+            alert("더이상 추가할 수 없습니다.")
+        }else {
+            const modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+            modal.show();
+        }
+    }
+
 </script>
+<!--
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <h1 class="mb-4">일반회원 가입</h1>
+        <form action="/member" method="post" id="memberSaveForm">
+            <label class="form-label my-3" for="memberId">아이디<sup>*</sup></label>
+            <input type="text" class="form-control" id="memberId" name="memberId">
+            <label class="form-label my-3" for="password">비밀번호 <sup>*</sup></label>
+            <input type="password" class="form-control" name="password" id="password" placeholder="비밀번호 입력">
+            <label class="form-label my-3" for="passwordChk">비밀번호 확인<sup>*</sup></label>
+            <input type="password" class="form-control" name="password" id="passwordChk" placeholder="비밀번호 입력" disabled>
+            <label class="form-label my-3" for="name">이름<sup>*</sup></label>
+            <input type="text" class="form-control" id="name" name="name">
+            <label class="form-label my-3" for="birth">생년월일<sup>*</sup></label>
+            <input type="date" class="form-control" id="birth" name="birth">
+            <label class="form-check-label my-3" for="male">남자</label>
+            <input type="radio" class="form-check-input my-3" name="gender" id="male" value="M" checked>
+            <label class="form-check-label my-3" for="female">여자</label>
+            <input type="radio" class="form-check-input my-3" name="gender" id="female" value="F">
+            <label class="form-label my-3" for="phone">연락처<sup>*</sup></label>
+            <input type="text" class="form-control" name="phone" id="phone">
+            <label class="form-label my-3" for="email">이메일 주소<sup>*</sup></label>
+
+            <div class="form-item mt-3" id="markStations">
+                <div class="markStation row mb-3 align-items-center">
+                    <input type="hidden" class="form-control" name="stationId">
+                    <input type="text" class="form-control" name="stationName">
+                    <input type="text" class="form-control" name="memo">
+                </div>
+                <div class="markStation row mb-3 align-items-center">
+                    <input type="hidden" class="form-control" name="stationId">
+                    <input type="text" class="form-control" name="stationName" >
+                    <input type="text" class="form-control" name="memo">
+                </div>
+                <div class="markStation row mb-3 align-items-center">
+                    <input type="hidden" class="form-control" name="stationId">
+                    <input type="text" class="form-control" name="stationName">
+                    <input type="text" class="form-control" name="memo">
+                </div>
+
+            </div>
+
+                <div class="row g-4 text-center align-items-center justify-content-center pt-4">
+                    <button id="joinButton" type="submit" form="memberSaveForm" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary" disabled>회원 가입</button>
+                </div>
+        </form>
+    </div>
+</div>-->
