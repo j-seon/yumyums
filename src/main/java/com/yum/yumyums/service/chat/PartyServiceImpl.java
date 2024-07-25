@@ -100,7 +100,7 @@ public class PartyServiceImpl implements PartyService {
 
 
 		//PartyMember 생성
-		Member member = Member.toSaveEntity(memberDTO);
+		Member member = Member.dtoToEntity(memberDTO);
 		PartyMember partyMember = PartyMember.createPartyMember(member, party, isPartyLeader);
 
 		//파티맴버를 DB에 저장

@@ -17,7 +17,7 @@ public class PartyMemberDTO {
 	private boolean isPartyLeader = false;
 
 	public PartyMember dtoToEntity() {
-		PartyMember partyMember = PartyMember.createPartyMember(Member.toSaveEntity(memberDTO), partyDTO.dtoToEntity(), isPartyLeader);
+		PartyMember partyMember = PartyMember.createPartyMember(Member.dtoToEntity(memberDTO), partyDTO.dtoToEntity(), isPartyLeader);
 		partyMember.setId(getId());
 		return partyMember;
 	}
