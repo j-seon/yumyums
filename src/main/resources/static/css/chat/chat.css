@@ -1,0 +1,38 @@
+.row {
+   width: 165px;
+}
+.add-chat-room{
+   width: 125px;
+   padding-right : 8px;
+}
+.inline-block {
+       display: inline-block;
+       vertical-align: top;
+   }
+
+.chatting {
+   margin: 5px;
+   padding: 5px;
+   border-radius: 5px;
+   background-color: #f1f1f1;
+   width: fit-content;
+}
+
+.chatting_own {
+   margin: 5px;
+   padding: 5px;
+   border-radius: 5px;
+   background-color: #d1e7dd;
+   width: fit-content;
+   align-self: flex-end;
+}
+
+.chat-window {
+   height: 400px;
+   overflow-y: auto;
+   border: 1px solid #ddd;
+   padding: 10px;
+}
+.setUser{
+height: 52px;
+}
