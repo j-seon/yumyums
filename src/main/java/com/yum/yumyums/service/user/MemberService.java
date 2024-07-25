@@ -9,4 +9,5 @@ public interface MemberService {
     void save(MemberJoinRequest memberJoinRequest);
     void saveMember(MemberDTO memberDTO);
     MemberDTO findById(String id);
+	boolean isValidMember(String memberId);
 }

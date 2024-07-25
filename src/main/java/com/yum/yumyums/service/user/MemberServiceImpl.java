@@ -10,11 +10,12 @@ import com.yum.yumyums.repository.user.MemberRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@org.springframework.stereotype.Service
+@Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
@@ -78,4 +79,11 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+	@Override
+	public boolean isValidMember(String memberId) {
+		if(memberRepository.findById(memberId) == null) {
+			return false;
+		}
+		return true;
+	}
 }

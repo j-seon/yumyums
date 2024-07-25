@@ -51,6 +51,19 @@
 <script>
     var idx = 0;
 
+    // 지역추가 버튼 클릭
+    const modalBtnClick = (e) => {
+        stationArr = document.getElementsByClassName('markStation');
+
+
+        if(stationArr.length >= 3){
+            alert("더이상 추가할 수 없습니다.")
+        }else {
+            const modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+            modal.show();
+        }
+    }
+
     // 검색어 입력시 결과목록 출력
     const searchStations = (e) => {
         const keyword = e.target.value.trim();
