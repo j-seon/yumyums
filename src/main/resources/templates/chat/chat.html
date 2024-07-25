@@ -1,0 +1,122 @@
+
+<body>
+
+    <!--<div class="container">-->
+    <h2>Chat Room</h2>
+
+    <div class="fruite inline-block">
+        <div class=" tab-class text-center">
+            <div class="row ">
+
+                <ul class="nav nav-pills d-inline-flex text-center mb-5 chat-room-list">
+                    <button type="button" class="btn btn-secondary add-chat-room" onclick="initModal()"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">채팅방 추가</button>
+                    <li class="nav-item" th:each="chat : ${chatList}">
+                        <a class="d-flex m-2 py-2 bg-light rounded-pill " data-bs-toggle="pill" th:data-room-id="${chat.chat.id}" >
+                            <span class="text-dark" style="width: 125px;"><div th:text="${chat.memberSavedRoomName}"></div></span>
+                            <button type="button" class="btn-close  del-room" aria-label="Close"></button>
+                        </a>
+                    </li>
+                </ul>
+
+<!--                <ul class="nav nav-pills d-inline-flex text-center mb-5 ">-->
+<!--                    <li>-->
+<!--                        <a class="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="modal" data-bs-target="#staticBackdrop">-->
+<!--                            <span class="text-dark" style="width: 125px;"><div>채팅방 추가</div></span>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+
+            </div>
+        </div>
+    </div>
+    <div class="inline-block">
+        <!--    <div>-->
+        <!--        <button id="connect" class="btn btn-primary">Connect</button>-->
+        <!--        <button id="disconnect" class="btn btn-danger" disabled>Disconnect</button>-->
+        <!--    </div>-->
+        <div class="col-md-12 chat-window" id="conversation" style="display:none;">
+            <div id="chatting"></div>
+        </div>
+        <form>
+            <div class="input-group">
+                <input type="text" id="message" class="form-control" placeholder="Type your message...">
+                <div class="input-group-append">
+                    <button id="send" class="btn btn-success" type="button">Send</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Modal -->
+<!--    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"-->
+<!--         data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"-->
+<!--         aria-hidden="true">-->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">지역 추가</h1>
+                    <button type="button" class="btn-close " data-bs-dismiss="modal" onclick="initModal()" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+
+
+                    <div class="stationInfo">
+                        <input type="hidden" class="form-control" name="setOutStnNum" id="setOutStnNum">
+
+                        <div class="form-item">
+                            <label class="form-label my-3" for="memo">방 이름</label>
+                            <input type="text" class="form-control" name="memo" id="memo">
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3" for="keyword">친구이름</label>
+                            <input id="keyword" class="form-control me-2" type="text" placeholder="친구 검색" aria-label="Search" oninput="searchFriend(event)">
+                            <ul class="userList list-group"></ul>
+                            <div class="setUser form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="initModal()">Close</button>
+                    <button type="button" class="btn btn-primary add-room">채팅방 만들기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+<script src="../../js/common/jquery.js"></script>
+<script src="../../js/common/popper.js"></script>
+<script src="../../js/chat/sockjs.js"></script>
+<script src="../../js/chat/stomp.js"></script>
+
+<link href="../../css/common/googlefont.css" rel="stylesheet">
+
+<!-- Icon Font Stylesheet -->
+<link href="../../css/common/fontawesome.css" rel="stylesheet"/>
+<link href="../../css/common/bootstrap-icons@1.4.1.css" rel="stylesheet">
+
+<!-- Libraries Stylesheet -->
+<link href="../../lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+<link href="../../lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+<!-- Template Stylesheet -->
+<link href="../../css/chat/chat.css" rel="stylesheet">
+<script >
+    var  loginUserId = "[[${session.loginUser.memberId}]]";
+</script>
+
+<script src="../../js/chat/chat.js"></script>
+
+<script th:each="chat : ${chatList}">
+    var  roomId = "[[${chat.chat.id}]]";
+   connect(roomId);
+</script>
+<style>
+
+
+</style>

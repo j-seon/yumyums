@@ -7,6 +7,6 @@ import lombok.Data;
 public class ChatMessageDTO {
 
     private int id;
-    private ChatMember chatMember;
+    private ChatMemberDTO chatMember;
     private String content;
 }
