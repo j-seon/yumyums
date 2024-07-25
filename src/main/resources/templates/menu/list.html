@@ -1,7 +1,7 @@
 
 <body>
 <h2>메뉴 보기</h2>
-<form th:action="@{/menu/list}" method="get">
+<form th:action="@{/menu}" method="get">
     <div>
         <label>분류:</label>
         <input type="checkbox" name="category" value="KOR"> 한식
@@ -48,7 +48,7 @@
     </thead>
     <tbody>
     <tr th:each="menu : ${menus}">
-        <td><a th:href="@{/menu/detail/{id}(id=${menu.id})}" th:text="${menu.name}"></a></td>
+        <td><a th:href="@{/menu/{id}(id=${menu.id})}" th:text="${menu.name}"></a></td>
         <td th:text="${menu.storeDTO.categoryKorName}"></td>
         <td th:text="${menu.content}"></td>
         <td th:text="${menu.price}"></td>
