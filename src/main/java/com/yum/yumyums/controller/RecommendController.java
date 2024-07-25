@@ -48,7 +48,7 @@ public class RecommendController {
         Map<Integer, Double> averageRatings = new HashMap<>();
 
         for (MenuDTO menu : menus) {
-            int storeId = menu.getStoreDTO().getId();
+            int storeId = menu.getStoreDTO().getStoreId();
             int likeCount = storeService.getLikesForStore(storeId);
             double averageRating = menuService.getAverageRateForMenu(menu.getId()).orElse(0.0);
 
@@ -79,7 +79,7 @@ public class RecommendController {
             model.addAttribute("templateData", templateData);
             model.addAttribute("averageRate", averageRating.isPresent() ? averageRating.getAsDouble() : "등록된 리뷰 없음");
 
-            int storeId = menu.get().getStoreDTO().getId();
+            int storeId = menu.get().getStoreDTO().getStoreId();
             int likeCount = storeService.getLikesForStore(storeId);
             model.addAttribute("likeCount", likeCount);
 

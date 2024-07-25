@@ -43,7 +43,7 @@ public class Menu {
     public MenuDTO entityToDto(){
 
         MenuDTO menuDTO = new MenuDTO();
-        menuDTO.setStoreDTO(this.store.entityToDTO());
+        menuDTO.setStoreDTO(this.store.entityToDto());
         menuDTO.setId(this.getId());
         menuDTO.setName(this.getName());
         menuDTO.setCategory(this.getCategory());

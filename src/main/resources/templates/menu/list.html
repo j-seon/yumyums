@@ -49,13 +49,13 @@
     <tbody>
     <tr th:each="menu : ${menus}">
         <td><a th:href="@{/menu/detail/{id}(id=${menu.id})}" th:text="${menu.name}"></a></td>
-        <td th:text="${menu.category}"></td>
+        <td th:text="${menu.storeDTO.categoryKorName}"></td>
         <td th:text="${menu.content}"></td>
         <td th:text="${menu.price}"></td>
         <td th:text="${menu.cookingTime}"></td>
-        <td th:text="${menu.storeDTO.busy}"></td>
+        <td th:text="${menu.storeDTO.busyKorName}"></td>
         <td th:text="${menu.isAlone ? 'Yes' : 'No'}"></td>
-        <td th:text="${likeCounts[menu.storeDTO.id]}"></td>
+        <td th:text="${likeCounts[menu.storeDTO.storeId]}"></td>
         <td th:text="${averageRatings[menu.id]}"></td>
     </tr>
     </tbody>

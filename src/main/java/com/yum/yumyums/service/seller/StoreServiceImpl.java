@@ -13,13 +13,13 @@ import com.yum.yumyums.repository.seller.StoreLikeRepository;
 public class StoreServiceImpl implements StoreService {
     private final StoreLikeRepository storeLikeRepository;
 
-	private final StoreRepository storeRepository;
+    private final StoreRepository storeRepository;
 
-	@Override
-	public StoreDTO findByName(String storeName) {
-		Store store = storeRepository.findByName(storeName);
-		return store.entityToDto();
-	}
+    @Override
+    public StoreDTO findByName(String storeName) {
+        Store store = storeRepository.findByName(storeName);
+        return store.entityToDto();
+    }
 
     public int getLikesForStore(int storeId) {
         return storeLikeRepository.countLikesByStoreId(storeId);

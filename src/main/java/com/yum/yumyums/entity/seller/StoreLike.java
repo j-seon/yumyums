@@ -27,7 +27,7 @@ public class StoreLike {
 
     public StoreLikeDTO entityToDTO() {
         StoreLikeDTO storeLikeDTO = new StoreLikeDTO();
-        storeLikeDTO.setStoreDTO(this.store.entityToDTO());
+        storeLikeDTO.setStoreDTO(this.store.entityToDto());
         storeLikeDTO.setMemberDTO(MemberDTO.toMemberDTO(this.member));
         return storeLikeDTO;
     }
