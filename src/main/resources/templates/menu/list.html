@@ -1,0 +1,65 @@
+
+<body>
+<h2>메뉴 보기</h2>
+<form th:action="@{/menu/list}" method="get">
+    <div>
+        <label>분류:</label>
+        <input type="checkbox" name="category" value="KOR"> 한식
+        <input type="checkbox" name="category" value="CHN"> 중식
+        <input type="checkbox" name="category" value="JPN"> 일식
+        <input type="checkbox" name="category" value="WESTERN"> 양식
+        <input type="checkbox" name="category" value="SNACK"> 분식
+    </div>
+    <div>
+        <label>가격대:</label>
+        <input type="checkbox" name="priceRange" value="below_10000"> 만원 이하
+        <input type="checkbox" name="priceRange" value="10000_20000"> 1만원~2만원
+        <input type="checkbox" name="priceRange" value="above_20000"> 2만원 이상
+    </div>
+    <div>
+        <label>혼밥가능여부:</label>
+        <input type="radio" name="isAlone" value="true"> 가능
+        <input type="radio" name="isAlone" value="false"> 불가능
+    </div>
+
+    <label>정렬</label>
+    <select name="sort">
+        <option value="rating">평점순</option>
+        <option value="busy">혼잡도순</option>
+        <option value="likes">좋아요순</option>
+    </select>
+
+    <button type="submit">조회</button>
+</form>
+<h2>결과 출력</h2>
+<table>
+    <thead>
+    <tr>
+        <th>이름</th>
+        <th>분류</th>
+        <th>내용</th>
+        <th>가격</th>
+        <th>조리시간</th>
+        <th>혼잡도</th>
+        <th>혼밥가능여부</th>
+        <th>좋아요수</th>
+        <th>메뉴 평점</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="menu : ${menus}">
+        <td><a th:href="@{/menu/detail/{id}(id=${menu.id})}" th:text="${menu.name}"></a></td>
+        <td th:text="${menu.category}"></td>
+        <td th:text="${menu.content}"></td>
+        <td th:text="${menu.price}"></td>
+        <td th:text="${menu.cookingTime}"></td>
+        <td th:text="${menu.storeDTO.busy}"></td>
+        <td th:text="${menu.isAlone ? 'Yes' : 'No'}"></td>
+        <td th:text="${likeCounts[menu.storeDTO.id]}"></td>
+        <td th:text="${averageRatings[menu.id]}"></td>
+    </tr>
+    </tbody>
+
+</table>
+</body>
+
