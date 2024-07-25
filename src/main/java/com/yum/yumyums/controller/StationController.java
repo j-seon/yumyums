@@ -17,15 +17,9 @@ import java.util.List;
 public class StationController {
     private final StationService stationService;
 
-    @GetMapping("/api")
+    @GetMapping("")
     public String stationApi() {
         stationService.getAndSaveStations();
         return "redirect:/";
-    }
-
-    @GetMapping("")
-    @ResponseBody
-    public List<StationDTO> searchStations(@RequestParam("keyword") String keyword) {
-        return stationService.searchStations(keyword);
     }
 }

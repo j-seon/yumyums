@@ -70,7 +70,7 @@
         const selectedValues = Array.from(document.getElementsByClassName('stationId')).map(el => el.value); // 추가된 역
 
         $.ajax({
-            url: '/stations',
+            url: '/api/v1/stations',
             data: { keyword : keyword },
             success: (data) => {
                 $('.stationList').empty();
@@ -134,12 +134,12 @@
         $('#markStations').append(`
         <div class="markStation row mb-3 align-items-center">
             <input type="hidden" class="form-control stationId" name="markStationDTOs[${idx}].stationId" value="${stnum}">
-            <div class="col-md-12 col-lg-4">
+            <div class="col-4">
                 <div class="form-item w-100">
                     <input type="text" class="form-control" name="markStationDTOs[${idx}].stationName" value="${stname}(${stline})" readonly>
                 </div>
             </div>
-            <div class="col-md-12 col-lg-7">
+            <div class="col-7">
                 <div class="form-item w-100">
                     <input type="text" class="form-control" name="markStationDTOs[${idx}].memo" value="${stmemo}" readonly>
                 </div>
