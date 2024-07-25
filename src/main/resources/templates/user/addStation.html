@@ -1,0 +1,161 @@
+
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">지역 추가</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="resetSearch();"></button>
+            </div>
+            <div class="modal-body">
+                <div class="searchContent">
+                    <input id="keyword" class="form-control me-2" type="text" placeholder="지하철역 검색" aria-label="Search"  oninput="searchStations(event)">
+                    <ul class="stationList list-group"></ul>
+                </div>
+                <div class="stationInfo d-none">
+                    <input type="hidden" class="form-control" name="stnum" id="stnum">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-4">
+                            <div class="form-item w-100">
+                                <label class="form-label my-3" for="stline">호선</label>
+                                <input type="text" class="form-control" name="stline" id="stline" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-8">
+                            <div class="form-item w-100">
+                                <label class="form-label my-3" for="stname">역이름</label>
+                                <input type="text" class="form-control" name="stname" id="stname" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-item">
+                        <label class="form-label my-3" for="stmemo">이름(별명)</label>
+                        <input type="text" class="form-control" name="stmemo" id="stmemo">
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer d-none">
+                <button type="button" class="btn btn-secondary" onclick="resetSearch()">재검색</button>
+                <button type="button" class="btn btn-primary" onclick="addStation();" data-bs-dismiss="modal">추가하기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var idx = 0;
+
+    // 지역추가 버튼 클릭
+    const modalBtnClick = (e) => {
+        stationArr = document.getElementsByClassName('markStation');
+
+
+        if(stationArr.length >= 3){
+            alert("더이상 추가할 수 없습니다.")
+        }else {
+            const modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+            modal.show();
+        }
+    }
+
+    // 검색어 입력시 결과목록 출력
+    const searchStations = (e) => {
+        const keyword = e.target.value.trim();
+        const selectedValues = Array.from(document.getElementsByClassName('stationId')).map(el => el.value); // 추가된 역
+
+        $.ajax({
+            url: '/api/v1/stations',
+            data: { keyword : keyword },
+            success: (data) => {
+                $('.stationList').empty();
+
+                data.forEach((stationDto) => {
+                    if (!selectedValues.includes(stationDto.outStnNum)) { //추가된 역은 필터링
+                        $('.stationList').append(`
+                        <li class="list-group-item list-group-item-action"
+                            data-stline="${stationDto.lineNm}"
+                            data-stname="${stationDto.stnKrNm}"
+                            data-stnum="${stationDto.outStnNum}"
+                            onclick="setStationInfo(event)"
+                            style="cursor:pointer;">${stationDto.stnKrNm}
+                            (${stationDto.lineNm})</li>
+                        `);
+                    }
+                });
+            }
+        });
+    }
+
+    // 추가할 역 선택
+    const setStationInfo = (e) => {
+        e.preventDefault();
+        document.querySelector('.searchContent').classList.add('d-none');
+        document.querySelector('.stationInfo').classList.remove('d-none');
+        document.querySelector('.modal-footer').classList.remove('d-none');
+
+        const dataItems = ['stline', 'stname', 'stnum'];
+        const values = {};
+
+        dataItems.forEach(item => {
+            values[item] = e.target.dataset[item];
+            document.getElementById(item).value = values[item]; // 해당 ID의 값 설정
+        });
+
+        document.getElementById('stmemo').value = `${values.stname}(${values.stline})`;
+    }
+
+    //검색창 초기화
+    const resetSearch = () => {
+        $('.stationList').empty();
+        document.querySelector('.searchContent').classList.remove('d-none');
+        document.querySelector('.stationInfo').classList.add('d-none');
+        document.querySelector('.modal-footer').classList.add('d-none');
+
+        const fieldsToClear = ['keyword', 'stline', 'stname', 'stnum', 'stmemo'];
+
+        fieldsToClear.forEach(fieldId => {
+            document.getElementById(fieldId).value = null;
+        });
+    }
+
+    //역 추가하기
+    const addStation = () => {
+        const stnum = document.getElementById('stnum').value;
+        const stline = document.getElementById('stline').value;
+        const stname = document.getElementById('stname').value;
+        const stmemo = document.getElementById('stmemo').value;
+
+        $('#markStations').append(`
+        <div class="markStation row mb-3 align-items-center">
+            <input type="hidden" class="form-control stationId" name="markStationDTOs[${idx}].stationId" value="${stnum}">
+            <div class="col-4">
+                <div class="form-item w-100">
+                    <input type="text" class="form-control" name="markStationDTOs[${idx}].stationName" value="${stname}(${stline})" readonly>
+                </div>
+            </div>
+            <div class="col-7">
+                <div class="form-item w-100">
+                    <input type="text" class="form-control" name="markStationDTOs[${idx}].memo" value="${stmemo}" readonly>
+                </div>
+            </div>
+            <button type="button" class="btn-close stationDelBtn" aria-label="Close" onclick="deleteStation(event);"></button>
+        </div>
+        `)
+
+        resetSearch();
+        idx++;
+    }
+
+    const deleteStation = (e) => {
+        e.currentTarget.closest('.markStation').remove();
+    }
+
+
+</script>
+

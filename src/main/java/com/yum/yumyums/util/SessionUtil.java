@@ -1,4 +1,4 @@
-package com.yum.yumyums.vo;
+package com.yum.yumyums.util;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.Getter;

@@ -3,6 +3,7 @@ package com.yum.yumyums.controller;
 import com.yum.yumyums.dto.TemplateData;
 import com.yum.yumyums.dto.user.MarkStationDTO;
 import com.yum.yumyums.dto.user.MemberDTO;
+import com.yum.yumyums.dto.user.MemberJoinRequest;
 import com.yum.yumyums.service.user.MarkStationService;
 import com.yum.yumyums.service.user.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,7 +13,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -38,9 +42,19 @@ public class MemberController {
     }
 
     @PostMapping("")
-    public String memberSaveSubmit(MemberDTO memberDTO, MarkStationDTO markStationDTO){
-        /*templateData.setViewPath("");*/
-        memberService.save(memberDTO, markStationDTO);
+    public String memberSaveSubmit(MemberJoinRequest memberJoinRequest){
+        System.out.println("request : "+memberJoinRequest);
+
+        /*MemberDTO memberDTO = memberJoinRequest.getMemberDTO();
+        System.out.println("member : "+ memberDTO);
+
+        List<MarkStationDTO> markStationDTOs = memberJoinRequest.getMarkStationDTOs();
+        for(MarkStationDTO station : markStationDTOs){
+            station.setMemberId(memberDTO.getMemberId());
+            System.out.println("station : "+station);
+        }*/
+
+        memberService.save(memberJoinRequest);
 
         return "redirect:/";
 

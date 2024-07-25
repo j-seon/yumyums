@@ -1,6 +1,9 @@
 package com.yum.yumyums.service.user;
 
+import com.yum.yumyums.dto.seller.MenuDTO;
+import com.yum.yumyums.dto.seller.StoreDTO;
 import com.yum.yumyums.entity.seller.Menu;
+import com.yum.yumyums.entity.seller.Seller;
 import com.yum.yumyums.entity.seller.Store;
 import com.yum.yumyums.enums.FoodCategory;
 import com.yum.yumyums.repository.user.SearchRepository;
@@ -49,14 +52,14 @@ class SearchServiceImplTest {
 		menu3.setName("삼계탕");
 		menu1.setStore(store1);
 
-		when(searchRepository.findByNameLike(searchValue)).thenReturn(Arrays.asList(menu1, menu2));
+		when(searchRepository.findAllMenuByNameLike(searchValue)).thenReturn(Arrays.asList(menu1, menu2));
 
 		// when
-		List<Menu> result = storeService.findMenus(searchValue);
+		List<MenuDTO> result = storeService.findMenus(searchValue);
 
 		// then
 		assertThat(result).hasSize(2);
-		assertThat(result).extracting(Menu::getName).containsExactlyInAnyOrder("떡라면", "진심 가득 라면");
+		assertThat(result).extracting(MenuDTO::getName).containsExactlyInAnyOrder("떡라면", "진심 가득 라면");
 
 	}
 	@Test
@@ -64,8 +67,12 @@ class SearchServiceImplTest {
 	public void findStoreMenu() throws Exception {
 		String searchValue = "치킨";
 
+		Seller seller = new Seller();
+		seller.setId("seller1");
+
 		Store store1 = new Store();
 		store1.setId(1);
+		store1.setSeller(seller);
 		store1.setName("시아");
 		store1.setCategory(FoodCategory.ETC);
 
@@ -74,14 +81,14 @@ class SearchServiceImplTest {
 		menu1.setName("쏘 치킨");
 		menu1.setStore(store1);
 
-		when(searchRepository.findStores(searchValue)).thenReturn(Arrays.asList(store1));
+		when(searchRepository.findAllStoreByKeyword(searchValue)).thenReturn(Arrays.asList(store1));
 
 		// when
-		List<Store> result = storeService.findStores(searchValue);
+		List<StoreDTO> result = storeService.findStores(searchValue);
 
 		// then
 		assertThat(result).hasSize(1);
-		assertThat(result).extracting(Store::getName).containsExactlyInAnyOrder("시아");
+		assertThat(result).extracting(StoreDTO::getName).containsExactlyInAnyOrder("시아");
 
 	}
 
@@ -90,8 +97,12 @@ class SearchServiceImplTest {
 	public void findStoreName() throws Exception {
 		String searchValue = "최고";
 
+		Seller seller = new Seller();
+		seller.setId("seller1");
+
 		Store store1 = new Store();
 		store1.setId(1);
+		store1.setSeller(seller);
 		store1.setName("최고의 치킨");
 		store1.setCategory(FoodCategory.ETC);
 
@@ -100,14 +111,14 @@ class SearchServiceImplTest {
 		menu1.setName("매콤 치킨");
 		menu1.setStore(store1);
 
-		when(searchRepository.findStores(searchValue)).thenReturn(Arrays.asList(store1));
+		when(searchRepository.findAllStoreByKeyword(searchValue)).thenReturn(Arrays.asList(store1));
 
 		// when
-		List<Store> result = storeService.findStores(searchValue);
+		List<StoreDTO> result = storeService.findStores(searchValue);
 
 		// then
 		assertThat(result).hasSize(1);
-		assertThat(result).extracting(Store::getName).containsExactlyInAnyOrder("최고의 치킨");
+		assertThat(result).extracting(StoreDTO::getName).containsExactlyInAnyOrder("최고의 치킨");
 
 	}
 
@@ -116,8 +127,12 @@ class SearchServiceImplTest {
 	public void storeDuplicateExamination() throws Exception {
 		String searchValue = "최고";
 
+		Seller seller = new Seller();
+		seller.setId("seller1");
+
 		Store store1 = new Store();
 		store1.setId(1);
+		store1.setSeller(seller);
 		store1.setName("최고의 치킨");
 		store1.setCategory(FoodCategory.ETC);
 
@@ -131,14 +146,14 @@ class SearchServiceImplTest {
 		menu2.setName("달콤 치킨");
 		menu2.setStore(store1);
 
-		when(searchRepository.findStores(searchValue)).thenReturn(Arrays.asList(store1));
+		when(searchRepository.findAllStoreByKeyword(searchValue)).thenReturn(Arrays.asList(store1));
 
 		// when
-		List<Store> result = storeService.findStores(searchValue);
+		List<StoreDTO> result = storeService.findStores(searchValue);
 
 		// then
 		assertThat(result).hasSize(1);
-		assertThat(result).extracting(Store::getName).containsExactlyInAnyOrder("최고의 치킨");
+		assertThat(result).extracting(StoreDTO::getName).containsExactlyInAnyOrder("최고의 치킨");
 
 	}
 
