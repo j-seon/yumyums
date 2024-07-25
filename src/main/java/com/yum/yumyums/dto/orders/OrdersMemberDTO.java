@@ -1,13 +1,12 @@
 package com.yum.yumyums.dto.orders;
 
-import com.yum.yumyums.entity.orders.Orders;
-import com.yum.yumyums.entity.user.Member;
+import com.yum.yumyums.dto.user.MemberDTO;
 import lombok.Data;
 
 @Data
 public class OrdersMemberDTO {
 
     private int id;
-    private Member member;
-    private Orders orders;
+    private MemberDTO memberDTO;
+    private OrdersDTO ordersDTO;
 }

@@ -7,7 +7,7 @@ import lombok.Data;
 public class MenuDTO {
 
     private int id;
-    private Store store;
+    private StoreDTO storeDTO;
     private String name;
     private String category;
     private String content;
@@ -15,4 +15,6 @@ public class MenuDTO {
     private int cookingTime;
     private boolean isAlone;
     private boolean isActive;
+
+
 }

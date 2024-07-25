@@ -9,7 +9,7 @@ import lombok.Data;
 public class StoreDTO {
 
     private int id;
-    private Seller seller;
+    private SellerDTO sellerDTO;
     private String password;
     private String name;
     private String address;

@@ -1,5 +1,6 @@
 package com.yum.yumyums.entity.seller;
 
+import com.yum.yumyums.dto.seller.MenuDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,5 +39,22 @@ public class Menu {
 
     @Column(nullable = false)
     private boolean isActive;
+
+    public MenuDTO entityToDto(){
+
+        MenuDTO menuDTO = new MenuDTO();
+        menuDTO.setStoreDTO(this.store.entityToDTO());
+        menuDTO.setId(this.getId());
+        menuDTO.setName(this.getName());
+        menuDTO.setCategory(this.getCategory());
+        menuDTO.setContent(this.getContent());
+        menuDTO.setPrice(this.getPrice());
+        menuDTO.setCookingTime(this.getCookingTime());
+        menuDTO.setAlone(this.isAlone());
+        menuDTO.setActive(this.isActive());
+
+        return menuDTO;
+
+    }
 
 }
