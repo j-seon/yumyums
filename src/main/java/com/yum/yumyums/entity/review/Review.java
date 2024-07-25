@@ -1,5 +1,6 @@
 package com.yum.yumyums.entity.review;
 
+import com.yum.yumyums.dto.review.ReviewDTO;
 import com.yum.yumyums.entity.orders.OrdersDetail;
 import com.yum.yumyums.entity.user.Member;
 import jakarta.persistence.*;
@@ -27,5 +28,13 @@ public class Review {
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
+
+    public ReviewDTO entityToDto(){
+        ReviewDTO reviewDTO = new ReviewDTO();
+        reviewDTO.setId(this.getId());
+        reviewDTO.setRate(this.getRate());
+        reviewDTO.setContent(this.getContent());
+        return reviewDTO;
+    }
 
 }

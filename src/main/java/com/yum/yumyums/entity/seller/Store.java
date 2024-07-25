@@ -1,9 +1,8 @@
 package com.yum.yumyums.entity.seller;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
+
 import com.yum.yumyums.dto.seller.SellerDTO;
 import com.yum.yumyums.dto.seller.StoreDTO;
-import com.yum.yumyums.entity.chat.PartyMember;
 import com.yum.yumyums.enums.Busy;
 import com.yum.yumyums.enums.FoodCategory;
 import jakarta.persistence.*;

@@ -1,12 +1,12 @@
-package com.yum.yumyums.dto.orders;
+package com.yum.yumyums.dto.seller;
 
 import com.yum.yumyums.dto.user.MemberDTO;
 import lombok.Data;
 
 @Data
-public class OrdersMemberDTO {
-
+public class StoreLikeDTO {
     private int id;
     private MemberDTO memberDTO;
-    private OrdersDTO ordersDTO;
+    private StoreDTO storeDTO;
+
 }
