@@ -25,7 +25,7 @@ public class RecommendController {
     private final MenuService menuService;
     private final StoreService storeService;
 
-    /*@GetMapping("/list")
+    /*@GetMapping
     public String getAllMenus(Model model,TemplateData templateData) {
         templateData.setViewPath("menu/list");
         List<Menu> menus = menuService.getAllActiveMenus();
@@ -34,7 +34,7 @@ public class RecommendController {
         return "template";
     }*/
 
-    @GetMapping("/list")
+    @GetMapping
     public String getMenusByFilters(
             @RequestParam(required = false) String category,
             @RequestParam(required = false) String priceRange,
@@ -66,7 +66,7 @@ public class RecommendController {
 
 
 
-    @GetMapping("/detail/{id}")
+    @GetMapping("/{id}")
     public String getMenu(@PathVariable("id") int id, Model model, TemplateData templateData) {
 
         templateData.setViewPath("menu/detail");
