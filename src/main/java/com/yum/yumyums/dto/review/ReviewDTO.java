@@ -1,15 +1,15 @@
 package com.yum.yumyums.dto.review;
 
-import com.yum.yumyums.entity.orders.OrdersDetail;
-import com.yum.yumyums.entity.user.Member;
+import com.yum.yumyums.dto.orders.OrdersDetailDTO;
+import com.yum.yumyums.dto.user.MemberDTO;
 import lombok.Data;
 
 @Data
 public class ReviewDTO {
 
     private int id;
-    private OrdersDetail ordersDetail;
-    private Member member;
+    private OrdersDetailDTO ordersDetailDTO;
+    private MemberDTO memberDTO;
     private float rate;
     private String content;
 }
