@@ -1,5 +1,7 @@
 package com.yum.yumyums.service.seller;
 
-public interface StoreService {
+import com.yum.yumyums.dto.seller.StoreDTO;
 
+public interface StoreService {
+	StoreDTO findByName(String storeName);
 }
