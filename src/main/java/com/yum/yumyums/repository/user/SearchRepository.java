@@ -14,13 +14,14 @@ public interface SearchRepository extends JpaRepository<Store, Long> {
 
 
 	// TODO searchStores를 진행할 때, 거리가 맞는 것들만 뽑아서 검색해야 함.
-	@Query("SELECT s FROM Store s LEFT JOIN Menu m " +
-			"ON s.id = m.store.id " +
+	@Query("SELECT s FROM Store s " +
+			"LEFT JOIN Menu m ON s.id = m.store.id " +
+			"LEFT JOIN Seller sl On s.seller.id = sl.id " +
 			"WHERE s.name LIKE %:searchValue% " +
 			"OR s.category LIKE %:searchValue% " +
 			"OR m.name LIKE %:searchValue%")
-	List<Store> findStores(@Param("searchValue") String searchValue);
+	List<Store> findAllStoreByKeyword(@Param("searchValue") String searchValue);
 
 	// SELECT m FROM Menu m WHERE m.name LIKE %:searchValue%
-	List<Menu> findByNameLike(String searchValue);
+	List<Menu> findAllMenuByNameLike(String searchValue);
 }

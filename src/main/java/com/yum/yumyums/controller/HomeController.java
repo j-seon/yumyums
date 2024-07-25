@@ -33,4 +33,5 @@ public class HomeController {
     public String alert(){
         return "inc/alert";
     }
+
 }
