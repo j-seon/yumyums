@@ -2,6 +2,7 @@ package com.yum.yumyums.dto.chat;
 
 import com.yum.yumyums.dto.user.MemberDTO;
 import com.yum.yumyums.entity.chat.Chat;
+import com.yum.yumyums.entity.chat.ChatMember;
 import com.yum.yumyums.entity.user.Member;
 import lombok.Data;
 
@@ -12,4 +13,12 @@ public class ChatMemberDTO {
     private ChatDTO chat;
     private MemberDTO member;
     private String memberSavedRoomName;
+
+    public ChatMember toDtoToEntity() {
+        ChatMember chatMember = new ChatMember();
+        chatMember.setId(this.getId());
+        chatMember.setChat(this.getChat().toDtoToEntity());
+        chatMember.setMemberSavedRoomName(this.getMemberSavedRoomName());
+        return chatMember;
+    }
 }

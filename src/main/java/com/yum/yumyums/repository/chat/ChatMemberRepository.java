@@ -15,4 +15,8 @@ public interface ChatMemberRepository extends JpaRepository<ChatMember, Integer>
     void deleteByChatIdAndMemberId( int chatId,  String memberId);
 
     Long countByChatId(int id);
+
+    ChatMember findById(int id);
+
+    List<ChatMember> findMemberIdByChatId(int chatId);
 }

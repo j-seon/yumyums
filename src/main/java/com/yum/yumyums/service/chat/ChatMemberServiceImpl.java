@@ -27,6 +27,7 @@ public class ChatMemberServiceImpl implements ChatMemberService {
         chatMemberRepository.save(chatMember);
     }
 
+    //저장
     @Transactional
     public void saveChatMember(ChatMember chatMember) {
         // Member 엔티티가 저장되어 있지 않은 경우 저장합니다.
@@ -39,11 +40,13 @@ public class ChatMemberServiceImpl implements ChatMemberService {
         chatMemberRepository.save(chatMember);
     }
 
+    //삭제
     @Override
     public void deleteByChatIdAndMemberId(int chatId, String memberId) {
         chatMemberRepository.deleteByChatIdAndMemberId(chatId,memberId);
     }
 
+    //정보 검색
     @Override
     public List<HashMap<String, Object>> findChatRoomInfoByMemberId(String memberId) {
 
@@ -53,12 +56,26 @@ public class ChatMemberServiceImpl implements ChatMemberService {
         List<ChatMember> returnEntities = chatMemberRepository.findMemberSavedRoomNameByMemberId(memberId);
         for (ChatMember returnEntity : returnEntities ) {
             HashMap<String, Object> returnHashMap = new HashMap<String, Object>();
-            returnHashMap.put("chatInfo",returnEntity.EntityToDto());
-            returnHashMap.put("chatMemberCount",chatMemberRepository.countByChatId(returnEntity.EntityToDto().getChat().getId()));
+            returnHashMap.put("chatInfo",returnEntity.entityToDto());
+            returnHashMap.put("chatMemberCount",chatMemberRepository.countByChatId(returnEntity.entityToDto().getChat().getId()));
             returnHashMapList.add(returnHashMap);
         }
-
         return returnHashMapList;
+    }
+
+    @Override
+    public List<ChatMemberDTO> findMemberIdByChatId(int chatId) {
+        List<ChatMemberDTO> returnDto =  new ArrayList<>();
+        List<ChatMember> returnEntities = chatMemberRepository.findMemberIdByChatId(chatId);
+        for (ChatMember returnEntity : returnEntities ) {
+            returnDto.add(returnEntity.entityToDto());
+        }
+        return returnDto;
+    }
+
+    @Override
+    public ChatMemberDTO findMemberIdById(int id) {
+        return chatMemberRepository.findById(id).entityToDto();
     }
 
     @Override
@@ -67,9 +84,8 @@ public class ChatMemberServiceImpl implements ChatMemberService {
 
         List<ChatMember> returnEntities = chatMemberRepository.findMemberSavedRoomNameByMemberId(memberId);
 
-
         for (ChatMember returnEntity : returnEntities ) {
-            returnDto.add(returnEntity.EntityToDto());
+            returnDto.add(returnEntity.entityToDto());
         }
         return returnDto;
     }

@@ -28,9 +28,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
 @Controller
@@ -49,21 +46,11 @@ public class ChatController {
 
         if(sessionUtil.isLoginAsMember(session)) {
             memberDTO= (MemberDTO) session.getAttribute("loginUser");
-            List<ChatMemberDTO> chatRoomList =  chatMemberService.findMemberSavedRoomNameByMemberId(memberDTO.getMemberId());
-
-            templateData.setViewPath("chat/chat");
-            model.addAttribute("chatList", chatRoomList);
-
-            HashMap<String, Objects> h2 = new HashMap<String, Objects>();
 
             List<HashMap<String, Object>> chatRoomHashList =  chatMemberService.findChatRoomInfoByMemberId(memberDTO.getMemberId());
+            model.addAttribute("chatRoomHashList", chatRoomHashList);
 
-            for(HashMap<String, Object> chatRoom : chatRoomHashList){
-                System.out.println("chatInfo"+chatRoom.get("chatInfo"));
-                System.out.println( "chatMemberCount"+chatRoom.get("chatMemberCount"));
-            }
-
-            model.addAttribute("chatList", chatRoomList);
+            templateData.setViewPath("chat/chat");
             model.addAttribute("templateData", templateData);
             return "template";
         }else{
@@ -92,12 +79,11 @@ public class ChatController {
     }
 
     //채팅방 생성
-    @PostMapping("")
+    @PostMapping
     @ResponseBody
     public String createChat(@RequestParam("memberIdList") List<String> memberIdList, @RequestParam("roomName") String roomName, HttpSession session) {
         try {
             MemberDTO memberDto = new MemberDTO();
-            SessionUtil sessionUtil =new SessionUtil();
             Chat chat = new Chat();
             ChatMember chatMember = new ChatMember();
             Member member = new Member();
@@ -119,11 +105,31 @@ public class ChatController {
                     chatMember.setMemberSavedRoomName(roomName);
                     chatMemberService.saveChatMember(chatMember);
                 }
-                messagingTemplate.convertAndSend("/chat/alive/"+memberId , "c/"+roomName+"/"+memberId+"/"+chat.getId());
+                messagingTemplate.convertAndSend("/chat/alive/"+memberId , "c/"+roomName+"/"+memberId+"/"+chat.getId()+"/"+memberIdList.size()+"/"+chatMember.getId());
             }
             return  ""+chat.getId();
         }catch (Exception e) {
             System.out.println("error : "+e.getMessage());
+            return "fail";
+        }
+    }
+
+    //채팅 삭제
+    @DeleteMapping
+    @ResponseBody
+    public String delRoom(@RequestParam("chatId") String strChatId,@RequestParam("memberId") String memberId, HttpSession session) {
+        int chatId = Integer.parseInt(strChatId);
+        try {
+            //해당 멤버 삭제
+            chatMemberService.deleteByChatIdAndMemberId(chatId,memberId);
+            //적용 시킬 멤버 불러옴
+            List<ChatMemberDTO> ChatMemberList = chatMemberService.findMemberIdByChatId(chatId);
+            //해당 정보 송신
+            for(ChatMemberDTO ChatMember : ChatMemberList ){
+                messagingTemplate.convertAndSend("/chat/alive/"+ChatMember.getMember().getMemberId() , "d/"+ChatMember.getMemberSavedRoomName()+"/"+memberId+"/"+ChatMember.getChat().getId()+"/"+ChatMemberList.size());
+            }
+            return "success";
+        }catch (Exception e) {
             return "fail";
         }
     }
@@ -147,28 +153,38 @@ public class ChatController {
         }
     }
 
-    //방 삭제
-    @PostMapping("/delRoom")
+    //채팅 찾기
+    @GetMapping("/findChatMessage")
     @ResponseBody
-    public String delRoom(@RequestParam("chatId") String strChatId,@RequestParam("memberId") String memberId, HttpSession session) {
-        int chatId = Integer.parseInt(strChatId);
+    public HashMap<String, Object> findChatMessage(@RequestParam("roomId") String strRoomId, HttpSession session) {
+        int roomId = Integer.parseInt(strRoomId);
+        List<ChatMessageDTO> chatMessageList = new ArrayList<>();
+        List<ChatMemberDTO> chatMemberList = new ArrayList<>();
+
+        HashMap<String, Object> returnData= new HashMap<String, Object>();
+
         try {
-            chatMemberService.deleteByChatIdAndMemberId(chatId,memberId);
-            return "success";
+            chatMessageList = chatMessageService.findByChatId(roomId);
+            chatMemberList =chatMemberService.findMemberIdByChatId(roomId);
+            returnData.put("chatMessageList", chatMessageList);
+            returnData.put("chatMemberList", chatMemberList);
+            return returnData;
         }catch (Exception e) {
-            return "fail";
+            System.out.println("error : "+e.getMessage());
+            return null;
         }
     }
+
+
     //웹소켓
+    //채팅 저장 및 보내기
     @MessageMapping("/{roomId}") //여기로 전송되면 메서드 호출 -> WebSocketConfig prefixes 에서 적용한건 앞에 생략
     @SendTo("/chat/room/{roomId}")   //구독하고 있는 장소로 메시지 전송 (목적지)  -> WebSocketConfig Broker 에서 적용한건 앞에 붙어줘야됨
     public ChatMessageDTO chat(@DestinationVariable Long roomId, ChatMessageDTO chatMessageDTO) {
-        //채팅 저장
-        //추가 예정
+        System.out.println(chatMessageDTO);
+        chatMessageService.save(chatMessageDTO);
         return chatMessageDTO;
     }
-    /////test
-
 
     @GetMapping("/test")
     public String testPage(Model model, TemplateData templateData) {
@@ -178,10 +194,6 @@ public class ChatController {
 
         List<HashMap<String, Object>> chatRoomList =  chatMemberService.findChatRoomInfoByMemberId(memberDTO.getMemberId());
 
-        for(HashMap<String, Object> chatRoom : chatRoomList){
-            System.out.println("chatInfo"+chatRoom.get("chatInfo"));
-            System.out.println( "chatMemberCount"+chatRoom.get("chatMemberCount"));
-        }
         templateData.setViewPath("chat/test");
         model.addAttribute("templateData", templateData);
         return "template";

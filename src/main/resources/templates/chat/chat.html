@@ -10,9 +10,18 @@
 
                 <ul class="nav nav-pills d-inline-flex text-center mb-5 chat-room-list">
                     <button type="button" class="btn btn-secondary add-chat-room" onclick="initModal()"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">채팅방 추가</button>
-                    <li class="nav-item" th:each="chat : ${chatList}">
-                        <a class="d-flex m-2 py-2 bg-light rounded-pill " data-bs-toggle="pill" th:data-room-id="${chat.chat.id}" >
-                            <span class="text-dark" style="width: 125px;"><div th:text="${chat.memberSavedRoomName}"></div></span>
+<!--                    <li class="nav-item" th:each="chat : ${chatList}">-->
+<!--                        <a class="d-flex m-2 py-2 bg-light rounded-pill " data-bs-toggle="pill" th:data-room-id="${chat.chat.id}" >-->
+<!--                            <span class="text-dark" style="width: 125px;"><div th:text="${chat.memberSavedRoomName}"></div></span>-->
+<!--                            <button type="button" class="btn-close  del-room" aria-label="Close"></button>-->
+<!--                        </a>-->
+<!--                    </li>-->
+                    <li class="nav-item" th:each="chatRoomHash : ${chatRoomHashList}">
+                        <a class="d-flex m-2 py-2 bg-light rounded-pill " data-bs-toggle="pill" th:data-room-id="${chatRoomHash.chatInfo.chat.id}" th:data-chat-member-id="${chatRoomHash.chatInfo.id}" >
+                            <span class="text-dark" style="width: 125px;">
+                                <div class="inline-block room-name" th:text="${chatRoomHash.chatInfo.memberSavedRoomName + ' '} "></div>
+                                <div class="inline-block room-member-count" th:text=" ${chatRoomHash.chatMemberCount} "></div>
+                                <div class="inline-block" >명</div></span>
                             <button type="button" class="btn-close  del-room" aria-label="Close"></button>
                         </a>
                     </li>
@@ -34,7 +43,9 @@
         <!--        <button id="connect" class="btn btn-primary">Connect</button>-->
         <!--        <button id="disconnect" class="btn btn-danger" disabled>Disconnect</button>-->
         <!--    </div>-->
-        <div class="col-md-12 chat-window" id="conversation" style="display:none;">
+        <div class="col-md-12 chat-window" id="conversation" >
+            <div id="room-info" class="d-flex m-2 py-2  rounded-pill ">room-info</div>
+            <div id="room-member" class="d-flex m-2 py-2  ">room-member</div>
             <div id="chatting"></div>
         </div>
         <form>
@@ -112,8 +123,8 @@
 
 <script src="../../js/chat/chat.js"></script>
 
-<script th:each="chat : ${chatList}">
-    var  roomId = "[[${chat.chat.id}]]";
+<script th:each="chatRoomHash : ${chatRoomHashList}">
+    var  roomId = "[[${chatRoomHash.chatInfo.chat.id}]]";
    connect(roomId);
 </script>
 <style>
