@@ -1,5 +1,6 @@
 .row {
    width: 165px;
+   overflow: auto;
 }
 .add-chat-room{
    width: 125px;
@@ -8,7 +9,12 @@
 .inline-block {
        display: inline-block;
        vertical-align: top;
-   }
+}
+.room-name {
+    width: 75px;
+    overflow: auto;
+  white-space: nowrap;
+}
 
 .chatting {
    margin: 5px;
@@ -16,6 +22,7 @@
    border-radius: 5px;
    background-color: #f1f1f1;
    width: fit-content;
+
 }
 
 .chatting_own {
@@ -35,4 +42,12 @@
 }
 .setUser{
 height: 52px;
+}
+.message-not-read{
+    border: 1px solid #f00;
+}
+.chat-member-id{
+    list-style: none;
+    margin: 5px;
+   padding: 5px;
 }

@@ -18,4 +18,8 @@ public interface ChatMemberService {
     void deleteByChatIdAndMemberId(int chatId, String memberId);
 
     List<HashMap<String, Object>> findChatRoomInfoByMemberId(String memberId);
+
+    List<ChatMemberDTO> findMemberIdByChatId(int id);
+
+    ChatMemberDTO findMemberIdById(int id);
 }

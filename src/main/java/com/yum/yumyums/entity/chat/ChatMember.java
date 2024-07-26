@@ -26,7 +26,7 @@ public class ChatMember {
 	@Column(name="member_saved_room_name")
 	private String memberSavedRoomName;
 
-	public ChatMemberDTO EntityToDto() {
+	public ChatMemberDTO entityToDto() {
 
 		MemberDTO memberDTO=new MemberDTO();
 		ChatMemberDTO chatMemberDTO = new ChatMemberDTO();
