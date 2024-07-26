@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.yum.yumyums.repository.seller.StoreLikeRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -24,4 +27,14 @@ public class StoreServiceImpl implements StoreService {
     public int getLikesForStore(int storeId) {
         return storeLikeRepository.countLikesByStoreId(storeId);
     }
+
+    public List<StoreDTO> getStoresOnMap() {
+        List<StoreDTO> store = new ArrayList<>();
+        List<Store> findAll = storeRepository.findAll();
+        for (Store s : findAll) {
+            store.add(s.entityToDto());
+        }
+        return store;
+    }
+
 }
