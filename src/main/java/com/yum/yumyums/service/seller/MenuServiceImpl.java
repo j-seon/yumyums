@@ -44,24 +44,7 @@ public class MenuServiceImpl implements MenuService {
             menus = menuRepository.findAllByFiltersAndSortByLikes(category, priceRange, isAlone);
 
         } else if ("busy".equals(sort)) {
-            Map<Busy, Integer> busyOrder = Map.of(
-                    Busy.SPACIOUS, 1,
-                    Busy.NOMAL, 2,
-                    Busy.CROWDED, 3,
-                    Busy.FULL, 4
-            );
-            menus.sort((m1, m2) -> {
-                int busyComparison = Integer.compare(
-                        busyOrder.get(m1.getStore().getBusy()),
-                        busyOrder.get(m2.getStore().getBusy())
-                );
-
-                if (busyComparison != 0) {
-                    return busyComparison;
-                }
-
-                return Integer.compare(m1.getCookingTime(), m2.getCookingTime());
-            });
+            menus = menuRepository.findAllOrderedByStoreBusyAndCookingTime(category, priceRange, isAlone);
         }
 
         for (Menu menu : menus) {

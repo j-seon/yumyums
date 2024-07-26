@@ -46,7 +46,9 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
                 "WHEN 'FULL' THEN 4 " +
                 "END, " +
                 "m.cookingTime ASC")
-        List<Menu> findAllOrderedByStoreBusyAndCookingTime();
+        List<Menu> findAllOrderedByStoreBusyAndCookingTime(@Param("category") String category,
+                                                           @Param("priceRange") String priceRange,
+                                                           @Param("isAlone") Boolean isAlone);
 }
 
 
