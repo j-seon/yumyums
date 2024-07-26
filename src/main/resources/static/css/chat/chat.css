@@ -22,7 +22,7 @@
    border-radius: 5px;
    background-color: #f1f1f1;
    width: fit-content;
-
+    margin-left :auto;
 }
 
 .chatting_own {
@@ -32,6 +32,7 @@
    background-color: #d1e7dd;
    width: fit-content;
    align-self: flex-end;
+
 }
 
 .chat-window {
@@ -50,4 +51,13 @@ height: 52px;
     list-style: none;
     margin: 5px;
    padding: 5px;
+}
+.chat-box{
+width : 229.633px;
+}
+#conversation{
+display:flex;
+}
+#room-info-box{
+height: 88px;
 }
