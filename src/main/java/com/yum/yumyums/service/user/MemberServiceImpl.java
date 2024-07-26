@@ -52,7 +52,6 @@ public class MemberServiceImpl implements MemberService {
             returnDto.add(MemberDTO.toMemberDTO(findEntity));
         }
         return returnDto;
-
     }
 
 }
