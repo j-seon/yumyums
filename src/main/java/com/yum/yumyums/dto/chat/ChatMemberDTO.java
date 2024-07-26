@@ -14,10 +14,10 @@ public class ChatMemberDTO {
     private MemberDTO member;
     private String memberSavedRoomName;
 
-    public ChatMember toDtoToEntity() {
+    public ChatMember dtoToEntity() {
         ChatMember chatMember = new ChatMember();
         chatMember.setId(this.getId());
-        chatMember.setChat(this.getChat().toDtoToEntity());
+        chatMember.setChat(this.getChat().dtoToEntity());
         chatMember.setMemberSavedRoomName(this.getMemberSavedRoomName());
         return chatMember;
     }

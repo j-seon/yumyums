@@ -12,12 +12,12 @@ public class ChatMessageDTO {
     private String content;
     private ChatDTO chat;
 
-    public ChatMessage toDtoToEntity() {
+    public ChatMessage dtoToEntity() {
         ChatMessage chatMessage = new ChatMessage();
         chatMessage.setId(this.getId());
         chatMessage.setContent(this.getContent());
-        chatMessage.setChatMember(this.getChatMember().toDtoToEntity());
-        chatMessage.setChat(this.getChat().toDtoToEntity());
+        chatMessage.setChatMember(this.getChatMember().dtoToEntity());
+        chatMessage.setChat(this.getChat().dtoToEntity());
         return  chatMessage;
     }
 }

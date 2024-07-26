@@ -9,7 +9,7 @@ public class ChatDTO {
     private int id;
     private String name;
 
-    public Chat toDtoToEntity() {
+    public Chat dtoToEntity() {
         Chat chat = new Chat();
         chat.setId(this.getId());
         chat.setName(this.getName());
