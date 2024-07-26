@@ -95,7 +95,6 @@ private List<StationDTO> parseStationDTOs(String responseBody) {
         return stations.stream()
                 .map(StationDTO::entityToDto)
                 .collect(Collectors.toList());
-
     }
 
 
