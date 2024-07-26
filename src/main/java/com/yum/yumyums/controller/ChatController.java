@@ -12,8 +12,8 @@ import com.yum.yumyums.service.chat.ChatMemberService;
 import com.yum.yumyums.service.chat.ChatMessageService;
 import com.yum.yumyums.service.chat.ChatService;
 import com.yum.yumyums.service.user.MemberService;
-import com.yum.yumyums.vo.SessionUtil;
 
+import com.yum.yumyums.util.SessionUtil;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -99,7 +99,7 @@ public class ChatController {
                 memberDto = memberService.findById(memberId);
 
                 if (memberDto != null) {
-                    member = Member.toSaveEntity(memberDto);
+                    member = Member.dtoToEntity(memberDto);
                     chatMember = new ChatMember();
                     chatMember.setMember(member);
                     chatMember.setChat(chat);
@@ -150,6 +150,7 @@ public class ChatController {
             for (MemberDTO  findMember : memberDtoList) {
                 returnList.add(findMember.getMemberId());
             }
+            System.out.println(returnList);
             return returnList;
         }catch (Exception e) {
             System.out.println("error : "+e.getMessage());
