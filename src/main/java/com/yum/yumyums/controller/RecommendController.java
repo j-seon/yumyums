@@ -40,8 +40,8 @@ public class RecommendController {
             @RequestParam(required = false) String priceRange,
             @RequestParam(required = false) Boolean isAlone,
             @RequestParam(required = false) String sort,
-            Model model, TemplateData templateData) {
-
+            Model model, TemplateData templateData
+    ) {
         templateData.setViewPath("menu/list");
         List<MenuDTO> menus = menuService.getMenusByFilters(category, priceRange, isAlone, sort);
         Map<Integer, Integer> likeCounts = new HashMap<>();
