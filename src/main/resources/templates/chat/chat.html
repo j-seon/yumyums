@@ -7,15 +7,8 @@
     <div class="fruite inline-block">
         <div class=" tab-class text-center">
             <div class="row ">
-
                 <ul class="nav nav-pills d-inline-flex text-center mb-5 chat-room-list">
                     <button type="button" class="btn btn-secondary add-chat-room" onclick="initModal()"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">채팅방 추가</button>
-<!--                    <li class="nav-item" th:each="chat : ${chatList}">-->
-<!--                        <a class="d-flex m-2 py-2 bg-light rounded-pill " data-bs-toggle="pill" th:data-room-id="${chat.chat.id}" >-->
-<!--                            <span class="text-dark" style="width: 125px;"><div th:text="${chat.memberSavedRoomName}"></div></span>-->
-<!--                            <button type="button" class="btn-close  del-room" aria-label="Close"></button>-->
-<!--                        </a>-->
-<!--                    </li>-->
                     <li class="nav-item" th:each="chatRoomHash : ${chatRoomHashList}">
                         <a class="d-flex m-2 py-2 bg-light rounded-pill " data-bs-toggle="pill" th:data-room-id="${chatRoomHash.chatInfo.chat.id}" th:data-chat-member-id="${chatRoomHash.chatInfo.id}" >
                             <span class="text-dark" style="width: 125px;">
@@ -26,30 +19,16 @@
                         </a>
                     </li>
                 </ul>
-
-<!--                <ul class="nav nav-pills d-inline-flex text-center mb-5 ">-->
-<!--                    <li>-->
-<!--                        <a class="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="modal" data-bs-target="#staticBackdrop">-->
-<!--                            <span class="text-dark" style="width: 125px;"><div>채팅방 추가</div></span>-->
-<!--                        </a>-->
-<!--                    </li>-->
-<!--                </ul>-->
-
             </div>
         </div>
     </div>
+    <!--채팅 창-->
     <div class="inline-block">
-        <!--    <div>-->
-        <!--        <button id="connect" class="btn btn-primary">Connect</button>-->
-        <!--        <button id="disconnect" class="btn btn-danger" disabled>Disconnect</button>-->
-        <!--    </div>-->
         <div id="room-info-box">
             <div id="room-info" class="d-flex m-2 py-2  rounded-pill ">room-info</div>
             <div id="room-member" class="d-flex m-2 py-2  ">room-member</div>
         </div>
-
         <div class="col-md-12 chat-window" id="conversation" >
-
             <div id="chatting"></div>
         </div>
         <form>
@@ -61,26 +40,16 @@
             </div>
         </form>
     </div>
-
-    <!-- Modal -->
-<!--    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"-->
-<!--         data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"-->
-<!--         aria-hidden="true">-->
+    <!--모달-->
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">지역 추가</h1>
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">채팅 추가</h1>
                     <button type="button" class="btn-close " data-bs-dismiss="modal" onclick="initModal()" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-
-
-
-                    <div class="stationInfo">
-                        <input type="hidden" class="form-control" name="setOutStnNum" id="setOutStnNum">
-
+                    <div class="info">
                         <div class="form-item">
                             <label class="form-label my-3" for="memo">방 이름</label>
                             <input type="text" class="form-control" name="memo" id="memo">
