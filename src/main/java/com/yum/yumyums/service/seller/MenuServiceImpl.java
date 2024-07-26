@@ -23,14 +23,16 @@ public class MenuServiceImpl implements MenuService {
                 .map(Menu::entityToDto);
     }
 
-  /*  @Override
+    /*  @Override
     public List<Menu> getAllActiveMenus() {
         return menuRepository.findByIsActiveTrue();
     } */
 
+
+    //필터 선택후 정렬
     public List<MenuDTO> getMenusByFilters(String category, String priceRange, Boolean isAlone, String sort) {
         List<MenuDTO> returnDto = new ArrayList<>();
-        List<Menu> menus = menuRepository.findByFilters(category, priceRange, isAlone);
+        List<Menu> menus = menuRepository.findAllByFilters(category, priceRange, isAlone);
 
         if ("rating".equals(sort)) {
             menus.sort((m1, m2) -> {
@@ -39,27 +41,10 @@ public class MenuServiceImpl implements MenuService {
                 return Double.compare(avgRating2.orElse(0.0), avgRating1.orElse(0.0));
             });
         } else if ("likes".equals(sort)) {
-            menus = menuRepository.findByFiltersAndSortByLikes(category, priceRange, isAlone);
+            menus = menuRepository.findAllByFiltersAndSortByLikes(category, priceRange, isAlone);
 
         } else if ("busy".equals(sort)) {
-            Map<Busy, Integer> busyOrder = Map.of(
-                    Busy.SPACIOUS, 1,
-                    Busy.NOMAL, 2,
-                    Busy.CROWDED, 3,
-                    Busy.FULL, 4
-            );
-            menus.sort((m1, m2) -> {
-                int busyComparison = Integer.compare(
-                        busyOrder.get(m1.getStore().getBusy()),
-                        busyOrder.get(m2.getStore().getBusy())
-                );
-
-                if (busyComparison != 0) {
-                    return busyComparison;
-                }
-
-                return Integer.compare(m1.getCookingTime(), m2.getCookingTime());
-            });
+            menus = menuRepository.findAllOrderedByStoreBusyAndCookingTime(category, priceRange, isAlone);
         }
 
         for (Menu menu : menus) {
@@ -69,6 +54,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
 
+    //리뷰 평균 평점 계산하기
     public OptionalDouble getAverageRateForMenu(int menuId) {
         var reviews = reviewRepository.findByMenuId(menuId);
         return reviews.stream()

@@ -18,7 +18,7 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
                 "(m.price > 10000 AND m.price <= 20000 AND :priceRange = '10000_20000') OR " +
                 "(m.price > 20000 AND :priceRange = 'above_20000')) " +
                 "AND (:isAlone IS NULL OR m.isAlone = :isAlone)")
-        List<Menu> findByFilters(@Param("category") String category,
+        List<Menu> findAllByFilters(@Param("category") String category,
                                  @Param("priceRange") String priceRange,
                                  @Param("isAlone") Boolean isAlone);
 
@@ -34,7 +34,7 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
                 "AND (:isAlone IS NULL OR m.isAlone = :isAlone) " +
                 "GROUP BY m.id " +
                 "ORDER BY COUNT(sl.id) DESC")
-        List<Menu> findByFiltersAndSortByLikes(@Param("category") String category,
+        List<Menu> findAllByFiltersAndSortByLikes(@Param("category") String category,
                                                @Param("priceRange") String priceRange,
                                                @Param("isAlone") Boolean isAlone);
 
@@ -46,7 +46,9 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
                 "WHEN 'FULL' THEN 4 " +
                 "END, " +
                 "m.cookingTime ASC")
-        List<Menu> findAllOrderedByStoreBusyAndCookingTime();
+        List<Menu> findAllOrderedByStoreBusyAndCookingTime(@Param("category") String category,
+                                                           @Param("priceRange") String priceRange,
+                                                           @Param("isAlone") Boolean isAlone);
 }
 
 
