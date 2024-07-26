@@ -1,6 +1,3 @@
-
-
-
 package com.yum.yumyums.controller;
 
 
@@ -24,7 +21,7 @@ public class MapController {
     @GetMapping
     public String showOnMap(Model model, TemplateData templateData) {
 
-        templateData.setViewPath("menu/map");
+        templateData.setViewPath("map/address");
         List<StoreDTO> stores = storeService.getStoresOnMap();
         model.addAttribute("stores", stores);
         return "template";
