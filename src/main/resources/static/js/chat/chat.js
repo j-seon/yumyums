@@ -49,7 +49,13 @@ function setConnected(connected) {
     $("#chatting").html("");
 }
 
-
+// 백드롭 수동 제거 함수
+function removeModalBackdrop() {
+    const backdrop = document.querySelector('.modal-backdrop');
+    if (backdrop) {
+        backdrop.parentNode.removeChild(backdrop);
+    }
+}
 //연결
 function connect(roomId) {
     if (!stompClientList[roomId]) {
@@ -201,7 +207,6 @@ $(document).ready(function() {
     //채팅방 추가
     $('.add-room').on('click', function(e) {
         let roomName = $("#memo").val();
-        console.log(roomName);
         roomUserList.push(loginUserId);
         $.ajax({
             url: "/chat" ,
@@ -211,7 +216,15 @@ $(document).ready(function() {
                 console.log(data);
                 roomUserList=[];
                 initModal();
-                $('#staticBackdrop').modal('hide')
+                  // Bootstrap 5 모달 닫기
+                let modalElement = document.getElementById('staticBackdrop');
+                let modalInstance = bootstrap.Modal.getInstance(modalElement);
+                if (modalInstance) {
+                    modalInstance.hide();
+                }
+
+                // 백드롭 수동 제거
+                removeModalBackdrop();
             },
             error: function(xhr, status, error) {
                 console.error("Error occurred:", error);
