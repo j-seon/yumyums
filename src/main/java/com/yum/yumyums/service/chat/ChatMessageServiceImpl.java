@@ -25,7 +25,6 @@ public class ChatMessageServiceImpl implements ChatMessageService {
         List<ChatMessageDTO> returnDtoList = new ArrayList<>();
         List<ChatMessage> returnEntityList = chatMessageRepository.findByChatId(chatId);
 
-
         for( ChatMessage returnEntity : returnEntityList){
             returnDtoList.add(returnEntity.entityToDto());
         }

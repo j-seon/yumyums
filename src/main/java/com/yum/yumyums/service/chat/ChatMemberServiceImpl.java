@@ -51,9 +51,8 @@ public class ChatMemberServiceImpl implements ChatMemberService {
     public List<HashMap<String, Object>> findChatRoomInfoByMemberId(String memberId) {
 
         List<HashMap<String, Object>> returnHashMapList = new ArrayList<HashMap<String, Object>>();
-
-
         List<ChatMember> returnEntities = chatMemberRepository.findMemberSavedRoomNameByMemberId(memberId);
+
         for (ChatMember returnEntity : returnEntities ) {
             HashMap<String, Object> returnHashMap = new HashMap<String, Object>();
             returnHashMap.put("chatInfo",returnEntity.entityToDto());
@@ -67,6 +66,7 @@ public class ChatMemberServiceImpl implements ChatMemberService {
     public List<ChatMemberDTO> findMemberIdByChatId(int chatId) {
         List<ChatMemberDTO> returnDto =  new ArrayList<>();
         List<ChatMember> returnEntities = chatMemberRepository.findMemberIdByChatId(chatId);
+
         for (ChatMember returnEntity : returnEntities ) {
             returnDto.add(returnEntity.entityToDto());
         }

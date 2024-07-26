@@ -29,7 +29,7 @@ public class ChatMessage {
 		ChatMessageDTO chatMessageDTO = new ChatMessageDTO();
 
 		chatMessageDTO.setChatMember(this.getChatMember().entityToDto());
-		chatMessageDTO.setChat(this.chat.EntityToDto());
+		chatMessageDTO.setChat(this.chat.entityToDto());
 		chatMessageDTO.setId(this.getId());
 		chatMessageDTO.setContent(this.getContent());
 

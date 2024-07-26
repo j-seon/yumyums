@@ -39,6 +39,7 @@ public class ChatController {
     private final MemberService memberService;
     private final SimpMessagingTemplate messagingTemplate;
 
+    //페이지 호출
     @GetMapping("")
     public String showChatPage(Model model, TemplateData templateData,HttpSession session) {
         SessionUtil sessionUtil =new SessionUtil();
@@ -63,6 +64,7 @@ public class ChatController {
     }
 
     //채팅방 참가
+    //추후 추가
     @PostMapping("/join")
     @ResponseBody
     public String joinChat(@RequestParam("memberIdList") List<String> memberIdList, HttpSession session) {
@@ -93,7 +95,6 @@ public class ChatController {
             chatService.save(chat);
 
             // 멤버 추가
-            //서비스 단에 빼두기
             for (String memberId : memberIdList) {
                 memberDto = memberService.findById(memberId);
 
@@ -105,8 +106,11 @@ public class ChatController {
                     chatMember.setMemberSavedRoomName(roomName);
                     chatMemberService.saveChatMember(chatMember);
                 }
+                //원격으로 체팅방 생성
+                // 0: c(생성), d(삭제) 1:roomName 2:memberId 3:chatId 4:member count 5:chat Member Id
                 messagingTemplate.convertAndSend("/chat/alive/"+memberId , "c/"+roomName+"/"+memberId+"/"+chat.getId()+"/"+memberIdList.size()+"/"+chatMember.getId());
             }
+            //생성한 쳇팅 아이디
             return  ""+chat.getId();
         }catch (Exception e) {
             System.out.println("error : "+e.getMessage());
@@ -181,22 +185,8 @@ public class ChatController {
     @MessageMapping("/{roomId}") //여기로 전송되면 메서드 호출 -> WebSocketConfig prefixes 에서 적용한건 앞에 생략
     @SendTo("/chat/room/{roomId}")   //구독하고 있는 장소로 메시지 전송 (목적지)  -> WebSocketConfig Broker 에서 적용한건 앞에 붙어줘야됨
     public ChatMessageDTO chat(@DestinationVariable Long roomId, ChatMessageDTO chatMessageDTO) {
-        System.out.println(chatMessageDTO);
         chatMessageService.save(chatMessageDTO);
         return chatMessageDTO;
-    }
-
-    @GetMapping("/test")
-    public String testPage(Model model, TemplateData templateData) {
-        MemberDTO memberDTO =new MemberDTO();
-        memberDTO.setMemberId("1");
-        HashMap<String, Objects> h2 = new HashMap<String, Objects>();
-
-        List<HashMap<String, Object>> chatRoomList =  chatMemberService.findChatRoomInfoByMemberId(memberDTO.getMemberId());
-
-        templateData.setViewPath("chat/test");
-        model.addAttribute("templateData", templateData);
-        return "template";
     }
 
     //채팅방 원격 생성

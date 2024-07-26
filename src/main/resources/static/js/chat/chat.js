@@ -177,13 +177,10 @@ $(document).ready(function() {
         e.preventDefault();
     });
 
-    $("#disconnect").click(function () {
-        var roomId = $("#roomId").val();
-        disconnect(roomId);
-    });
-
+    //채팅 전송
     $("#send").click(function () { sendChat(); });
 
+    //채팅방 선택
     $('.nav').on('click', '.nav-item .del-room', function() {
         const roomId = $(this).parent().data('room-id');
         $(this).parent().remove();
@@ -192,7 +189,7 @@ $(document).ready(function() {
              data: { chatId: roomId, memberId:loginUserId },
              method: "DELETE",
              success: (data) => {
-                console.log(data)
+                disconnect(roomId);
              }, error: (xhr, status, error) => {
                   console.error('Error: ' + error);
                   console.error('Status: ' + status);
@@ -201,6 +198,7 @@ $(document).ready(function() {
          });
     });
 
+    //채팅방 추가
     $('.add-room').on('click', function(e) {
         let roomName = $("#memo").val();
         console.log(roomName);
@@ -253,24 +251,18 @@ $(document).ready(function() {
                     console.error('Status: ' + status);
                     console.error(xhr);
                }
-           });
-        //채팅방 정보 뿌려주기
-
-
-
+          });
     });
 
     //채팅 추가
     $(".userList").on("click", ".add-user-id", function() {
         roomUserList.push($(this).text());
-
         $('.setUser').append(
             '<div class="btn btn-secondary">'+$(this).text()+"</div>");
         $('.userList').empty();
     });
-
-
 });
+//끝나기전 연결 제거
 window.BeforeUnloadEvent = function () {
     var activeRoomId = $('.nav-item a.active').data('room-id');
     disconnect(activeRoomId);

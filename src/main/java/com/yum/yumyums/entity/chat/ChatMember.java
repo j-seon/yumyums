@@ -31,7 +31,7 @@ public class ChatMember {
 		MemberDTO memberDTO=new MemberDTO();
 		ChatMemberDTO chatMemberDTO = new ChatMemberDTO();
 		chatMemberDTO.setId(this.getId());
-		chatMemberDTO.setChat(this.getChat().EntityToDto());
+		chatMemberDTO.setChat(this.getChat().entityToDto());
 		chatMemberDTO.setMember(memberDTO.toMemberDTO(this.getMember()));
 		chatMemberDTO.setMemberSavedRoomName(this.getMemberSavedRoomName());
 

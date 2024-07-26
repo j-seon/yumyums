@@ -16,7 +16,7 @@ public class Chat {
 	@Column(nullable = false, length = 50)
 	private String name;
 
-	public ChatDTO EntityToDto() {
+	public ChatDTO entityToDto() {
 
 		ChatDTO chatDTO = new ChatDTO();
 		chatDTO.setId(this.getId());
