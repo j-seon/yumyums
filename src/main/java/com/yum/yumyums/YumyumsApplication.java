@@ -10,6 +10,4 @@ public class YumyumsApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(YumyumsApplication.class, args);
 	}
-
-
 }

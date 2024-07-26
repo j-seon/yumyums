@@ -1,5 +1,6 @@
 package com.yum.yumyums.dto.chat;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.yum.yumyums.dto.seller.StoreDTO;
 import com.yum.yumyums.entity.chat.Party;
 import com.yum.yumyums.entity.chat.PartyMember;
@@ -36,7 +37,7 @@ public class PartyDTO {
         return party;
     }
 
-    // 연관관계 메소드
+    //== 연관관계 메소드 ==//
     public void addPartyMember(PartyMemberDTO partyMemberDTO) {
         partyMemberDTOs.add(partyMemberDTO);
         partyMemberDTO.setPartyDTO(this);
@@ -48,8 +49,19 @@ public class PartyDTO {
         }
     }
 
-    // 조회 로직
+    //== 조회 로직 ==//
+    @JsonGetter("partyMemberCount")
     public int getPartyMemberCount() {
         return partyMemberDTOs.size();
+    }
+
+    @JsonGetter("payTypeKorName")
+    public String getPayTypeKorName() {
+        return payType.getKorName();
+    }
+
+    @JsonGetter("randomTypeKorName")
+    public String getRandomTypeKorName() {
+        return randomType.getKorName();
     }
 }

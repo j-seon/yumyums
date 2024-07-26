@@ -42,14 +42,18 @@ public class PartyController {
 			return "redirect:/login"; // 로그인 페이지로 이동
 		}
 
-		// 이미 파티에 소속돼있다면
-		String encryptedPartyID = partyService.findEncryptedPartyIDByMemberId(memberDTO);
-		if (encryptedPartyID != null) {
-			return "redirect:/party/" + encryptedPartyID; // 해당 파티 상세페이지로 이동
-		}
-
-		//넘어가려는 페이지가 존재한다면 (인덱스에서 뭔가 해서 넘어왔다면)
+		//== 유효성 검사 ajax ==//
+		//넘어가려는 페이지가 존재한다면 (인덱스에서 ajax로 넘어왔다면)
 		if(targetPage != null) {
+
+			// 이미 파티에 소속돼있다면
+			String encryptedPartyId = partyService.findEncryptedPartyIdByMemberId(memberDTO);
+			if (!encryptedPartyId.equals("")) {
+				templateData.setUrl("/party/" + encryptedPartyId);
+				return "inc/redirect"; // 해당 파티 상세페이지로 이동
+				// ajax를 통해서 오기때문에 리다이렉트 페이지로 이동시켜 URL 이동
+			}
+
 			//파티 생성 페이지로 이동한다면
 			if(targetPage.equals("create_party")) {
 				//파티 생성을 위한 변수들 전송
@@ -89,20 +93,20 @@ public class PartyController {
 
 		//== 비즈니스 로직 ==//
 		//파티 생성
-		String encryptedPartyID = partyService.createParty(partyDTO, memberDTO, storeName);
+		String encryptedPartyId = partyService.createParty(partyDTO, memberDTO, storeName);
 
 		// 파티생성에 실패했다면
-		if(encryptedPartyID == null) {
+		if(encryptedPartyId.equals("")) {
 			model.addAttribute("partyDTO", new PartyDTO());
 			return "redirect:/party";
 		}
 
-		return "redirect:/party/" + encryptedPartyID;
+		return "redirect:/party/" + encryptedPartyId;
 	}
 
 	//파티 검색
-	@GetMapping("/{encryptedPartyID}")
-	public String findById(@PathVariable String encryptedPartyID, final HttpServletRequest request, Model model,  TemplateData templateData) {
+	@GetMapping("/{encryptedPartyId}")
+	public String findById(@PathVariable String encryptedPartyId, final HttpServletRequest request, Model model, TemplateData templateData) {
 		HttpSession session = request.getSession();
 
 		//== 유효성 검사 ==//
@@ -111,53 +115,68 @@ public class PartyController {
 			return "redirect:/login"; // 로그인 페이지로 이동
 		}
 
-		//== 비즈니스 로직==//
 		//회원, 파티 정보값 가져오기
 		MemberDTO memberDTO = (MemberDTO) session.getAttribute(MEMBER_DTO_SESSION_ATTRIBUTE_NAME);
-		PartyDTO partyDTO = partyService.findParty(encryptedPartyID);
+		PartyDTO partyDTO = partyService.findParty(encryptedPartyId);
 		model.addAttribute("partyDTO", partyDTO);
 
-		//파티원이 아니라면
-//		if(!partyService.isPartyMember(encryptedPartyID, memberDTO)) {
-//			templateData.setViewPath("party/join_party");
-//			model.addAttribute("templateData", templateData);
-//			return "template"; //파티초대 페이지로 이동
-//		}
+		//해당 파티의 파티원이 아니라면
+		if(!partyService.isThisPartyMember(encryptedPartyId, memberDTO)) {
 
+			//다른 파티에 소속돼있다면
+			String encryptedAlreadyJoinPartyId = partyService.findEncryptedPartyIdByMemberId(memberDTO);
+			if (!encryptedAlreadyJoinPartyId.equals("")) {
+				// 해당 파티의 정보값을 저장해서 넘김
+				PartyDTO alreadyJoinPartyDTO = partyService.findParty(encryptedAlreadyJoinPartyId);
+				model.addAttribute("partyDTO", alreadyJoinPartyDTO);
+				return "redirect:/party/" + encryptedAlreadyJoinPartyId; //소속된 파티의 상세 페이지로 이동
+			}
+
+			//다른 파티에 소속돼있지 않다면 (파티에 초대받은 사람이라면)
+
+			// 페이지에 값을 띄우기위한 이넘 값을 모델에 추가
+			model.addAttribute("payTypes", PayType.values());
+			model.addAttribute("randomTypes", RandomType.values());
+
+			//초대를 받기위한 값들을 모델에 추가
+			model.addAttribute("encryptedPartyId", encryptedPartyId);
+			templateData.setViewPath("party/join_party");
+			model.addAttribute("templateData", templateData);
+			return "template"; //파티 초대받기 페이지로 이동
+		}
+
+
+		//== 비즈니스 로직==//
 		// 페이지 이동
 		templateData.setViewPath("party/party_detail");
 		model.addAttribute("templateData", templateData);
 		return "template"; //파티상세 페이지로 이동
 	}
 
-//
-//	//파티에 회원추가 (파티초대)
-//	@PostMapping("/${partyId}")
-//	public String addMemberToParty(final HttpServletRequest request, @RequestParam("partyId") String partyId) {
-//		HttpSession session = request.getSession();
-//		String memberId = (String) session.getAttribute(MEMBER_DTO_SESSION_ATTRIBUTE_NAME);
-//
-//		//소비자 회원으로 로그인중이지 않다면
-//		if (!isLoginAsMember(session)) {
-//			return "redirect:/login"; // 로그인 페이지로 이동
-//		}
-//
-//		//TODO 파티초대 로직
-//		//TODO partyId 복호화해서 다시저장.
-//
-//		//TODO 세션.멤버id로 파티 검색 + isActive가 true인 파티가 존재하는지 여부를 확인.
-////		if (partyService.isMemberInActiveParty(memberId)) {
-////			// TODO 존재한다면 memberId로 존재하는 파티조회
-////			// TODO redirect deletePartyOrPartyMember 함수호출
-////		}
-//
-//		//TODO 파티가입 : artyId, memberId를 이용해 파티원 테이블에 insert
-//		//TODO partyId 값을 세션에넣고 party/${partyId}리다이렉트
-//
-//		// partyService.addMemberToParty() 이용하기 -> PartyDTO를 반환??
-//
-//		return "redirect:/party/" + partyId; //파티 조회 페이지로 이동
-//	}
+
+	//파티에 회원추가 (파티초대)
+	@PostMapping("/{encryptedPartyId}")
+	public String addMemberToParty(final HttpServletRequest request, @PathVariable("encryptedPartyId") String encryptedPartyId, Model model,  TemplateData templateData) {
+		HttpSession session = request.getSession();
+		MemberDTO memberDTO = (MemberDTO) session.getAttribute(MEMBER_DTO_SESSION_ATTRIBUTE_NAME);
+
+		//== 유효성 검사 ==//
+		//소비자 회원으로 로그인중이지 않다면
+		if (!isLoginAsMember(session)) {
+			return "redirect:/login"; // 로그인 페이지로 이동
+		}
+
+		//이미 가입중인 파티가 있다면
+		String encryptedAlreadyJoinPartyID = partyService.findEncryptedPartyIdByMemberId(memberDTO);
+		if (!encryptedAlreadyJoinPartyID.equals("")) {
+			templateData.setUrl("/party/" + encryptedAlreadyJoinPartyID);
+			return "inc/redirect"; // 해당 파티 상세페이지로 이동
+		}
+
+		//== 비즈니스 로직 ==//
+		partyService.addMemberToParty(encryptedPartyId, memberDTO, false);
+		return "redirect:/party/" + encryptedPartyId; //파티 조회 페이지로 이동
+	}
 //
 //	//파티 탈퇴
 //	@DeleteMapping("/${partyId}")

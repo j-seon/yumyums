@@ -12,4 +12,5 @@ public interface PartyRepository extends JpaRepository<Party, String> {
 			"WHERE p.isActive = true " +
 			"AND pm.member.id = :memberId")
 	Party findActivePartyByMemberId(@Param("memberId")String memberId);
+
 }

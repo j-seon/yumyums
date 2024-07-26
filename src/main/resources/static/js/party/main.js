@@ -17,6 +17,7 @@
 
 	// 필요한 페이지를 가져오는 메소드
 	function loadPageContent(targetPage) { // 수정된 부분
+
 		$.ajax({
 			url: '/party',
 			data: { targetPage: targetPage },

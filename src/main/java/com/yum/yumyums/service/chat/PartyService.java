@@ -7,19 +7,19 @@ public interface PartyService {
 
 	//URL 관련
 	String generateInviteUrl(String partyId);
-	String getPartyIdByInviteUrlParam(String encryptedPartyID);
+	String getPartyIdByInviteUrlParam(String encryptedPartyId);
 
 	//파티 관리 (생성,삭제,추가)
 	String createParty(PartyDTO partyDTO, MemberDTO memberDTO, String storeName);
-	String addMemberToParty(String encryptedPartyID, MemberDTO memberDTO, boolean isPartyLeader);
-	String deleteParty(String encryptedPartyID, MemberDTO memberDTO);
-	String deleteMemberToParty(String encryptedPartyID, MemberDTO memberDTO);
+	String addMemberToParty(String encryptedPartyId, MemberDTO memberDTO, boolean isPartyLeader);
+	String deleteParty(String encryptedPartyId, MemberDTO memberDTO);
+	String deleteMemberToParty(String encryptedPartyId, MemberDTO memberDTO);
 
 	//select
-	String findEncryptedPartyIDByMemberId(MemberDTO memberDTO);
-	PartyDTO findParty(String encryptedPartyID);
+	String findEncryptedPartyIdByMemberId(MemberDTO memberDTO);
+	PartyDTO findParty(String encryptedPartyId);
 
 	//검증 (DB 데이터 확인)
 	boolean isMemberInActiveParty(MemberDTO memberDTO);
-	boolean isPartyMember(String partyId, MemberDTO memberDTO);
+	boolean isThisPartyMember(String partyId, MemberDTO memberDTO);
 }

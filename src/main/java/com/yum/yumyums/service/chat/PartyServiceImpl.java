@@ -31,8 +31,8 @@ public class PartyServiceImpl implements PartyService {
 	// [URL] URL 생성
 	@Override
 	public String generateInviteUrl(String partyId) {
-		String encryptedPartyID = generateInviteUrlParam(partyId);
-		return SITE_LINK.getUrl() + encryptedPartyID;
+		String encryptedPartyId = generateInviteUrlParam(partyId);
+		return SITE_LINK.getUrl() + encryptedPartyId;
 	}
 
 	// [URL] 파라미터 생성
@@ -42,8 +42,8 @@ public class PartyServiceImpl implements PartyService {
 
 	// [URL] URL로 partyId 추출
 	@Override
-	public String getPartyIdByInviteUrlParam(String encryptedPartyID) {
-		return SecureUtil.calcDecrypt(encryptedPartyID);
+	public String getPartyIdByInviteUrlParam(String encryptedPartyId) {
+		return SecureUtil.calcDecrypt(encryptedPartyId);
 	}
 
 	// [관리] 파티방 생성 + 파티에 인원 추가
@@ -58,17 +58,17 @@ public class PartyServiceImpl implements PartyService {
 		partyDTO.setId(partyId);
 
 		//방 생성
-		String encryptedPartyID = createPartyRoom(partyDTO);
+		String encryptedPartyId = createPartyRoom(partyDTO);
 
 		//파티장을 멤버에 추가
-		String insertPartyMemberValuePartyId = addMemberToParty(encryptedPartyID, memberDTO, true);
+		String insertPartyMemberValuePartyId = addMemberToParty(encryptedPartyId, memberDTO, true);
 
 
 		//정상 저장여부 체크
-		if(!insertPartyMemberValuePartyId.equals(encryptedPartyID)) {
+		if(!insertPartyMemberValuePartyId.equals(encryptedPartyId)) {
 			throw new RuntimeException("파티 생성 중, 파티 리더를 DB에 저장하는데 실패했습니다.");
 		}
-		 return encryptedPartyID;
+		 return encryptedPartyId;
 	}
 
 	// [관리] 파티방 생성
@@ -88,9 +88,9 @@ public class PartyServiceImpl implements PartyService {
 
 	// [관리] 파티에 인원 추가
 	@Override
-	public String addMemberToParty(String encryptedPartyID, MemberDTO memberDTO, boolean isPartyLeader) {
+	public String addMemberToParty(String encryptedPartyId, MemberDTO memberDTO, boolean isPartyLeader) {
 		//파티아이디 복호화
-		String partyId = getPartyIdByInviteUrlParam(encryptedPartyID);
+		String partyId = getPartyIdByInviteUrlParam(encryptedPartyId);
 
 		//Party 가져오기
 		Party party = partyRepository.findById(partyId)
@@ -116,22 +116,22 @@ public class PartyServiceImpl implements PartyService {
 
 	// [관리] 파티탈퇴
 	@Override
-	public String deleteMemberToParty(String encryptedPartyID, MemberDTO memberDTO) {
+	public String deleteMemberToParty(String encryptedPartyId, MemberDTO memberDTO) {
 		return null;
 	}
 
 	// [관리] 파티삭제 (파티장탈퇴 = 파티삭제)
 	@Override
-	public String deleteParty(String encryptedPartyID, MemberDTO memberDTO) {
+	public String deleteParty(String encryptedPartyId, MemberDTO memberDTO) {
 		return null;
 	}
 
 
 	// [select] 파티id로 파티 찾아주기
 	@Override
-	public PartyDTO findParty(String encryptedPartyID) {
+	public PartyDTO findParty(String encryptedPartyId) {
 		//복호화
-		String partyId = getPartyIdByInviteUrlParam(encryptedPartyID);
+		String partyId = getPartyIdByInviteUrlParam(encryptedPartyId);
 
 		//파티찾기
 		PartyDTO partyDTO = partyRepository.findById(partyId).get().entityToDto();
@@ -145,10 +145,10 @@ public class PartyServiceImpl implements PartyService {
 
 	// [select] 회원id로 파티 찾아, 암호화된 파티 아이디 돌려주기
 	@Override
-	public String findEncryptedPartyIDByMemberId(MemberDTO memberDTO) {
+	public String findEncryptedPartyIdByMemberId(MemberDTO memberDTO) {
 		Party party = partyRepository.findActivePartyByMemberId(memberDTO.getMemberId());
 		if(party == null) {
-			return null;
+			return "";
 		}
 		return SecureUtil.calcEncrypt(party.getId());
 	}
@@ -165,7 +165,16 @@ public class PartyServiceImpl implements PartyService {
 
 	// [검증] 해당 파티에 소속돼있는 회원인지 조회
 	@Override
-	public boolean isPartyMember(String encryptedPartyID, MemberDTO memberDTO) {
+	public boolean isThisPartyMember(String encryptedPartyId, MemberDTO memberDTO) {
+		//파티아이디 복호화
+		String partyId = getPartyIdByInviteUrlParam(encryptedPartyId);
+
+		//Party 가져오기
+		boolean isPartyMember = partyMemberRepository.existsByPartyIdAndMemberIdAndPartyIsActiveTrue(partyId, memberDTO.getMemberId());
+
+		if(isPartyMember) {
+			return true;
+		}
 		return false;
 	}
 
