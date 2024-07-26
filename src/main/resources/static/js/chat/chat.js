@@ -116,12 +116,12 @@ function sendChat() {
 
      if (chatMessage.chatMember.member.memberId == loginUserId) {
          $("#chatting").append(
-             "<div class='chatting_own'><tr><td>" + chatMessage.content + "</td></tr></div>"
+             "<div class='chat-box'><div class='chatting_own'><tr><td>" + chatMessage.content + "</td></tr></div></div>"
          );
      } else {
          if (activeRoomId == chatMessage.chatMember.chat.id) {
              $("#chatting").append(
-                 "<div class='chatting'><tr><td>" + "[" + chatMessage.chatMember.member.memberId + "] " + chatMessage.content + "</td></tr></div>"
+                 "<div class='chat-box'><div class='chatting'><tr><td>" + "[" + chatMessage.chatMember.member.memberId + "] " + chatMessage.content + "</td></tr></div></div>"
              );
          }else{
          $('a[data-room-id="' + chatMessage.chatMember.chat.id + '"]').addClass('message-not-read');
