@@ -15,7 +15,7 @@
                     </div>
                     <div class="form-item">
                         <label class="form-label my-3" for="name">매장명 <sup>*</sup></label>
-                        <input type="text" class="form-control" id="name" name="name" oninput="duplicate(event, '/stores/nameChk');" required>
+                        <input type="text" class="form-control" id="name" name="name" oninput="duplicate(event, 'storeName');" required>
                         <div class="valid-feedback">
                             사용 가능한 매장명
                         </div>
@@ -73,38 +73,4 @@
     </div>
 </div>
 
-<script>
-
-    const duplicate = (e, url) => {
-        const keyword = e.target.value.trim();
-        const nameInput = document.getElementById('name');
-
-        if(keyword.length === 0){
-            nameInput.classList.remove('is-invalid','is-valid')
-            return
-        }
-
-        $.ajax({
-            url: url,
-            type: 'GET',
-            data: { keyword : keyword },
-            success: (data) => {
-                if (data) {
-                    nameInput.classList.remove('is-valid');
-                    nameInput.classList.add('is-invalid');
-                } else {
-                    nameInput.classList.remove('is-invalid');
-                    nameInput.classList.add('is-valid');
-                }
-            },
-            error: (xhr, status, error) => {
-                console.error('Error occurred:', error);
-                console.error('Status', status);
-                console.error('Xhr:',  xhr);
-                console.log('Response Text:', xhr.responseText);
-                nameInput.classList.remove('is-valid', 'is-invalid');
-            }
-
-        });
-    }
-</script>
+<script src="../../js/common/duplicate.js"></script>

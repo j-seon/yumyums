@@ -92,7 +92,7 @@ public class StoreController {
         return ResponseEntity.ok("dashboard/" + loginStore.getStoreId());
     }
 
-    @GetMapping("/save")
+    @GetMapping("/form")
     public String storeSave(Model model, TemplateData templateData, HttpServletRequest request){
         HttpSession session = request.getSession();
         if(session.getAttribute("loginType") == null || !session.getAttribute("loginType").equals("s")){
@@ -107,22 +107,7 @@ public class StoreController {
         model.addAttribute("templateData",templateData);
         return "template";
     }
-    
-    @GetMapping("/nameChk")
-    @ResponseBody
-    public ResponseEntity<Boolean> nameChk(@RequestParam("keyword") String keyword){
-        // 입력값 확인
-        if (keyword == null || keyword.trim().isEmpty()) {
-            return ResponseEntity.badRequest().body(false); // 잘못된 요청 처리
-        }
 
-        System.out.println("Checking keyword: " + keyword);
-
-        // store가 null인 경우 false, 존재하는 경우 true 반환
-        boolean exists = storeService.findByName(keyword) != null;
-
-        return ResponseEntity.ok(exists);
-    }
 
     @PostMapping("")
     public String storeSaveSubmit(StoreDTO storeDTO, HttpServletRequest request){
@@ -135,5 +120,5 @@ public class StoreController {
         return "redirect:/stores";
     }
 
-    //TODO 이름 중복검사 모듈화, 주소입력시 지도API 활용, 이미지첨부 기능 만들어서 모듈화하기. 
+    //TODO 주소입력시 지도API 활용, 이미지첨부 기능 만들어서 모듈화하기.
 }
