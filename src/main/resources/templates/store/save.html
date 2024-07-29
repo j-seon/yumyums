@@ -1,0 +1,110 @@
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <h1 class="mb-4">매장 추가</h1>
+        <form action="/stores" method="post">
+            <div class="row g-5 align-items-center justify-content-center">
+                <div class="col-md-12 col-lg-6 col-xl-7">
+                    <div class="form-item">
+                        <label class="form-label my-3" for="name">카테고리(업종) <sup>*</sup></label>
+                        <select class="form-select" name="category" required>
+                            <option value="" selected disabled hidden>카테고리 선택</option>
+                            <option th:each="category : ${categories}"
+                                    th:value="${category.name()}"
+                                    th:text="${category.korName}"></option>
+                        </select>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="name">매장명 <sup>*</sup></label>
+                        <input type="text" class="form-control" id="name" name="name" oninput="duplicate(event, '/stores/nameChk');" required>
+                        <div class="valid-feedback">
+                            사용 가능한 매장명
+                        </div>
+                        <div class="invalid-feedback">
+                            중복된 매장명
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="password">비밀번호 <sup>*</sup></label>
+                        <input type="password" class="form-control" name="password" id="password" placeholder="비밀번호 입력" required>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="passwordChk">비밀번호 확인 <sup>*</sup></label>
+                        <input type="password" class="form-control" name="passwordChk" id="passwordChk" placeholder="비밀번호 입력" disabled>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="address">주소 <sup>*</sup></label>
+                        <input type="text" class="form-control" id="address" name="address" required>
+                    </div>
+                    <div class="row">
+                        <div class="my-3">
+                            <span>영업시간 <sup>*</sup></span>
+                        </div>
+                        <div class="col form-floating">
+                            <select class="form-select" id="openTime" name="openTime" required>
+                                <option value="" selected disabled hidden>시간 선택</option>
+                                <option th:each="hour : ${#numbers.sequence(0, 24)}"
+                                        th:value="${hour}"
+                                        th:text="${hour < 10 ? '0' + hour : hour}"></option>
+                            </select>
+                            <label for="openTime">시작시간</label>
+                        </div>
+                        <div class="col form-floating">
+                            <select class="form-select" id="closeTime" name="closeTime" required>
+                                <option value="" selected disabled hidden>시간 선택</option>
+                                <option th:each="hour : ${#numbers.sequence(0, 24)}"
+                                        th:value="${hour}"
+                                        th:text="${hour < 10 ? '0' + hour : hour}"></option>
+                            </select>
+                            <label for="closeTime">마감시간</label>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="content">한줄 소개글</label>
+                        <textarea class="form-control" id="content" name="content" rows="3"></textarea>
+                    </div>
+
+
+                </div>
+                <div class="row g-4 text-center align-items-center justify-content-center pt-4">
+                    <input type="submit" value="매장 추가" class="btn border-secondary py-3 px-4 col-md-12 col-lg-6 col-xl-7 text-uppercase text-primary">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+
+    const duplicate = (e, url) => {
+        const keyword = e.target.value.trim();
+        const nameInput = document.getElementById('name');
+
+        if(keyword.length === 0){
+            nameInput.classList.remove('is-invalid','is-valid')
+            return
+        }
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: { keyword : keyword },
+            success: (data) => {
+                if (data) {
+                    nameInput.classList.remove('is-valid');
+                    nameInput.classList.add('is-invalid');
+                } else {
+                    nameInput.classList.remove('is-invalid');
+                    nameInput.classList.add('is-valid');
+                }
+            },
+            error: (xhr, status, error) => {
+                console.error('Error occurred:', error);
+                console.error('Status', status);
+                console.error('Xhr:',  xhr);
+                console.log('Response Text:', xhr.responseText);
+                nameInput.classList.remove('is-valid', 'is-invalid');
+            }
+
+        });
+    }
+</script>

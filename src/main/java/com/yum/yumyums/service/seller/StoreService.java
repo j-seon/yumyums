@@ -15,4 +15,6 @@ public interface StoreService {
 	int getLikesForStore(int storeId);
 
 	List<StoreDTO> getStoresOnMap();
+
+	void save(StoreDTO storeDTO);
 }

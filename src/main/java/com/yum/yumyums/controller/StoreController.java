@@ -3,6 +3,8 @@ package com.yum.yumyums.controller;
 import com.yum.yumyums.dto.TemplateData;
 import com.yum.yumyums.dto.seller.SellerDTO;
 import com.yum.yumyums.dto.seller.StoreDTO;
+import com.yum.yumyums.enums.FoodCategory;
+import com.yum.yumyums.service.seller.SellerService;
 import com.yum.yumyums.service.seller.StoreService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -27,6 +29,7 @@ public class StoreController {
     */
 
     private final StoreService storeService;
+    private final SellerService sellerService;
 
     @GetMapping("")
     public String storesList(@RequestParam(defaultValue = "0") int page, Model model, TemplateData templateData, HttpServletRequest request){
@@ -71,18 +74,66 @@ public class StoreController {
     };
 
     @PostMapping("/login")
-    public ResponseEntity<String> storeLogin(@RequestBody StoreDTO storeDTO){
+    public ResponseEntity<String> storeLogin(@RequestBody StoreDTO storeDTO, HttpServletRequest request){
         String storeName = storeDTO.getName();
         String password = storeDTO.getPassword();
+        HttpSession session = request.getSession();
 
         StoreDTO loginStore = storeService.loginStore(storeName, password);
+
 
         System.out.println("로그인 성공? "+loginStore == null+ "="+loginStore);
 
         if(loginStore == null){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패");
         }
+
+        session.setAttribute("storeId", loginStore.getStoreId());
         return ResponseEntity.ok("dashboard/" + loginStore.getStoreId());
     }
 
+    @GetMapping("/save")
+    public String storeSave(Model model, TemplateData templateData, HttpServletRequest request){
+        HttpSession session = request.getSession();
+        if(session.getAttribute("loginType") == null || !session.getAttribute("loginType").equals("s")){
+            templateData.setMessage("판매자 계정이 아닙니다.");
+            templateData.setUrl("/");
+            return "inc/alert";
+        }
+
+        templateData.setViewPath("store/save");
+
+        model.addAttribute("categories", FoodCategory.values());
+        model.addAttribute("templateData",templateData);
+        return "template";
+    }
+    
+    @GetMapping("/nameChk")
+    @ResponseBody
+    public ResponseEntity<Boolean> nameChk(@RequestParam("keyword") String keyword){
+        // 입력값 확인
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body(false); // 잘못된 요청 처리
+        }
+
+        System.out.println("Checking keyword: " + keyword);
+
+        // store가 null인 경우 false, 존재하는 경우 true 반환
+        boolean exists = storeService.findByName(keyword) != null;
+
+        return ResponseEntity.ok(exists);
+    }
+
+    @PostMapping("")
+    public String storeSaveSubmit(StoreDTO storeDTO, HttpServletRequest request){
+        HttpSession session = request.getSession();
+        SellerDTO sellerDTO = (SellerDTO)session.getAttribute("loginUser");
+
+        storeDTO.setSellerDTO(sellerDTO);
+        System.out.println("storeDTO : "+storeDTO);
+        storeService.save(storeDTO);
+        return "redirect:/stores";
+    }
+
+    //TODO 이름 중복검사 모듈화, 주소입력시 지도API 활용, 이미지첨부 기능 만들어서 모듈화하기. 
 }
