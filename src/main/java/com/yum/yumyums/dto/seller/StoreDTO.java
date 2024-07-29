@@ -25,6 +25,7 @@ public class StoreDTO {
     private int openTime;
     private int closeTime;
     private Busy busy = Busy.CROWDED;
+    private int likes;
 
     public Store dtoToEntity() {
         Store store = new Store();
@@ -44,5 +45,10 @@ public class StoreDTO {
     @JsonGetter("categoryKorName")
     public String getCategoryKorName() {
         return category.getKorName();
+    }
+
+    @JsonGetter("busyKorName")
+    public String getBusyKorName() {
+        return busy.getKorName();
     }
 }

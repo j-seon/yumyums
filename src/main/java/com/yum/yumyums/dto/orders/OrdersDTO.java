@@ -1,6 +1,6 @@
 package com.yum.yumyums.dto.orders;
 
-import com.yum.yumyums.entity.seller.Store;
+import com.yum.yumyums.dto.seller.StoreDTO;
 import lombok.Data;
 import java.time.LocalDateTime;
 
@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 public class OrdersDTO {
 
     private String id;
-    private Store store;
+    private StoreDTO storeDTO;
     private int totalPrice;
     private int discount;
     private LocalDateTime ordersTime;

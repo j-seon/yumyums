@@ -1,14 +1,14 @@
 package com.yum.yumyums.dto.orders;
 
-import com.yum.yumyums.entity.seller.Menu;
-import com.yum.yumyums.entity.user.Member;
+import com.yum.yumyums.dto.seller.MenuDTO;
+import com.yum.yumyums.dto.user.MemberDTO;
 import lombok.Data;
 
 @Data
 public class CartDTO {
 
     private int id;
-    private Member member;
-    private Menu menu;
+    private MemberDTO memberDTO;
+    private MenuDTO menuDTO;
     private int menuCount;
 }
