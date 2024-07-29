@@ -1,0 +1,151 @@
+<div class="container-fluid fruite py-5">
+    <div class="container py-5">
+        <div class="tab-class text-center">
+            <div class="row g-4">
+                <div class="col-lg-4 text-start">
+                    <h1>매장 목록</h1>
+                </div>
+                <div class="col-lg-8 text-end">
+                    <ul class="nav nav-pills d-inline-flex text-center mb-5">
+                        <li class="nav-item">
+                            <a class="d-flex m-2 py-2 bg-light rounded-pill active" href="stores/add">
+                                <span class="text-dark" style="width: 130px;">매장 추가</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tab-content">
+                <div id="tab-1" class="tab-pane fade show p-0 active">
+                    <div class="row g-4">
+                        <div class="col-lg-12">
+                            <div class="row g-4" th:each="store : ${stores}">
+                                <div class="col-md-6 col-lg-4 col-xl-3">
+                                    <div class="rounded position-relative fruite-item">
+                                        <div class="fruite-img">
+                                            <img src="https://i.namu.wiki/i/Bbq0E9hXYyrXbL4TnIE__vtQ2QwiZ3i40NZSLiX_a6S0ftYCndVZjf4vlruWur4I3Z0o7CZuFrRMl2CKxyk30w.webp" class="img-fluid w-100 rounded-top" alt="">
+                                        </div>
+                                        <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;" th:text="${store.categoryKorName}"/>
+                                        <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                            <h4 th:text="${store.name}"></h4>
+                                            <p th:text="${store.content}"></p>
+                                            <div class="d-flex justify-content-between flex-lg-wrap align-items-center">
+                                                <p class="text-dark fs-6 fw-bold mb-0"><i class="fa fa-heart text-danger"></i> <span th:text="|${#numbers.formatInteger(store.likes, 0, 'COMMA')}|"></span></p>
+                                                <!-- Button trigger modal -->
+                                                <button type="button" class="btn border border-secondary rounded-pill px-3 text-primary" data-bs-toggle="modal" data-bs-target="#enterStoreModal" th:attr="data-bs-whatever=${store.name}"><i class="fa fa-store me-2 text-primary"></i>매장 입장</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Pagination 시작-->
+                            <div class="col-12">
+                                <div class="pagination d-flex justify-content-center mt-5">
+                                    <a th:href="@{/items(page=${currentPage - 1}, size=10)}"
+                                       th:class="${currentPage == 0} ? 'disabled' : ''"
+                                       class="rounded"
+                                       th:if="${currentPage > 0}">«</a>
+                                    <th:block th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+                                        <a th:href="@{/items(page=${i}, size=10)}"
+                                           th:class="${i == currentPage} ? 'active rounded' : 'rounded'"
+                                           th:text="${i+1}"
+                                        >
+                                        </a>
+                                    </th:block>
+
+                                    <a th:href="@{/items(page=${currentPage + 1})}"
+                                       th:class="${currentPage == totalPages - 1} ? 'disabled' : ''"
+                                       class="rounded"
+                                       th:if="${currentPage < totalPages - 1}">»</a>
+                                </div>
+                            </div>
+                            <!--Pagination 끝-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="enterStoreModal" tabindex="-1" aria-labelledby="enterStoreModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="enterStoreModalLabel">매장 입장</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="storesLoginForm">
+                <div class="modal-body">
+                    <h3 class="text-center"></h3>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">매장명</label>
+                        <input type="text" class="form-control" id="recipient-name" name="name" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-form-label" for="storePassword">비밀번호 <sup>*</sup></label>
+                        <input type="password" class="form-control" id="storePassword" name="password" placeholder="비밀번호 입력" required>
+                        <div class="invalid-feedback">
+                            비밀번호를 확인해주세요.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    <button type="button" class="btn btn-primary" onclick="storeLogin();">매장 로그인</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    window.onload = () => {
+
+        const enterStoreModal = document.getElementById('enterStoreModal')
+            if (enterStoreModal) {
+              enterStoreModal.addEventListener('show.bs.modal', event => {
+                // Button that triggered the modal
+                const button = event.relatedTarget
+                // Extract info from data-bs-* attributes
+                const recipient = button.getAttribute('data-bs-whatever')
+                // If necessary, you could initiate an Ajax request here
+                // and then do the updating in a callback.
+
+                // Update the modal's content.
+                const modalBodyInput = enterStoreModal.querySelector('#recipient-name')
+                modalBodyInput.value = recipient
+              })
+        }
+    }
+
+
+    const storeLogin = () => {
+        const name = $('#recipient-name').val();
+        const password = $('#storePassword').val();
+
+         $.ajax({
+            url: 'stores/login',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                name: name,
+                password: password
+            }),
+            success: function (data) {
+                console.log('로그인 성공:', data);
+                // 로그인 성공 시 추가 처리 (예: 페이지 리로드, 메시지 표시 등)
+                window.location.href = data
+                // 필요시 성공 메시지 표시 등
+            },
+            error: function (xhr, status, error) {
+                $('#storePassword').addClass('is-invalid');
+            }
+        });
+    }
+
+
+</script>

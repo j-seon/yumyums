@@ -25,6 +25,7 @@ public class StoreDTO {
     private int openTime;
     private int closeTime;
     private Busy busy = Busy.CROWDED;
+    private int likes;
 
     public Store dtoToEntity() {
         Store store = new Store();

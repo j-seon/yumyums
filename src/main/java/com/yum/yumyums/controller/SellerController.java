@@ -22,7 +22,8 @@ public class SellerController {
     판매자 상세정보 - GET : /seller/id
     판매자 상세정보 수정 페이지 - GET : /seller/id/update
     판매자 상세정보 수정 등록  - PUT : /seller/id
-    판매자 탈퇴  - PUT : /seller/id/withdraw
+    판매자 탈퇴  - DELETE : /seller/id
+
     */
 
     private final SellerService sellerService;
@@ -59,4 +60,6 @@ public class SellerController {
         }
 
     }
+
+
 }
