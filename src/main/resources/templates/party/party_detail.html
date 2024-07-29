@@ -5,6 +5,14 @@
 	<title>파티 만들기</title>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="../../css/party/party_detail.css">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		var  loginUserId = "[[${session.loginUser.memberId}]]";
+
+		// 파티멤버의 인원수 가져오기
+		var partyMembersSize = [[${partyDTO.partyMemberCount}]]; // 리스트 크기를 JavaScript 변수로 가져옵니다.
+	</script>
+	<script src="../../js/party/partyDetail.js"></script>
 </head>
 <body>
 <div class="container">
@@ -41,6 +49,7 @@
 							<span th:text="${partyMember.memberDTO.name}"></span>
 						</div>
 					</div>
+					<input type="hidden" name="party-leader-id" th:value="${partyMember.memberDTO.getMemberId()}">
 				</th:block>
 				<!-- //파티원 한명 정보(파티장)-->
 			</div>
@@ -74,9 +83,12 @@
 			<!-- 링크로 초대 -->
 			<div class="join-link-container">
 				<div><span>링크로 초대</span></div>
-				<div><span><!--링크 받아올 것--></span></div>
-				<!-- 복사 버튼 -->
 				<div>
+					<span id="join-party-url" th:text="${siteLink + joinPartyKey}"></span>
+					<input type="hidden" name="joinPartyKey" th:value="${joinPartyKey}">
+				</div>
+				<!-- 복사 버튼 -->
+				<div  onclick="copyUrlToClipboard()">
 					<img src="" alt="">
 					<span>복사</span>
 				</div>
@@ -84,7 +96,7 @@
 			</div>
 			<!-- //링크로 초대 -->
 
-			<div>
+			<div class="party-button">
 				<input type="button" value="메뉴 선택 시작">
 			</div>
 		</div>

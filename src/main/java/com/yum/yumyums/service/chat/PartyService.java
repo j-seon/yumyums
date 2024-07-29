@@ -12,8 +12,8 @@ public interface PartyService {
 	//파티 관리 (생성,삭제,추가)
 	String createParty(PartyDTO partyDTO, MemberDTO memberDTO, String storeName);
 	String addMemberToParty(String encryptedPartyId, MemberDTO memberDTO, boolean isPartyLeader);
-	String deleteParty(String encryptedPartyId, MemberDTO memberDTO);
-	String deleteMemberToParty(String encryptedPartyId, MemberDTO memberDTO);
+	void deleteParty(String encryptedPartyId, MemberDTO memberDTO);
+	void deleteMemberToParty(String encryptedPartyId, MemberDTO memberDTO, boolean isPartyLeader);
 
 	//select
 	String findEncryptedPartyIdByMemberId(MemberDTO memberDTO);
@@ -22,4 +22,5 @@ public interface PartyService {
 	//검증 (DB 데이터 확인)
 	boolean isMemberInActiveParty(MemberDTO memberDTO);
 	boolean isThisPartyMember(String partyId, MemberDTO memberDTO);
+	boolean isThisPartyLeader(String encryptedPartyId, MemberDTO memberDTO);
 }

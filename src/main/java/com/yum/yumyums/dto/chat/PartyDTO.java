@@ -8,6 +8,7 @@ import com.yum.yumyums.enums.PayType;
 import com.yum.yumyums.enums.RandomType;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class PartyDTO {
     private RandomType randomType;
     private boolean isActive = true;
     private List<PartyMemberDTO> partyMemberDTOs = new ArrayList<>();
+    private LocalDateTime createTime = LocalDateTime.now();
 
 
 
@@ -27,6 +29,7 @@ public class PartyDTO {
         Party party = Party.createParty(id, storeDTO.dtoToEntity(), payType);
         party.setRandomType(this.randomType);
         party.setActive(this.isActive);
+        party.setCreateTime(this.createTime);
 
         // 파티멤버 저장
         List<PartyMember> partyMembers = new ArrayList<>();

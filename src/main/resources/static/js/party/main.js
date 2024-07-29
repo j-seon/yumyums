@@ -1,3 +1,4 @@
+	//== 상점페이지 ==//
 	// 파티 index 페이지의 partyItem에 클릭 이벤트 삽입
 	document.addEventListener('DOMContentLoaded', function() {
 		const partyItems = document.querySelectorAll('.party-item');
@@ -8,7 +9,7 @@
 						loadPageContent('create_party');
 						break;
 					case '파티입장':
-						loadPageContent('join_party');
+						loadPageContent('before_join_party');
 						break;
 				}
 			});
@@ -30,8 +31,6 @@
 			}
 		});
 	}
-
-
 
 
 	const openFindStoreForm = () => {
@@ -69,6 +68,7 @@
 			}
 		});
 	}
+
 
 	// 상점 선택
 	const setStoreInfo = (event) => {

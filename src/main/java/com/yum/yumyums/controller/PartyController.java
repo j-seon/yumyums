@@ -3,12 +3,15 @@ package com.yum.yumyums.controller;
 import com.yum.yumyums.dto.TemplateData;
 import com.yum.yumyums.dto.chat.PartyDTO;
 import com.yum.yumyums.dto.user.MemberDTO;
+import com.yum.yumyums.enums.FixUrl;
 import com.yum.yumyums.enums.PayType;
 import com.yum.yumyums.enums.RandomType;
 import com.yum.yumyums.service.chat.PartyService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -120,6 +123,9 @@ public class PartyController {
 		PartyDTO partyDTO = partyService.findParty(encryptedPartyId);
 		model.addAttribute("partyDTO", partyDTO);
 
+
+
+		//== 비즈니스 로직==//
 		//해당 파티의 파티원이 아니라면
 		if(!partyService.isThisPartyMember(encryptedPartyId, memberDTO)) {
 
@@ -145,8 +151,11 @@ public class PartyController {
 			return "template"; //파티 초대받기 페이지로 이동
 		}
 
+		// 파티초대 링크저장
+		String SITE_LINK = FixUrl.SITE_LINK.getUrl() + "party/";
+		model.addAttribute("siteLink", SITE_LINK);
+		model.addAttribute("joinPartyKey", encryptedPartyId);
 
-		//== 비즈니스 로직==//
 		// 페이지 이동
 		templateData.setViewPath("party/party_detail");
 		model.addAttribute("templateData", templateData);
@@ -177,29 +186,43 @@ public class PartyController {
 		partyService.addMemberToParty(encryptedPartyId, memberDTO, false);
 		return "redirect:/party/" + encryptedPartyId; //파티 조회 페이지로 이동
 	}
-//
-//	//파티 탈퇴
-//	@DeleteMapping("/${partyId}")
-//	public String deletePartyOrPartyMember(final HttpServletRequest request, @RequestParam("partyId") String partyId) {
-//		HttpSession session = request.getSession();
-//
-//		//소비자 회원으로 로그인중이지 않다면
-//		if (!isLoginAsMember(session)) {
-//			return "redirect:/login"; // 로그인 페이지로 이동
-//		}
-//
-//		//TODO 파티탈퇴 로직제작
-//
-//		//TODO partyId, memberId를 통해 파티장인지 확인 -> where문으로 걸고 해당 컬럼의 파티장여부가 true인지 확인
-//		//TODO 파티원 Entity제작 -> 테이블 구성까지 제작
-//		//TODO 파티장이라면 방을 폭파시킨다 (파티원목록에서 partyId로 where문 걸고 전부 딜리트 + 파티도 where로 딜리트)
-//		//TODO 파티장이 아니라면 (파티원목록에서 partyId, memberId where문걸고 딜리트)
-//
-//		//TODO 파티탈퇴후 세션에서 파티ID 등 파티정보값 모두 삭제
-//
-//		return null;
-//	}
+
+	//파티 탈퇴
+	@DeleteMapping("/{encryptedPartyId}")
+	public String deletePartyOrPartyMember(final HttpServletRequest request, @PathVariable("encryptedPartyId") String encryptedPartyId, Model model,  TemplateData templateData) {
+		HttpSession session = request.getSession();
+		MemberDTO memberDTO = (MemberDTO) session.getAttribute(MEMBER_DTO_SESSION_ATTRIBUTE_NAME);
+
+		//== 유효성검사 ==//
+		//소비자 회원으로 로그인중이지 않다면
+		if (!isLoginAsMember(session)) {
+			return "redirect:/login"; // 로그인 페이지로 이동
+		}
 
 
+		//== 비즈니스 로직 ==//
+		//파티장이라면
+		if (partyService.isThisPartyLeader(encryptedPartyId, memberDTO)) {
+			PartyDTO partyDTO = partyService.findParty(encryptedPartyId);
+
+			//파티원이 한명이라면
+			if (partyDTO.getPartyMemberCount() <= 1) {
+				//파티 삭제
+				partyService.deleteParty(encryptedPartyId, memberDTO);
+				templateData.setUrl("/party");
+				return "inc/redirect"; // 해당 파티 상세페이지로 이동
+			}
+
+			//파티원이 여러명이라면, 파티 탈퇴 후 위임
+			partyService.deleteMemberToParty(encryptedPartyId, memberDTO, true);
+			templateData.setUrl("/party");
+			return "inc/redirect"; // 해당 파티 상세페이지로 이동
+		}
+
+		//파티장이 아니라면 파티탈퇴
+		partyService.deleteMemberToParty(encryptedPartyId, memberDTO, true);
+		templateData.setUrl("/party");
+		return "inc/redirect"; // 해당 파티 상세페이지로 이동
+	}
 
 }
