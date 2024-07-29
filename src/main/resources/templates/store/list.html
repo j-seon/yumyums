@@ -30,7 +30,7 @@
                                             <h4 th:text="${store.name}"></h4>
                                             <p th:text="${store.content}"></p>
                                             <div class="d-flex justify-content-between flex-lg-wrap align-items-center">
-                                                <p class="text-dark fs-5 fw-bold mb-0"><i class="fa fa-heart text-danger"></i> 0명</p>
+                                                <p class="text-dark fs-6 fw-bold mb-0"><i class="fa fa-heart text-danger"></i> <span th:text="|${#numbers.formatInteger(store.likes, 0, 'COMMA')}|"></span></p>
                                                 <!-- Button trigger modal -->
                                                 <button type="button" class="btn border border-secondary rounded-pill px-3 text-primary" data-bs-toggle="modal" data-bs-target="#enterStoreModal" th:attr="data-bs-whatever=${store.name}"><i class="fa fa-store me-2 text-primary"></i>매장 입장</button>
                                             </div>

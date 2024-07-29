@@ -33,8 +33,13 @@ public class StoreServiceImpl implements StoreService {
 
 		// Store 엔티티를 StoreDTO로 변환
 		List<StoreDTO> storeDTOs = storePage.getContent().stream()
-				.map(Store::entityToDto) // 변환 메서드 호출
-				.collect(Collectors.toList());
+            .map(store -> {
+                StoreDTO dto = store.entityToDto(); // 인스턴스 메서드 호출
+                int likes = getLikesForStore(store.getId()); // 좋아요 수 조회
+                dto.setLikes(likes); // 좋아요 수 설정
+                return dto;
+            })
+            .collect(Collectors.toList());
 
 		// Page<StoreDTO>로 변환하여 반환
 		return new PageImpl<>(storeDTOs, storePage.getPageable(), storePage.getTotalElements());
@@ -73,10 +78,12 @@ public class StoreServiceImpl implements StoreService {
 		return null;
 	}
 
+    @Override
     public int getLikesForStore(int storeId) {
         return storeLikeRepository.countLikesByStoreId(storeId);
     }
 
+    @Override
     public List<StoreDTO> getStoresOnMap() {
         List<StoreDTO> store = new ArrayList<>();
         List<Store> findAll = storeRepository.findAll();
