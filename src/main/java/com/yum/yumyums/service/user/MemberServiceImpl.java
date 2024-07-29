@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -86,4 +87,14 @@ public class MemberServiceImpl implements MemberService {
 		}
 		return true;
 	}
+    @Override
+    public List<MemberDTO> findByIdStartsWith(String id) {
+        List<Member> optionalMember = memberRepository.findByIdStartsWith(id);
+        List<MemberDTO> returnDto=new ArrayList<>();
+        for (Member findEntity :  optionalMember) {
+            returnDto.add(MemberDTO.toMemberDTO(findEntity));
+        }
+        return returnDto;
+    }
+
 }

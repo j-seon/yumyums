@@ -11,4 +11,8 @@ public interface StoreService {
     Page<StoreDTO> getStoresBySellerId(String sellerId, int page, int pageSize);
 
     StoreDTO loginStore(String storeName, String password);
+
+	int getLikesForStore(int storeId);
+
+	List<StoreDTO> getStoresOnMap();
 }

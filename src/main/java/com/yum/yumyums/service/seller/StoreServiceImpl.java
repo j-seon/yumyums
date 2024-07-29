@@ -8,15 +8,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import com.yum.yumyums.repository.seller.StoreLikeRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class StoreServiceImpl implements StoreService {
+    private final StoreLikeRepository storeLikeRepository;
 
-	private final StoreRepository storeRepository;
+    private final StoreRepository storeRepository;
 
 	@Override
 	public StoreDTO findByName(String storeName) {
@@ -69,4 +72,18 @@ public class StoreServiceImpl implements StoreService {
 		}
 		return null;
 	}
+
+    public int getLikesForStore(int storeId) {
+        return storeLikeRepository.countLikesByStoreId(storeId);
+    }
+
+    public List<StoreDTO> getStoresOnMap() {
+        List<StoreDTO> store = new ArrayList<>();
+        List<Store> findAll = storeRepository.findAll();
+        for (Store s : findAll) {
+            store.add(s.entityToDto());
+        }
+        return store;
+    }
+
 }

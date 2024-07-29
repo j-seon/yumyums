@@ -45,4 +45,9 @@ public class StoreDTO {
     public String getCategoryKorName() {
         return category.getKorName();
     }
+
+    @JsonGetter("busyKorName")
+    public String getBusyKorName() {
+        return busy.getKorName();
+    }
 }
