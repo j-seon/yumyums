@@ -31,14 +31,14 @@ public class StoreController {
     @GetMapping("")
     public String storesList(@RequestParam(defaultValue = "0") int page, Model model, TemplateData templateData, HttpServletRequest request){
         HttpSession session = request.getSession();
-        SellerDTO sellerDto = (SellerDTO) session.getAttribute("loginUser");
 
-        if(sellerDto == null || !session.getAttribute("loginType").equals("s")){
+        if(session.getAttribute("loginType") == null || !session.getAttribute("loginType").equals("s")){
             templateData.setMessage("판매자 계정이 아닙니다.");
             templateData.setUrl("/");
             return "inc/alert";
         }
 
+        SellerDTO sellerDto = (SellerDTO) session.getAttribute("loginUser");
         String sellerId = sellerDto.getSellerId();
 
         // 상점 목록과 페이지 정보 가져오기
