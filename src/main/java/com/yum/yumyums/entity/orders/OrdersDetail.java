@@ -1,6 +1,7 @@
 package com.yum.yumyums.entity.orders;
 
 import com.yum.yumyums.entity.seller.Menu;
+import com.yum.yumyums.entity.seller.Store;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -23,6 +24,11 @@ public class OrdersDetail {
     @ManyToOne
     @JoinColumn(name = "menu_id", nullable = false)
     private Menu menu;
+
+    //상점 ID
+    @ManyToOne
+    @JoinColumn(name = "store_id", nullable = false)
+    private Store Store;
 
     //메뉴
     @Column(name = "menu_name",length = 50)
