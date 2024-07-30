@@ -37,8 +37,7 @@ public class APIController {
 
 
     @GetMapping("/duplicate")
-    @ResponseBody
-    public ResponseEntity<Boolean> nameChk(@RequestParam("keyword") String keyword, @RequestParam("field") String field){
+    public ResponseEntity<Boolean> duplicate(@RequestParam("keyword") String keyword, @RequestParam("field") String field){
         // 입력값 확인
         if (keyword == null || keyword.trim().isEmpty()) {
             return ResponseEntity.badRequest().body(false); // 잘못된 요청 처리
