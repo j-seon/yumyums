@@ -48,6 +48,6 @@ public class DashBoardServiceImpl implements DashBoardService {
 
     @Override
     public int getTodayTotalSalesVolumeByStoreId(int intStoreId) {
-        return ordersDetailRepository.getTodayTotalSalesVolumeByStoreId(intStoreId);;
+        return ordersDetailRepository.getTodayTotalSalesVolumeByStoreId(intStoreId);
     }
 }
