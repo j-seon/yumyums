@@ -31,6 +31,7 @@ public class StoreDTO {
         Store store = new Store();
         store.setId(storeId);
         store.setSeller(Seller.toSaveEntity(sellerDTO));
+        store.setPassword(password);
         store.setName(name);
         store.setAddress(address);
         store.setCategory(category);

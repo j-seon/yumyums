@@ -23,7 +23,17 @@ public class StoreServiceImpl implements StoreService {
 
 	@Override
 	public StoreDTO findByName(String storeName) {
+        // storeName이 null이거나 빈 문자열일 경우 예외 처리
+        if (storeName == null || storeName.trim().isEmpty()) {
+            return null; // 또는 예외를 던질 수 있음
+        }
+
 		Store store = storeRepository.findByName(storeName);
+
+        // Store이 null일 경우 null 반환
+        if (store == null) {
+            return null;
+        }
 		return store.entityToDto();
 	}
 
@@ -91,6 +101,13 @@ public class StoreServiceImpl implements StoreService {
             store.add(s.entityToDto());
         }
         return store;
+    }
+
+    @Override
+    public void save(StoreDTO storeDTO) {
+
+        Store store = storeDTO.dtoToEntity();
+        storeRepository.save(store);
     }
 
 }

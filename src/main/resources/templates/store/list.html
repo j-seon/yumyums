@@ -8,7 +8,7 @@
                 <div class="col-lg-8 text-end">
                     <ul class="nav nav-pills d-inline-flex text-center mb-5">
                         <li class="nav-item">
-                            <a class="d-flex m-2 py-2 bg-light rounded-pill active" href="stores/add">
+                            <a class="d-flex m-2 py-2 bg-light rounded-pill active" href="stores/form">
                                 <span class="text-dark" style="width: 130px;">매장 추가</span>
                             </a>
                         </li>
@@ -19,16 +19,16 @@
                 <div id="tab-1" class="tab-pane fade show p-0 active">
                     <div class="row g-4">
                         <div class="col-lg-12">
-                            <div class="row g-4" th:each="store : ${stores}">
-                                <div class="col-md-6 col-lg-4 col-xl-3">
-                                    <div class="rounded position-relative fruite-item">
+                            <div class="row d-flex g-4 align-items-stretch">
+                                <div class="col-md-6 col-lg-4 col-xl-3" th:each="store : ${stores}">
+                                    <div class="rounded position-relative fruite-item h-100">
                                         <div class="fruite-img">
                                             <img src="https://i.namu.wiki/i/Bbq0E9hXYyrXbL4TnIE__vtQ2QwiZ3i40NZSLiX_a6S0ftYCndVZjf4vlruWur4I3Z0o7CZuFrRMl2CKxyk30w.webp" class="img-fluid w-100 rounded-top" alt="">
                                         </div>
                                         <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;" th:text="${store.categoryKorName}"/>
                                         <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                                             <h4 th:text="${store.name}"></h4>
-                                            <p th:text="${store.content}"></p>
+                                            <p class=" text-truncate" th:text="${store.content}"></p>
                                             <div class="d-flex justify-content-between flex-lg-wrap align-items-center">
                                                 <p class="text-dark fs-6 fw-bold mb-0"><i class="fa fa-heart text-danger"></i> <span th:text="|${#numbers.formatInteger(store.likes, 0, 'COMMA')}|"></span></p>
                                                 <!-- Button trigger modal -->
