@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,6 +38,10 @@ public class Party {
 	@Column(columnDefinition = "boolean DEFAULT true", nullable = false)
 	private boolean isActive;
 
+	@Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", nullable = false)
+	private LocalDateTime createTime = LocalDateTime.now();
+
+
 	public PartyDTO entityToDto() {
 		PartyDTO partyDTO = new PartyDTO();
 		partyDTO.setId(id);
@@ -44,6 +49,7 @@ public class Party {
 		partyDTO.setPayType(payType);
 		partyDTO.setRandomType(randomType);
 		partyDTO.setActive(isActive);
+		partyDTO.setCreateTime(createTime);
 
 		return partyDTO;
 	}
@@ -55,6 +61,7 @@ public class Party {
 		party.setStore(store);
 		party.setPayType(payType);
 		party.setActive(true);
+		party.setCreateTime(LocalDateTime.now());
 
 		return party;
 	}
