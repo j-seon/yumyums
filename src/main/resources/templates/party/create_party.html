@@ -31,28 +31,47 @@
 				</div>
 
 				<div class="party-option-item">
-					<span>결제방식: </span>
-					<div th:each="payType : ${payTypes}" class="radio-container">
-						<input type="radio" name="pay_type" th:field="*{payType}" th:value="${payType.name()}">
-						<span th:text="${payType.getKorName()}"></span>
+					<span>모집방식: </span>
+					<div class="radio-container">
+						<input type="radio" name="join_type" th:field="*{matching}" value="false">초대하기
+						<input type="radio" name="join_type" th:field="*{matching}" value="true">랜덤모집
 					</div>
 				</div>
 
 				<div class="party-option-item">
-					<span>모집방식: </span>
-					<div class="radio-container">
-						<input type="radio" name="join_type" value="랜덤모집">랜덤모집
-						<input type="radio" name="join_type" value="초대하기">초대하기
+					<span>결제방식: </span>
+					<div th:each="payType : ${payTypes}" class="radio-container invite">
+						<input type="radio" name="pay_type" th:field="*{payType}" th:value="${payType.name()}">
+						<span th:text="${payType.getKorName()}"></span>
+					</div>
+					<div class="radio-container random">
+						<input type="radio" name="pay_type" th:field="*{payType}" value="DOUTCH">
+						<span>각자결제</span>
+						<input type="radio" name="pay_type" th:field="*{payType}" value="SPLIT">
+						<span>분할결제</span>
 					</div>
 				</div>
 
 				<div class="party-option-item">
 					<span>선택방법: </span>
-					<div th:each="randomType : ${randomTypes}" class="radio-container">
+					<div th:each="randomType : ${randomTypes}" class="radio-container invite">
 						<input type="radio" name="random_type" th:field="*{randomType}" th:value="${randomType.name()}">
 						<span th:text="${randomType.getKorName()}"></span>
 					</div>
 				</div>
+
+				<div class="party-option-item">
+					<span>최대 파티 인원: </span>
+					<select th:field="*{maxMemberCount}" class="radio-container invite">
+						<option  th:each="maxMemberCount : ${invitePartyMaxMemberCount}" th:value="${maxMemberCount}"
+								th:text="${maxMemberCount}"></option>
+					</select>
+					<select th:field="*{maxMemberCount}" class="radio-container random">
+						<option  th:each="maxMemberCount : ${randomPartyMaxMemberCount}" th:value="${maxMemberCount}"
+								 th:text="${maxMemberCount}"></option>
+					</select>
+				</div>
+
 
 				<button type="submit">방만들기</button>
 			</div>

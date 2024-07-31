@@ -24,5 +24,5 @@ public interface PartyService {
 	boolean isMemberInActiveParty(MemberDTO memberDTO);
 	boolean isThisPartyMember(String partyId, MemberDTO memberDTO);
 	boolean isThisPartyLeader(String encryptedPartyId, MemberDTO memberDTO);
-	boolean isPartyMemberFull(String encryptedPartyId));
+	boolean isPartyMemberFull(String encryptedPartyId);
 }

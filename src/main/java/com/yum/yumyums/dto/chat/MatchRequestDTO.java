@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class MatchRequestDTO {
 	private MemberDTO memberDTO;
-	private String storeId;
+	private String storeName;
 	private PayType payType;
+	private int maxMemberCount;
 }
