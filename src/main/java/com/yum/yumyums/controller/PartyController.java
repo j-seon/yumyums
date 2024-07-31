@@ -183,6 +183,10 @@ public class PartyController {
 		}
 
 		//== 비즈니스 로직 ==//
+		// 파티 초대를 할 수 없는 상황이라면 (최대 인원 초과)
+		if (partyService.isPartyMemberFull(encryptedPartyId)) {
+			return "파티 인원이 가득 찼습니다.";
+		}
 		partyService.addMemberToParty(encryptedPartyId, memberDTO, false);
 		return "redirect:/party/" + encryptedPartyId; //파티 조회 페이지로 이동
 	}

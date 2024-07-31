@@ -25,4 +25,6 @@ public interface PartyMemberRepository extends JpaRepository<PartyMember, Intege
 	boolean existsActivePartyWithLeader(@Param("partyId") String partyId, @Param("memberId") String memberId);
 
 	void deleteByMemberId(String MemberId);
+
+	int findByPartyId(String partyId);
 }

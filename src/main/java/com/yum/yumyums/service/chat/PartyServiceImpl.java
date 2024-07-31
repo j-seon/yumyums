@@ -211,4 +211,20 @@ public class PartyServiceImpl implements PartyService {
 		String partyId = getPartyIdByInviteUrlParam(encryptedPartyId);
 		return partyMemberRepository.existsActivePartyWithLeader(partyId, memberDTO.getMemberId());
 	}
+
+	// [검증] 파티 초대가 가능한 상태인지 확인 (파티 인원수 조회)
+	@Override
+	public boolean isPartyMemberFull(String encryptedPartyId) {
+		//파티 정보값 DB에서 불러오기
+		PartyDTO partyDTO = findParty(encryptedPartyId);
+		int nowPartyMember = partyMemberRepository.findByPartyId(partyDTO.getId());
+
+		// 파티원을 추가할 수 있는 상태라면
+		if (nowPartyMember + 1 <= partyDTO.getPartyMemberCount()) {
+			return false;
+		}
+		//추가할 수 없는 상태라면
+		return true;
+	}
+
 }

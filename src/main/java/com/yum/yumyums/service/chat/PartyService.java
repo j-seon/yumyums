@@ -19,8 +19,10 @@ public interface PartyService {
 	String findEncryptedPartyIdByMemberId(MemberDTO memberDTO);
 	PartyDTO findParty(String encryptedPartyId);
 
+
 	//검증 (DB 데이터 확인)
 	boolean isMemberInActiveParty(MemberDTO memberDTO);
 	boolean isThisPartyMember(String partyId, MemberDTO memberDTO);
 	boolean isThisPartyLeader(String encryptedPartyId, MemberDTO memberDTO);
+	boolean isPartyMemberFull(String encryptedPartyId));
 }
