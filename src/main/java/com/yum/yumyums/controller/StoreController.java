@@ -1,11 +1,14 @@
 package com.yum.yumyums.controller;
 
+import com.yum.yumyums.dto.ImagesDTO;
 import com.yum.yumyums.dto.TemplateData;
 import com.yum.yumyums.dto.seller.SellerDTO;
 import com.yum.yumyums.dto.seller.StoreDTO;
 import com.yum.yumyums.enums.FoodCategory;
+import com.yum.yumyums.service.ImagesService;
 import com.yum.yumyums.service.seller.SellerService;
 import com.yum.yumyums.service.seller.StoreService;
+import com.yum.yumyums.util.ImageDefaultUrl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -15,13 +18,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/stores")
-public class StoreController {
+public class StoreController extends ImageDefaultUrl {
     /*
     판매자 매장 목록 - GET : /stores
     팬매자 매장 추가 - POST : /stores
@@ -30,6 +34,7 @@ public class StoreController {
 
     private final StoreService storeService;
     private final SellerService sellerService;
+    private final ImagesService imagesService;
 
     @GetMapping("")
     public String storesList(@RequestParam(defaultValue = "0") int page, Model model, TemplateData templateData, HttpServletRequest request){
@@ -62,6 +67,9 @@ public class StoreController {
         * */
 
         System.out.println("total : "+storePage.getTotalPages());
+        for(StoreDTO store : storePage.getContent()){
+            System.out.println(store.toString());
+        }
 
         // Model에 데이터 추가
         model.addAttribute("stores", storePage.getContent()); // 현재 페이지의 상점 목록
@@ -110,13 +118,22 @@ public class StoreController {
 
 
     @PostMapping("")
-    public String storeSaveSubmit(StoreDTO storeDTO, HttpServletRequest request){
+    public String storeSaveSubmit(StoreDTO storeDTO, @RequestParam("storeImg") MultipartFile imgFile , HttpServletRequest request){
         HttpSession session = request.getSession();
         SellerDTO sellerDTO = (SellerDTO)session.getAttribute("loginUser");
 
+        if(!imgFile.isEmpty()){
+            imgUrl = "/seller/"+sellerDTO.getSellerId()+"/"+imgFile.getOriginalFilename();
+        }
+
+        String savedImgUrl = imagesService.uploadImage(imgFile, imgUrl);
+
+        ImagesDTO imagesDTO = new ImagesDTO();
+        imagesDTO.setImgUrl(savedImgUrl);
         storeDTO.setSellerDTO(sellerDTO);
-        System.out.println("storeDTO : "+storeDTO);
+        storeDTO.setImagesDTO(imagesDTO);
         storeService.save(storeDTO);
+
         return "redirect:/stores";
     }
 

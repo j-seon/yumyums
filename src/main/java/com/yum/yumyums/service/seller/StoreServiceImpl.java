@@ -1,9 +1,15 @@
 package com.yum.yumyums.service.seller;
 
 import com.yum.yumyums.dto.seller.StoreDTO;
+import com.yum.yumyums.entity.Images;
 import com.yum.yumyums.entity.seller.Store;
 import com.yum.yumyums.repository.seller.StoreRepository;
+import com.yum.yumyums.service.ImagesService;
+import com.yum.yumyums.service.ImagesServiceImpl;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +26,8 @@ public class StoreServiceImpl implements StoreService {
     private final StoreLikeRepository storeLikeRepository;
 
     private final StoreRepository storeRepository;
+    private final Logger logger = LoggerFactory.getLogger(ImagesServiceImpl.class);
+    private final ImagesService imagesService;
 
 	@Override
 	public StoreDTO findByName(String storeName) {
@@ -104,9 +112,14 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
+    @Transactional
     public void save(StoreDTO storeDTO) {
+        Images savedImages = imagesService.saveImage(storeDTO.getImagesDTO());
 
         Store store = storeDTO.dtoToEntity();
+        store.setImages(savedImages);
+        logger.info("저장할 Store의 images_id: {}",store.getImages().getId());
+        logger.info("저장할 Store의 images url: {}",store.getImages().getImgUrl());
         storeRepository.save(store);
     }
 
