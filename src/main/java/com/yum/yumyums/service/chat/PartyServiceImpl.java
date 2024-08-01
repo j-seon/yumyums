@@ -217,14 +217,14 @@ public class PartyServiceImpl implements PartyService {
 	public boolean isPartyMemberFull(String encryptedPartyId) {
 		//파티 정보값 DB에서 불러오기
 		PartyDTO partyDTO = findParty(encryptedPartyId);
-		int nowPartyMember = partyMemberRepository.findByPartyId(partyDTO.getId());
+		int maxPartyMemberCount = partyDTO.getMaxMemberCount();
+		int nowPartyMemberCount = partyMemberRepository.countByPartyId(partyDTO.getId());
 
-		// 파티원을 추가할 수 있는 상태라면
-		if (nowPartyMember + 1 <= partyDTO.getPartyMemberCount()) {
-			return false;
+		// 파티가 가득찼다면
+		if (nowPartyMemberCount + 1 > maxPartyMemberCount) {
+			return true;
 		}
-		//추가할 수 없는 상태라면
-		return true;
+		return false;
 	}
 
 }
