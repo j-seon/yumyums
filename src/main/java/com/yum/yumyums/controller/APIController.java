@@ -84,5 +84,12 @@ public class APIController {
         int intStoreId = Integer.parseInt(storeId);
         return dashBoardService.findYearlySumsByStoreId(intStoreId);
     }
+    @GetMapping("/menuInfo")
+    @ResponseBody
+    public List<Map<String,Object>> menuInfo(@RequestParam("storeId") String storeId) {
+        int intStoreId = Integer.parseInt(storeId);
+
+        return dashBoardService.findMenuInfoList(intStoreId);
+    }
 
 }

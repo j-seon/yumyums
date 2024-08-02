@@ -1,5 +1,6 @@
 var ctxLine
 var lineChart
+var table
 
 // 차트 데이터 설정
  function setChart(term) {
@@ -71,29 +72,52 @@ function createChart() {
        }
    });
 }
+function createTable(){
+    if ($.fn.DataTable.isDataTable('#myTable')) {
+        $('#myTable').DataTable().clear().destroy(); // 기존 테이블 제거
+    }
+
+    table = $('#myTable').DataTable({
+        columns: [
+            { title: "메뉴" },
+            { title: "가격" },
+            { title: "판매 수량" },
+            { title: "평점" }
+        ],
+        data: []
+    });
+}
+function setTable(){
+var goUrl=''
+    $.ajax({
+        url: "/api/v1/menuInfo" , // URL 경로에 categoryText를 포함
+        method: "get", // GET 메소드 사용
+        data:{storeId : '3'},
+        success: function(data, status, xhr) {
+console.log(data[0].name)
+//            console.log(data.name)
+//            console.log(data.avgRate)
+//            console.log(data.orderCount)
+//            console.log(data.price)
+
+            data.forEach((menuInfo) => {
+                table.row.add([menuInfo.name, menuInfo.price, menuInfo.orderCount ,menuInfo.avgRate]).draw();
+             });
+        },
+        error: function(xhr, status, error) {
+            console.error("Error occurred:", error);
+        }
+    });
+}
 
 $(document).ready(function() {
     createChart();
     setChart("day");
+    createTable();
+    setTable();
 
 
-    // DataTable 초기화
-    let table = new DataTable('#myTable', {});
-    table.row.add(["Row 2 Data 222", "asRow 2 Data 2","asss"]).draw();
 
-    table.clear().destroy(); // 기존 테이블 제거
-
-    $('#myTable').DataTable({
-        columns: [
-            { title: "Updated Header 1" },
-            { title: "Updated Header 2" },
-            { title: "Updated Header 3" }
-        ],
-        data: [
-            ["New Data 1", "New Data 2", "New Data 3"],
-            ["New Data 4", "New Data 5", "New Data 6"]
-        ]
-    });
 
     $('.nav-link').on('click', function(e) {
         e.preventDefault();
