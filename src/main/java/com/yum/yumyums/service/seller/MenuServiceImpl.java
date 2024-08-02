@@ -7,9 +7,11 @@ import com.yum.yumyums.enums.Busy;
 import com.yum.yumyums.repository.review.ReviewRepository;
 import com.yum.yumyums.repository.seller.MenuRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -60,6 +62,20 @@ public class MenuServiceImpl implements MenuService {
         return reviews.stream()
                 .mapToDouble(Review::getRate)
                 .average();
+    }
+
+    @Override
+    public Page<MenuDTO> getMenusByStoreId(int storeId, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.by("category", "name"));
+        Page<Menu> menuPage = menuRepository.findMenusByStoreIdOrderedByCategory(storeId, pageable);
+
+        List<MenuDTO> menuDTOs = menuPage.getContent().stream()
+                .map(menu -> {
+                    MenuDTO dto = menu.entityToDto();
+                    return dto;
+                })
+                .collect(Collectors.toList());
+        return new PageImpl<>(menuDTOs, menuPage.getPageable(), menuPage.getTotalElements());
     }
 
 }

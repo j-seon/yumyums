@@ -1,6 +1,8 @@
 package com.yum.yumyums.entity.seller;
 
 import com.yum.yumyums.dto.seller.MenuDTO;
+import com.yum.yumyums.entity.Images;
+import com.yum.yumyums.enums.FoodCategory;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,8 +24,9 @@ public class Menu {
     @Column(nullable = false, length = 50)
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 50)
-    private String category;
+    private FoodCategory category;
 
     @Column(columnDefinition = "TEXT")
     private String content;
@@ -35,13 +38,16 @@ public class Menu {
     private int cookingTime;
 
     @Column(nullable = false)
-    private boolean isAlone;
+    private boolean isAlone; //혼밥 가능여부(true = 가능)
 
     @Column(nullable = false)
     private boolean isActive;
 
-    public MenuDTO entityToDto(){
+    @ManyToOne
+    @JoinColumn(name = "images_id")
+    private Images images;
 
+    public MenuDTO entityToDto(){
         MenuDTO menuDTO = new MenuDTO();
         menuDTO.setStoreDTO(this.store.entityToDto());
         menuDTO.setId(this.getId());
@@ -53,8 +59,12 @@ public class Menu {
         menuDTO.setAlone(this.isAlone());
         menuDTO.setActive(this.isActive());
 
+        if (this.images != null) {
+            menuDTO.setImagesDTO(this.images.entityToDto());
+        } else {
+            menuDTO.setImagesDTO(null);
+        }
         return menuDTO;
-
     }
 
 }
