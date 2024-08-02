@@ -18,12 +18,16 @@
             <div class="tab-content">
                 <div id="tab-1" class="tab-pane fade show p-0 active">
                     <div class="row g-4">
+                        <div th:if="${#lists.isEmpty(stores)}" class="col-12 text-center mt-5">
+                            <p>아직 매장이 없습니다.</p>
+                        </div>
                         <div class="col-lg-12">
                             <div class="row d-flex g-4 align-items-stretch">
                                 <div class="col-md-6 col-lg-4 col-xl-3" th:each="store : ${stores}">
                                     <div class="rounded position-relative fruite-item h-100">
-                                        <div class="fruite-img">
-                                            <img src="https://i.namu.wiki/i/Bbq0E9hXYyrXbL4TnIE__vtQ2QwiZ3i40NZSLiX_a6S0ftYCndVZjf4vlruWur4I3Z0o7CZuFrRMl2CKxyk30w.webp" class="img-fluid w-100 rounded-top" alt="">
+                                        <div class="fruite-img w-100 d-flex justify-content-center align-items-center" style="height:300px;">
+                                            <img th:if="${store.imagesDTO != null}" th:src="|/img${store.imagesDTO.imgUrl}|" class="d-block w-100 h-100" style="object-fit:contain;">
+                                            <img th:if="${store.imagesDTO == null}" src="/img/yumyums_default.jpg" class="d-block w-100 h-100" style="object-fit:contain;">
                                         </div>
                                         <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;" th:text="${store.categoryKorName}"/>
                                         <div class="p-4 border border-secondary border-top-0 rounded-bottom">
@@ -41,20 +45,20 @@
 
                             <!--Pagination 시작-->
                             <div class="col-12">
-                                <div class="pagination d-flex justify-content-center mt-5">
-                                    <a th:href="@{/items(page=${currentPage - 1}, size=10)}"
+                                <div class="pagination d-flex justify-content-center mt-5" th:if="${totalPages > 0}">
+                                    <a th:href="@{/stores(page=${currentPage - 1})}"
                                        th:class="${currentPage == 0} ? 'disabled' : ''"
                                        class="rounded"
                                        th:if="${currentPage > 0}">«</a>
                                     <th:block th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
-                                        <a th:href="@{/items(page=${i}, size=10)}"
+                                        <a th:href="@{/stores(page=${i})}"
                                            th:class="${i == currentPage} ? 'active rounded' : 'rounded'"
                                            th:text="${i+1}"
                                         >
                                         </a>
                                     </th:block>
 
-                                    <a th:href="@{/items(page=${currentPage + 1})}"
+                                    <a th:href="@{/stores(page=${currentPage + 1})}"
                                        th:class="${currentPage == totalPages - 1} ? 'disabled' : ''"
                                        class="rounded"
                                        th:if="${currentPage < totalPages - 1}">»</a>

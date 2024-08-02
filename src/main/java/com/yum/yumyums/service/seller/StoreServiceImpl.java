@@ -1,8 +1,11 @@
 package com.yum.yumyums.service.seller;
 
 import com.yum.yumyums.dto.seller.StoreDTO;
+import com.yum.yumyums.entity.Images;
 import com.yum.yumyums.entity.seller.Store;
 import com.yum.yumyums.repository.seller.StoreRepository;
+import com.yum.yumyums.service.ImagesService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -20,6 +23,7 @@ public class StoreServiceImpl implements StoreService {
     private final StoreLikeRepository storeLikeRepository;
 
     private final StoreRepository storeRepository;
+    private final ImagesService imagesService;
 
 	@Override
 	public StoreDTO findByName(String storeName) {
@@ -104,9 +108,12 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
+    @Transactional
     public void save(StoreDTO storeDTO) {
+        Images savedImages = imagesService.saveImage(storeDTO.getImagesDTO());
 
         Store store = storeDTO.dtoToEntity();
+        store.setImages(savedImages);
         storeRepository.save(store);
     }
 
