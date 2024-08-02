@@ -67,7 +67,13 @@ public class Store {
 		storeDTO.setOpenTime(this.openTime);
 		storeDTO.setCloseTime(this.closeTime);
 		storeDTO.setBusy(this.busy);
-		storeDTO.setImagesDTO(this.images.entityToDto());
+		
+		// Null 체크 추가 기존 작업 중인 더미데이터에는 images 값이 없어서 부득이하게 설정
+		if (this.images != null) {
+			storeDTO.setImagesDTO(this.images.entityToDto());
+		} else {
+			storeDTO.setImagesDTO(null); // 또는 기본값을 설정할 수 있습니다.
+		}
 
 		return storeDTO;
 	}
