@@ -21,7 +21,7 @@ public class PartyDTO {
     private RandomType randomType;
     private List<PartyMemberDTO> partyMemberDTOs = new ArrayList<>();
     private LocalDateTime createTime = LocalDateTime.now();
-    private int maxMemberCount = 30;
+    private int maxMemberCount;
 
     private boolean isActive = true; // 활성화된 파티
     private boolean isMatching = false; // 랜덤매칭인 파티
@@ -35,6 +35,7 @@ public class PartyDTO {
         party.setCreateTime(this.createTime);
         party.setActive(isActive);
         party.setMatching(isMatching);
+        party.setMaxMemberCount(maxMemberCount);
 
         // 파티멤버 저장
         List<PartyMember> partyMembers = new ArrayList<>();

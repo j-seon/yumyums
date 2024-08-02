@@ -12,6 +12,7 @@
 		var partyMembersSize = [[${partyDTO.partyMemberCount}]]; // 리스트 크기를 JavaScript 변수로 가져옵니다.
 	</script>
 	<script src="../../js/party/partyDetail.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 </head>
 <body>
 
@@ -73,7 +74,8 @@
 					<div class="position-relative mx-auto mt-5">
 						<span id="join-party-url" class="form-control border-0 w-100 py-3 px-4 rounded-pill text-truncate" th:text="${siteLink + joinPartyKey}"></span>
 						<input type="hidden" name="joinPartyKey" th:value="${joinPartyKey}">
-						<button type="button" class="btn btn-primary border-0 border-secondary py-3 px-4 position-absolute rounded-pill text-white" style="top: 0; right: 0;" onclick="copyUrlToClipboard()" >
+						<!-- 부트스트랩은 data-bs-toggle="modal" data-bs-target="#exampleModal" 이거다 -->
+						<button type="button" class="btn btn-primary border-0 border-secondary py-3 px-4 position-absolute rounded-pill text-white" style="top: 0; right: 0;"  onclick="copyUrlToClipboard()" >
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
 								<path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"/>
 							</svg>
@@ -93,6 +95,26 @@
 	</div>
 </div>
 <!-- Fact Start -->
+
+
+
+<!-- 링크 복사 완료 창 -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				복사가 완료되었습니다!
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- //링크 복사 완료 창 -->
 
 
 </body>

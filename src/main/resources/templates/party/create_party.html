@@ -60,23 +60,23 @@
 									<span th:text="${payType.getKorName()}"></span>
 								</label>
 							</div>
-							<div class="form-check me-3 random">
-								<input class="form-check-input" type="radio" name="pay_type" th:field="*{payType}" value="DOUTCH" id="dutchPayment">
-								<label class="form-check-label" for="dutchPayment">각자결제</label>
+							<div class="form-check me-3 random d-none">
+								<input class="form-check-input" type="radio" name="pay_type" th:field="*{payType}" value="DUTCH" id="DUTCH">
+								<label class="form-check-label" for="DUTCH">각자결제</label>
 							</div>
-							<div class="form-check random">
-								<input class="form-check-input" type="radio" name="pay_type" th:field="*{payType}" value="SPLIT" id="splitPayment">
-								<label class="form-check-label" for="splitPayment">분할결제</label>
+							<div class="form-check random d-none">
+								<input class="form-check-input" type="radio" name="pay_type" th:field="*{payType}" value="SPLIT" id="SPLIT">
+								<label class="form-check-label" for="SPLIT">분할결제</label>
 							</div>
 						</div>
 					</div>
 
-					<div class="party-option-item mb-3 random-type">
+					<div class="party-option-item mb-3 random-type d-none">
 						<label class="form-label">선택방법:</label>
 						<div class="d-flex">
 							<div class="form-check me-3" th:each="randomType : ${randomTypes}">
-								<input class="form-check-input" type="radio" name="random_type" th:field="*{randomType}" th:value="${randomType.name()}" th:id="${randomType.name()}">
-								<label class="form-check-label" th:for="${randomType.name()}">
+								<input class="form-check-input random-type d-none" type="radio" name="random_type" th:field="*{randomType}" th:value="${randomType.name()}" th:id="${randomType.name()}">
+								<label class="form-check-label random-type d-none" th:for="${randomType.name()}">
 									<span th:text="${randomType.getKorName()}"></span>
 								</label>
 							</div>
@@ -89,7 +89,7 @@
 							<select th:field="*{maxMemberCount}" class="form-select me-3 invite">
 								<option th:each="maxMemberCount : ${invitePartyMaxMemberCount}" th:value="${maxMemberCount}" th:text="${maxMemberCount}"></option>
 							</select>
-							<select th:field="*{maxMemberCount}" class="form-select random">
+							<select th:field="*{maxMemberCount}" class="form-select random d-none">
 								<option th:each="maxMemberCount : ${randomPartyMaxMemberCount}" th:value="${maxMemberCount}" th:text="${maxMemberCount}"></option>
 							</select>
 						</div>

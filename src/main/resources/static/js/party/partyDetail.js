@@ -12,14 +12,20 @@
 		document.execCommand('copy'); 			//현재 선택된 텍스트를 클립보드에 복사
 		document.body.removeChild(tempInput); 	//생성한 input 요소 제거
 
-		// 복사 완료 메시지 (선택 사항)
-		alert('링크가 복사되었습니다' + joinPartyUrl);
+
+		Swal.fire({
+		  title: '복사가 완료되었습니다!',
+		  icon: 'success',
+		  confirmButtonColor: '#FFA62F',
+		  confirmButtonText: 'OK'
+		})
 	}
 
 
 
-	$(document).ready(function() {
 
+
+	$(document).ready(function() {
 		// party-leader-id 값을 가져오기
 		var partyLeaderId = document.querySelector('input[name="party-leader-id"]').value;
 		var partyJoinKey = document.querySelector('input[name="joinPartyKey"]').value;

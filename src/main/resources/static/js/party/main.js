@@ -25,10 +25,92 @@
 			method: 'GET',
 			success: function(data) {
 				$('.container').html(data);
+
+				// 이동할 페이지가 파티생성 페이지라면
+				if (targetPage === 'create_party') {
+					initializeFormToggles();
+				}
 			},
 			error: function() {
 				alert('페이지를 로드하는 데 실패했습니다.');
 			}
+		});
+	}
+
+	// create_party로 넘어갈때 시작하는 것
+   function initializeFormToggles() {
+		const inviteOption = document.getElementById('inviteOption');
+		const randomOption = document.getElementById('randomOption');
+		const payTypeRadios = document.querySelectorAll('input[name="payType"]');
+		const randomTypeElements = document.querySelectorAll('.random-type');
+
+		inviteOption.addEventListener('click', () => {
+			// invite 클래스 항목의 d-none 비활성화
+			document.querySelectorAll('.invite').forEach(element => {
+				element.classList.remove('d-none');
+			});
+
+			// random 클래스 항목의 d-none 활성화
+			document.querySelectorAll('.random').forEach(element => {
+				element.classList.add('d-none');
+			});
+
+			// 모든 라디오 버튼 선택 초기화
+			document.querySelectorAll('input[type="radio"]').forEach(radio => {
+				radio.checked = false;
+			});
+
+			// 랜덤 결제 선택방법 d-none 활성화
+			randomTypeElements.forEach(element => {
+				element.classList.add('d-none');
+			});
+
+			inviteOption.checked = true;
+		});
+
+		randomOption.addEventListener('click', () => {
+			// random 클래스 항목의 d-none 비활성화
+			document.querySelectorAll('.random').forEach(element => {
+				element.classList.remove('d-none');
+			});
+
+			// invite 클래스 항목의 d-none 활성화
+			document.querySelectorAll('.invite').forEach(element => {
+				element.classList.add('d-none');
+			});
+
+			// 모든 선택 초기화
+			document.querySelectorAll('input[type="radio"]').forEach(radio => {
+				radio.checked = false;
+			});
+
+			// 랜덤 결제 선택방법 d-none 활성화
+			randomTypeElements.forEach(element => {
+				element.classList.add('d-none');
+			});
+
+			randomOption.checked = true;
+		});
+
+		payTypeRadios.forEach(radio => {
+			radio.addEventListener('change', (event) => {
+				if (event.target.id === 'RANDOM_ONCE') {
+					randomTypeElements.forEach(element => {
+						element.classList.remove('d-none');
+					});
+				} else {
+					randomTypeElements.forEach(element => {
+						element.classList.add('d-none');
+					});
+				}
+
+				// random-type 클래스의 모든 선택 초기화
+				randomTypeElements.forEach(element => {
+					element.querySelectorAll('input[type="radio"]').forEach(input => {
+						input.checked = false;
+					});
+				});
+			});
 		});
 	}
 

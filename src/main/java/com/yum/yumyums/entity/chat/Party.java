@@ -79,6 +79,7 @@ public class Party {
 		party.setPayType(partyDTO.getPayType());
 		party.setRandomType(partyDTO.getRandomType());
 		party.setActive(true);
+		party.setMaxMemberCount(partyDTO.getMaxMemberCount());
 
 		return party;
 	}
