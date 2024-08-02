@@ -1,20 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>파티 만들기</title>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script>
-		var  loginUserId = "[[${session.loginUser.memberId}]]";
 
-		// 파티멤버의 인원수 가져오기
-		var partyMembersSize = [[${partyDTO.partyMemberCount}]]; // 리스트 크기를 JavaScript 변수로 가져옵니다.
-	</script>
-	<script src="../../js/party/partyDetail.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-</head>
-<body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+	var  loginUserId = "[[${session.loginUser.memberId}]]";
+
+	// 파티멤버의 인원수 가져오기
+	var partyMembersSize = [[${partyDTO.partyMemberCount}]]; // 리스트 크기를 JavaScript 변수로 가져옵니다.
+</script>
+<script src="../../js/party/partyDetail.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
 
 
@@ -115,7 +109,3 @@
 	</div>
 </div>
 <!-- //링크 복사 완료 창 -->
-
-
-</body>
-</html>

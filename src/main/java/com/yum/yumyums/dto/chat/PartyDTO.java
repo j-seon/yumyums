@@ -29,13 +29,12 @@ public class PartyDTO {
 
 
     public Party dtoToEntity() {
-        Party party = Party.createParty(id, storeDTO.dtoToEntity(), payType);
+        Party party = Party.createParty(id, storeDTO.dtoToEntity(), payType, maxMemberCount);
         party.setRandomType(this.randomType);
         party.setActive(this.isActive);
         party.setCreateTime(this.createTime);
         party.setActive(isActive);
         party.setMatching(isMatching);
-        party.setMaxMemberCount(maxMemberCount);
 
         // 파티멤버 저장
         List<PartyMember> partyMembers = new ArrayList<>();

@@ -53,6 +53,7 @@ public class Party {
 		partyDTO.setPayType(payType);
 		partyDTO.setRandomType(randomType);
 		partyDTO.setCreateTime(createTime);
+		partyDTO.setMaxMemberCount(maxMemberCount);
 
 		partyDTO.setActive(isActive);
 		partyDTO.setMatching(isMatching);
@@ -61,13 +62,14 @@ public class Party {
 	}
 
 	// 생성 메소드
-	public static Party createParty(String partyId, Store store, PayType payType) {
+	public static Party createParty(String partyId, Store store, PayType payType, int maxMemberCount) {
 		Party party = new Party();
 		party.setId(partyId);
 		party.setStore(store);
 		party.setPayType(payType);
 		party.setActive(true);
 		party.setCreateTime(LocalDateTime.now());
+		party.setMaxMemberCount(maxMemberCount);
 
 		return party;
 	}

@@ -40,7 +40,7 @@
 					<div class="party-option-item">
 						<span>결제방식: </span>
 						<div class="radio-container">
-							<input type="radio" name="pay_type" th:field="*{payType}" value="DOUTCH">
+							<input type="radio" name="pay_type" th:field="*{payType}" value="DUTCH">
 							<span>각자결제</span>
 							<input type="radio" name="pay_type" th:field="*{payType}" value="SPLIT">
 							<span>분할결제</span>
@@ -55,7 +55,7 @@
 						</select>
 					</div>
 
-					<button type="submit">매칭시작</button>
+					<button type="submit" id="submit-btn">매칭시작</button>
 				</div>
 				<!-- //매칭 옵션 설정 -->
 			</form>
