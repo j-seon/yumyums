@@ -24,7 +24,7 @@ public class Review {
     private OrdersDetail ordersDetail;
 
     @ManyToOne
-    @JoinColumn(name = "orders_member_id", nullable = false)
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
     @ManyToOne

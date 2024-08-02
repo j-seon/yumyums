@@ -2,6 +2,7 @@ package com.yum.yumyums.controller;
 
 
 import com.yum.yumyums.dto.StationDTO;
+import com.yum.yumyums.service.DashBoardService;
 import com.yum.yumyums.service.StationService;
 import com.yum.yumyums.dto.seller.StoreDTO;
 import com.yum.yumyums.service.seller.StoreService;
@@ -10,7 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,6 +22,7 @@ public class APIController {
     private final StationService stationService;
     private final SearchService searchService;
     private final StoreService storeService;
+    private final DashBoardService dashBoardService;
 
     @GetMapping("/stations")
     @ResponseBody
@@ -59,6 +63,26 @@ public class APIController {
         }
 
         return null;
+    }
+
+    @GetMapping("/dailySums")
+    @ResponseBody
+    public List<Map<String,Object>> dailySums(@RequestParam("storeId") String storeId) {
+        int intStoreId = Integer.parseInt(storeId);
+        return dashBoardService.findDailySumsByStoreId(intStoreId);
+    }
+
+    @GetMapping("/monthlySums")
+    @ResponseBody
+    public List<Map<String,Object>> monthlySums(@RequestParam("storeId") String storeId) {
+        int intStoreId = Integer.parseInt(storeId);
+        return dashBoardService.findMonthlySumsByStoreId(intStoreId);
+    }
+    @GetMapping("/yearlySums")
+    @ResponseBody
+    public List<Map<String,Object>> yearlySums(@RequestParam("storeId") String storeId) {
+        int intStoreId = Integer.parseInt(storeId);
+        return dashBoardService.findYearlySumsByStoreId(intStoreId);
     }
 
 }

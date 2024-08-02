@@ -15,11 +15,12 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
 
     List<Review> findByCreateTimeAfter(LocalDateTime createTime);
 
-    // 오늘 날짜를 기준으로 rate의 평균값을 계산하는 쿼리
+    // 금일 날짜를 기준으로 rate의 평균값을 계산하는 쿼리
     @Query(value="SELECT AVG(r.rate) FROM Review r where r.store_id = :storeId", nativeQuery = true)
     Double findAverageByStoreId(@Param("storeId") int storeId);
 
-    // 오늘 이전 날짜를 기준으로 rate의 평균값을 계산하는 쿼리
+    // 금일 이전 날짜를 기준으로 rate의 평균값을 계산하는 쿼리
     @Query(value = "SELECT AVG(rate) FROM review WHERE create_time < CURDATE() and store_id = :storeId", nativeQuery = true)
     Double findAverageRateBeforeTodayByStoreId(@Param("storeId") int storeId);
+
 }

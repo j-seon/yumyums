@@ -45,7 +45,8 @@
 <body>
     <th:block th:replace="~{|${templateData.viewPath}|}"></th:block>
 </body>
-
+<!--   jquery File   -->
+<script src="../../js/common/jquery.js"></script>
 <!--   Core JS Files   -->
 <script src="../../dashboard/assets/js/core/jquery-3.7.1.min.js"></script>
 <script src="../../dashboard/assets/js/core/popper.min.js"></script>
@@ -82,6 +83,7 @@
 <!-- Kaiadmin DEMO methods, don't include it in your project! -->
 <script src="../../dashboard/assets/js/setting-demo.js"></script>
 <script src="../../dashboard/assets/js/demo.js"></script>
+
 <script>
     $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
       type: "line",

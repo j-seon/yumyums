@@ -22,7 +22,7 @@ public class Faq {
     @Column(length = 50)
     private String category;
 
-    public FaqDTO EntityToDto() {
+    public FaqDTO entityToDto() {
 
         FaqDTO faqDTO = new FaqDTO();
         faqDTO.setId(this.getId());

@@ -1,13 +1,14 @@
 package com.yum.yumyums.entity.orders;
 
+import com.yum.yumyums.dto.orders.OrdersDetailDTO;
 import com.yum.yumyums.entity.seller.Menu;
 import com.yum.yumyums.entity.seller.Store;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.Data;
 
 @Entity
 @Table(name = "orders_detail")
-@Getter
+@Data
 public class OrdersDetail {
 
     //상세ID
@@ -28,7 +29,7 @@ public class OrdersDetail {
     //상점 ID
     @ManyToOne
     @JoinColumn(name = "store_id", nullable = false)
-    private Store Store;
+    private Store store;
 
     //메뉴
     @Column(name = "menu_name",length = 50)
@@ -41,4 +42,17 @@ public class OrdersDetail {
     //구매한개수
     @Column(name="menu_count")
     private int menuCount;
+
+    public OrdersDetailDTO entityToDto() {
+        OrdersDetailDTO ordersDetailDTO = new OrdersDetailDTO();
+
+        ordersDetailDTO.setId(this.getId());
+        ordersDetailDTO.setMenuDTO(this.getMenu().entityToDto());
+        ordersDetailDTO.setStoreDTO(this.getStore().entityToDto());
+        ordersDetailDTO.setMenuName(this.getMenuName());
+        ordersDetailDTO.setMenuPrice(this.getMenuPrice());
+        ordersDetailDTO.setMenuCount(this.getMenuCount());
+
+        return ordersDetailDTO;
+    }
 }
