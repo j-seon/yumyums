@@ -123,7 +123,7 @@ public class StoreController extends ImageDefaultUrl {
         SellerDTO sellerDTO = (SellerDTO)session.getAttribute("loginUser");
 
         if(!imgFile.isEmpty()){
-            imgUrl = "/seller/"+sellerDTO.getSellerId()+"/"+imgFile.getOriginalFilename();
+            imgUrl = "seller/"+sellerDTO.getSellerId()+"/"+imgFile.getOriginalFilename();
         }
 
         String savedImgUrl = imagesService.uploadImage(imgFile, imgUrl);

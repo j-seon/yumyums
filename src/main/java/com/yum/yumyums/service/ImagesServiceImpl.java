@@ -12,7 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import static com.yum.yumyums.util.ImageDefaultUrl.DEFAULT_IMAGE_URL;
+import static com.yum.yumyums.util.ImageDefaultUrl.DEFAULT_IMAGE_FILENAME;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +28,7 @@ public class ImagesServiceImpl implements ImagesService{
     @Override
     public String uploadImage(MultipartFile imgFile, String imgUrl) {
         if(imgUrl == null){
-            return DEFAULT_IMAGE_URL;
+            return DEFAULT_IMAGE_FILENAME;
         }
 
         // -----이미지 업로드 시작-----
