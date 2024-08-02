@@ -18,6 +18,9 @@
             <div class="tab-content">
                 <div id="tab-1" class="tab-pane fade show p-0 active">
                     <div class="row g-4">
+                        <div th:if="${#lists.isEmpty(stores)}" class="col-12 text-center mt-5">
+                            <p>아직 매장이 없습니다.</p>
+                        </div>
                         <div class="col-lg-12">
                             <div class="row d-flex g-4 align-items-stretch">
                                 <div class="col-md-6 col-lg-4 col-xl-3" th:each="store : ${stores}">
@@ -41,7 +44,7 @@
 
                             <!--Pagination 시작-->
                             <div class="col-12">
-                                <div class="pagination d-flex justify-content-center mt-5">
+                                <div class="pagination d-flex justify-content-center mt-5" th:if="${totalPages > 0}">
                                     <a th:href="@{/stores(page=${currentPage - 1})}"
                                        th:class="${currentPage == 0} ? 'disabled' : ''"
                                        class="rounded"

@@ -137,5 +137,5 @@ public class StoreController extends ImageDefaultUrl {
         return "redirect:/stores";
     }
 
-    //TODO 주소입력시 지도API 활용, 이미지첨부 기능 만들어서 모듈화하기.
+    //TODO 주소입력시 지도API 활용.
 }
