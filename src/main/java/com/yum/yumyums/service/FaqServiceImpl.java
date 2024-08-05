@@ -20,7 +20,7 @@ public class FaqServiceImpl implements FaqService {
         List<FaqDTO> returnDto =  new ArrayList<>();;
         List<Faq> findAll = faqRepository.findAll();
         for (Faq findEntity :  findAll) {
-            returnDto.add(findEntity.EntityToDto());
+            returnDto.add(findEntity.entityToDto());
         }
         return returnDto;
     }
@@ -36,7 +36,7 @@ public class FaqServiceImpl implements FaqService {
 
         List<Faq> findAll = faqRepository.findByCategory(category);
         for (Faq findEntity :  findAll) {
-            returnDto.add(findEntity.EntityToDto());
+            returnDto.add(findEntity.entityToDto());
         }
         return returnDto;
     }

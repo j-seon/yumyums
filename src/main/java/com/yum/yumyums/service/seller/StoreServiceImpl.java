@@ -1,8 +1,11 @@
 package com.yum.yumyums.service.seller;
 
 import com.yum.yumyums.dto.seller.StoreDTO;
+import com.yum.yumyums.entity.Images;
 import com.yum.yumyums.entity.seller.Store;
 import com.yum.yumyums.repository.seller.StoreRepository;
+import com.yum.yumyums.service.ImagesService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -20,10 +23,21 @@ public class StoreServiceImpl implements StoreService {
     private final StoreLikeRepository storeLikeRepository;
 
     private final StoreRepository storeRepository;
+    private final ImagesService imagesService;
 
 	@Override
 	public StoreDTO findByName(String storeName) {
+        // storeName이 null이거나 빈 문자열일 경우 예외 처리
+        if (storeName == null || storeName.trim().isEmpty()) {
+            return null; // 또는 예외를 던질 수 있음
+        }
+
 		Store store = storeRepository.findByName(storeName);
+
+        // Store이 null일 경우 null 반환
+        if (store == null) {
+            return null;
+        }
 		return store.entityToDto();
 	}
 
@@ -91,6 +105,16 @@ public class StoreServiceImpl implements StoreService {
             store.add(s.entityToDto());
         }
         return store;
+    }
+
+    @Override
+    @Transactional
+    public void save(StoreDTO storeDTO) {
+        Images savedImages = imagesService.saveImage(storeDTO.getImagesDTO());
+
+        Store store = storeDTO.dtoToEntity();
+        store.setImages(savedImages);
+        storeRepository.save(store);
     }
 
 }

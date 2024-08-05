@@ -1,0 +1,16 @@
+.busy-buttons{
+   width: 80px;
+
+}
+.font-size-14{
+    font-size: 14px;
+
+}
+.float-left{
+    float:left;
+}
+.order-detail-list{
+    height :229px;
+    overflow: scroll;
+
+}

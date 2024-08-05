@@ -1,7 +1,9 @@
 package com.yum.yumyums.dto.seller;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.yum.yumyums.dto.ImagesDTO;
 import com.yum.yumyums.dto.chat.PartyDTO;
+import com.yum.yumyums.entity.Images;
 import com.yum.yumyums.entity.chat.PartyMember;
 import com.yum.yumyums.entity.seller.Seller;
 import com.yum.yumyums.entity.seller.Store;
@@ -26,11 +28,13 @@ public class StoreDTO {
     private int closeTime;
     private Busy busy = Busy.CROWDED;
     private int likes;
+    private ImagesDTO imagesDTO;
 
     public Store dtoToEntity() {
         Store store = new Store();
         store.setId(storeId);
         store.setSeller(Seller.toSaveEntity(sellerDTO));
+        store.setPassword(password);
         store.setName(name);
         store.setAddress(address);
         store.setCategory(category);
@@ -38,7 +42,7 @@ public class StoreDTO {
         store.setOpenTime(openTime);
         store.setCloseTime(closeTime);
         store.setBusy(busy);
-
+        store.setImages(imagesDTO.dtoToEntity());
         return store;
     }
 
