@@ -5,6 +5,8 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
+import static com.yum.yumyums.util.ImageDefaultUrl.DEFAULT_IMAGE_FILENAME;
+
 @Data
 public class ImagesDTO {
     private Long imgId;
@@ -13,6 +15,9 @@ public class ImagesDTO {
 
     public Images dtoToEntity() {
         Images image = new Images();
+        if(this.imgUrl == null) {
+            this.imgUrl = DEFAULT_IMAGE_FILENAME;
+        }
         image.setImgUrl(this.imgUrl);
         return image;
     }
