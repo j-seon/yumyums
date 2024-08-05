@@ -42,7 +42,9 @@ public class StoreDTO {
         store.setOpenTime(openTime);
         store.setCloseTime(closeTime);
         store.setBusy(busy);
-        store.setImages(imagesDTO.dtoToEntity());
+        if(imagesDTO != null){
+            store.setImages(imagesDTO.dtoToEntity());
+        }
         return store;
     }
 
