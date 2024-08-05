@@ -10,6 +10,6 @@ import java.util.List;
 public interface ReviewRepository extends JpaRepository<Review, Integer> {
 
     @Query("SELECT r FROM Review r JOIN r.ordersDetail od JOIN od.menu m WHERE m.id = :menuId")
-    List<Review> findByMenuId(@Param("menuId") int menuId);
+    List<Review> findByMenuId(int menuId);
 
 }

@@ -8,5 +8,5 @@ import org.springframework.data.repository.query.Param;
 
 public interface StoreLikeRepository extends JpaRepository<StoreLike, Integer> {
     @Query("SELECT COUNT(sl) FROM StoreLike sl WHERE sl.store.id = :storeId")
-    int countLikesByStoreId(@Param("storeId") int storeId);
+    int countLikesByStoreId(int storeId);
 }

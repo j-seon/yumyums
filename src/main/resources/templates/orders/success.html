@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>주문 성공</title>
+
+
+</head>
+<body>
+<h1>주문 성공</h1>
+<p><span th:text="${order.memberDTO.name}"></span>님!</p>
+
+
+<h2>주문 상세보기</h2>
+<p>가게 <span th:text="${order.storeDTO.name}"></span></p>
+<p>대기번호 <span th:text="${order.waitingNum}"></span></p>
+<p>결제방식 <span th:text="${order.paymentMethod}"></span></p>
+<p>주문시간 <span th:text="${formattedOrderTime}"></span></p>
+
+<h3>예상 대기시간</h3>
+
+//뒤로가기 막기
+
+</body>
+</html>
