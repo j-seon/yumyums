@@ -56,5 +56,17 @@ public class Menu {
         return menuDTO;
 
     }
+    public static Menu dtoToEntity(MenuDTO menuDTO) {
+        Menu menu = new Menu();
+        menu.setId(menuDTO.getId());
+        menu.setName(menuDTO.getName());
+        menu.setCategory(menuDTO.getCategory());
+        menu.setContent(menuDTO.getContent());
+        menu.setPrice(menuDTO.getPrice());
+        menu.setCookingTime(menuDTO.getCookingTime());
+        menu.setAlone(menuDTO.isAlone());
+        menu.setActive(menuDTO.isActive());
+        return menu;
+    }
 
 }
