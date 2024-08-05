@@ -10,8 +10,6 @@ import com.yum.yumyums.service.chat.PartyService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -59,6 +57,12 @@ public class PartyController {
 				templateData.setUrl("/party/" + encryptedPartyId);
 				return "inc/redirect"; // 해당 파티 상세페이지로 이동
 				// ajax를 통해서 오기때문에 리다이렉트 페이지로 이동시켜 URL 이동
+			}
+
+			//파티 매칭 페이지로 이동한다면
+			if(targetPage.equals("party_match")) {
+				templateData.setUrl("/party/match");
+				return "inc/redirect"; // 파티 매칭 url로 이동
 			}
 
 			//파티 생성 페이지로 이동한다면
