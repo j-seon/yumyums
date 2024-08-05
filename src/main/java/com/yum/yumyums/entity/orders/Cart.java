@@ -1,14 +1,15 @@
 package com.yum.yumyums.entity.orders;
 
+import com.yum.yumyums.dto.orders.CartDTO;
 import com.yum.yumyums.entity.user.Member;
 import com.yum.yumyums.entity.seller.Menu;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Table(name = "cart")
-@Getter
+@Data
 public class Cart {
 
     @Id
@@ -27,5 +28,23 @@ public class Cart {
     @ColumnDefault("1")
     @Column(nullable = false)
     private int menuCount;
+
+    public CartDTO entityToDto(){
+        CartDTO cartDTO = new CartDTO();
+        cartDTO.setId(this.getId());
+        cartDTO.setMemberDTO(this.member.entityToDto());
+        cartDTO.setMenuDTO(this.menu.entityToDto());
+        cartDTO.setMenuCount(this.getMenuCount());
+        return cartDTO;
+    }
+
+    public static Cart dtoToEntity(CartDTO cartDTO) {
+        Cart cart = new Cart();
+        cart.setId(cartDTO.getId());
+        cart.setMember(Member.dtoToEntity(cartDTO.getMemberDTO()));
+        cart.setMenu(Menu.dtoToEntity(cartDTO.getMenuDTO()));
+        cart.setMenuCount(cartDTO.getMenuCount());
+        return cart;
+    }
 
 }

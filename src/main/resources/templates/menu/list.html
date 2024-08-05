@@ -1,6 +1,10 @@
-
 <body>
 <h2>메뉴 보기</h2>
+<div id="cart-link">
+    <a href="/cart">장바구니로 이동</a>
+    <span id="cart-count">장바구니에 0개의 상품이 있습니다.</span>
+</div>
+
 <form th:action="@{/menu}" method="get">
     <div>
         <label>분류:</label>
@@ -28,14 +32,15 @@
         <option value="busy">혼잡도순</option>
         <option value="likes">좋아요순</option>
     </select>
-
     <button type="submit">조회</button>
 </form>
+
 <h2>결과 출력</h2>
 <table>
     <thead>
     <tr>
         <th>이름</th>
+        <th>가게 이름</th>
         <th>분류</th>
         <th>내용</th>
         <th>가격</th>
@@ -44,11 +49,14 @@
         <th>혼밥가능여부</th>
         <th>좋아요수</th>
         <th>메뉴 평점</th>
+        <th>수량</th>
+        <th>장바구니</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="menu : ${menus}">
+    <tr th:each="menu : ${menus}" th:attr="data-menu-id=${menu.id}">
         <td><a th:href="@{/menu/{id}(id=${menu.id})}" th:text="${menu.name}"></a></td>
+        <td th:text="${menu.storeDTO.name}"></td>
         <td th:text="${menu.storeDTO.categoryKorName}"></td>
         <td th:text="${menu.content}"></td>
         <td th:text="${menu.price}"></td>
@@ -57,9 +65,59 @@
         <td th:text="${menu.isAlone ? 'Yes' : 'No'}"></td>
         <td th:text="${likeCounts[menu.storeDTO.storeId]}"></td>
         <td th:text="${averageRatings[menu.id]}"></td>
+        <td>
+            <input type="number" name="quantity" min="1" value="1"/>
+        </td>
+        <td>
+            <button th:onclick="'addToCart(' + ${menu.id} + ')'" >담기</button>
+        </td>
     </tr>
     </tbody>
-
 </table>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+    function addToCart(menuId) {
+        const row = $("tr[data-menu-id=" + menuId + "]");
+        const quantity = row.find('input[name="quantity"]').val();
+
+        $.ajax({
+            url: "/cart/add",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                menuDTO: {id: menuId},
+                menuCount: quantity
+            }),
+            success: function (response) {
+                alert(response);
+                updateCartCount();
+            },
+            error: function (xhr) {
+                if (xhr.status === 400) {
+                    alert("같은 가게의 메뉴만 담을 수 있습니다");
+                } else if (xhr.status === 401) {
+                    alert("로그인 해주세요");
+                    window.location.href = "/login";
+                }else {
+                    alert("오류가 발생했습니다 다시 시도해 주세요");
+                }
+            }
+        });
+    }
+
+    function updateCartCount() {
+        $.get("/cart/count", function (count) {
+            $("#cart-count").text("장바구니에 " + count + "개의 메뉴가 담겨 있습니다");
+        });
+    }
+
+    $(document).ready(function () {
+        updateCartCount();
+    });
+</script>
 </body>
 

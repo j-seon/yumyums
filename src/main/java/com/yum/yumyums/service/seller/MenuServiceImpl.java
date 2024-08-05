@@ -18,15 +18,22 @@ public class MenuServiceImpl implements MenuService {
     private final MenuRepository menuRepository;
     private final ReviewRepository reviewRepository;
 
+    public List<MenuDTO> getMenusByStoreId(int storeId) {
+        List<MenuDTO> returnDto = new ArrayList<>();
+        List<Menu> findAll = menuRepository.findByStoreId(storeId);
+
+        for (Menu findEntity : findAll) {
+            returnDto.add(findEntity.entityToDto());
+        }
+
+        return returnDto;
+    }
+
+
     public Optional<MenuDTO> findById(int id) {
         return menuRepository.findById(id)
                 .map(Menu::entityToDto);
     }
-
-    /*  @Override
-    public List<Menu> getAllActiveMenus() {
-        return menuRepository.findByIsActiveTrue();
-    } */
 
 
     //필터 선택후 정렬

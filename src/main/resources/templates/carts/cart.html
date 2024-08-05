@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>장바구니</title>
+    <script>
+        function calculateTotal() {
+            var checkboxes = document.getElementsByName("cartItemCheckbox");
+            var total = 0;
+
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    var price = parseFloat(checkboxes[i].closest("tr").querySelector("td:nth-child(7)").innerText);
+                    total += price;
+                }
+            }
+
+            document.getElementById("totalPrice").innerText = total.toFixed(2);
+        }
+    </script>
+</head>
+<body>
+<h2>장바구니</h2>
+<table>
+    <thead>
+    <tr>
+        <th>선택</th>
+        <th>메뉴이름</th>
+        <th>가게</th>
+        <th>내용</th>
+        <th>가격</th>
+        <th>수량</th>
+        <th>합계</th>
+        <th>수량 수정</th>
+        <th>삭제</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="cartItem : ${cartItems}">
+        <td>
+            <input type="checkbox" name="cartItemCheckbox" onchange="calculateTotal()"/>
+        </td>
+        <td th:text="${cartItem.menuDTO.name}"></td>
+        <td th:text="${cartItem.menuDTO.storeDTO.name}"></td>
+        <td th:text="${cartItem.menuDTO.content}"></td>
+        <td th:text="${cartItem.menuDTO.price}"></td>
+        <td th:text="${cartItem.menuCount}"></td>
+        <td th:text="${cartItem.menuDTO.price * cartItem.menuCount}"></td>
+        <td>
+            <form th:action="@{/cart/update}" method="post">
+                <input type="hidden" name="menuId" th:value="${cartItem.menuDTO.id}"/>
+                <input type="number" name="menuCount" min="1" th:value="${cartItem.menuCount}"/>
+                <button type="submit">수량 수정</button>
+            </form>
+        </td>
+        <td>
+            <form th:action="@{/cart/remove}" method="post">
+                <input type="hidden" name="menuId" th:value="${cartItem.menuDTO.id}"/>
+                <button type="submit">삭제</button>
+            </form>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="7" style="text-align: right;">총 합계:</td>
+        <td colspan="2" id="totalPrice">0.00</td>
+    </tr>
+    </tbody>
+</table>
+<div>
+    <a th:href="@{/menu}"><button>처음으로</button></a>
+
+    <form th:action="@{/orders/checkout}" method="get">
+        <button type="submit">주문하기</button>
+    </form>
+</div>
+</body>
+</html>

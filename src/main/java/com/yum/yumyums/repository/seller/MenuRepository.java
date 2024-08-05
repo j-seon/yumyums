@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface MenuRepository extends JpaRepository<Menu, Integer> {
 
-        //List<Menu> findByIsActiveTrue();
+        List<Menu> findByStoreId(int storeId);
 
         @Query("SELECT m FROM Menu m WHERE m.isActive = true " +
                 "AND (:category IS NULL OR m.category = :category) " +
@@ -19,8 +19,8 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
                 "(m.price > 20000 AND :priceRange = 'above_20000')) " +
                 "AND (:isAlone IS NULL OR m.isAlone = :isAlone)")
         List<Menu> findAllByFilters(@Param("category") String category,
-                                 @Param("priceRange") String priceRange,
-                                 @Param("isAlone") Boolean isAlone);
+                                    @Param("priceRange") String priceRange,
+                                    @Param("isAlone") Boolean isAlone);
 
         @Query("SELECT m FROM Menu m " +
                 "LEFT JOIN m.store s " +
@@ -35,8 +35,8 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
                 "GROUP BY m.id " +
                 "ORDER BY COUNT(sl.id) DESC")
         List<Menu> findAllByFiltersAndSortByLikes(@Param("category") String category,
-                                               @Param("priceRange") String priceRange,
-                                               @Param("isAlone") Boolean isAlone);
+                                                  @Param("priceRange") String priceRange,
+                                                  @Param("isAlone") Boolean isAlone);
 
         @Query("SELECT m FROM Menu m JOIN m.store s ORDER BY " +
                 "CASE s.busy " +
