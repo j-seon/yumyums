@@ -12,43 +12,43 @@
 		document.execCommand('copy'); 			//현재 선택된 텍스트를 클립보드에 복사
 		document.body.removeChild(tempInput); 	//생성한 input 요소 제거
 
-		// 복사 완료 메시지 (선택 사항)
-		alert('링크가 복사되었습니다' + joinPartyUrl);
+
+		Swal.fire({
+		  title: '복사가 완료되었습니다!',
+		  icon: 'success',
+		  confirmButtonColor: '#FFA62F',
+		  confirmButtonText: 'OK'
+		})
 	}
 
 
 
-	$(document).ready(function() {
 
-		// party-leader-id 값을 가져옵니다.
+
+	$(document).ready(function() {
+		// party-leader-id 값을 가져오기
 		var partyLeaderId = document.querySelector('input[name="party-leader-id"]').value;
 		var partyJoinKey = document.querySelector('input[name="joinPartyKey"]').value;
 
-		// 버튼을 추가할 div 요소를 선택합니다.
-		var buttonContainer = document.querySelector('.party-button');
+		// 버튼을 추가할 div 요소를 선택
+		var buttonContainer = document.querySelector('.store-container');
 
-		// 조건에 따라 버튼을 생성합니다.
+		// 파티 삭제 버튼 생성
+		var leaveButton = document.createElement('input');
+		leaveButton.type = 'button';
+		leaveButton.className = 'm-2 btn btn-sm btn-plus bg-light border';
+		leaveButton.onclick = function() {
+			leaveParty(partyJoinKey); // 파티 삭제 함수 호출
+		};
+
+		// 현재 유저가 파티장이면서, 인원이 혼자라면
 		if (partyLeaderId === loginUserId && partyMembersSize <= 1) {
-			// 파티 삭제 버튼 생성
-			var deleteButton = document.createElement('input');
-			deleteButton.type = 'button';
-			deleteButton.value = '파티 삭제';
-			deleteButton.onclick = function() {
-				leaveParty(partyJoinKey); // 파티 삭제 함수 호출
-				alert("파티 삭제지롱")
-			};
-			buttonContainer.appendChild(deleteButton); // 버튼을 div에 추가
-		} else {
-			// 파티 탈퇴 버튼 생성
-			var leaveButton = document.createElement('input');
-			leaveButton.type = 'button';
+			leaveButton.value = '파티 삭제';
+		} else { // 파티장이 아니거나 파티가 여러명이라면
 			leaveButton.value = '파티 탈퇴';
-			leaveButton.onclick = function() {
-				leaveParty(partyJoinKey); // 파티 탈퇴 함수 호출
-				alert("파티 탈퇴지롱")
-			};
-			buttonContainer.appendChild(leaveButton); // 버튼을 div에 추가
 		}
+
+		buttonContainer.appendChild(leaveButton); // 버튼을 div에 추가
 	});
 
     function leaveParty(partyJoinKey) {

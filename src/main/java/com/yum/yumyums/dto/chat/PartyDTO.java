@@ -19,17 +19,22 @@ public class PartyDTO {
     private StoreDTO storeDTO = null;
     private PayType payType = null;
     private RandomType randomType;
-    private boolean isActive = true;
     private List<PartyMemberDTO> partyMemberDTOs = new ArrayList<>();
     private LocalDateTime createTime = LocalDateTime.now();
+    private int maxMemberCount;
+
+    private boolean isActive = true; // 활성화된 파티
+    private boolean isMatching = false; // 랜덤매칭인 파티
 
 
 
     public Party dtoToEntity() {
-        Party party = Party.createParty(id, storeDTO.dtoToEntity(), payType);
+        Party party = Party.createParty(id, storeDTO.dtoToEntity(), payType, maxMemberCount);
         party.setRandomType(this.randomType);
         party.setActive(this.isActive);
         party.setCreateTime(this.createTime);
+        party.setActive(isActive);
+        party.setMatching(isMatching);
 
         // 파티멤버 저장
         List<PartyMember> partyMembers = new ArrayList<>();
