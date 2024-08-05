@@ -16,6 +16,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import static com.yum.yumyums.util.SessionUtil.*;
 
 
@@ -66,6 +70,13 @@ public class PartyController {
 				// 페이지에 값을 띄우기위한 이넘 값을 모델에 추가
 				model.addAttribute("payTypes", PayType.values());
 				model.addAttribute("randomTypes", RandomType.values());
+
+				// 각 파티의 종류별 최대 인원을 생성 후 저장
+				List<Integer> invitePartyMaxMemberCount = IntStream.rangeClosed(2, 30).boxed().collect(Collectors.toList());
+				List<Integer> randomPartyMaxMemberCount = IntStream.rangeClosed(2, 4).boxed().collect(Collectors.toList());
+
+				model.addAttribute("invitePartyMaxMemberCount", invitePartyMaxMemberCount);
+				model.addAttribute("randomPartyMaxMemberCount", randomPartyMaxMemberCount);
 			}
 
 			//페이지 이동
@@ -183,6 +194,11 @@ public class PartyController {
 		}
 
 		//== 비즈니스 로직 ==//
+		// 파티 초대를 할 수 없는 상황이라면 (최대 인원 초과)
+		if (partyService.isPartyMemberFull(encryptedPartyId)) {
+			return "파티 인원이 가득 찼습니다.";
+		}
+
 		partyService.addMemberToParty(encryptedPartyId, memberDTO, false);
 		return "redirect:/party/" + encryptedPartyId; //파티 조회 페이지로 이동
 	}

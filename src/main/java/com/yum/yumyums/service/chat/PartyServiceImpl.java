@@ -161,9 +161,11 @@ public class PartyServiceImpl implements PartyService {
 	public PartyDTO findParty(String encryptedPartyId) {
 		//복호화
 		String partyId = getPartyIdByInviteUrlParam(encryptedPartyId);
+		System.out.println("복호화된 partyId : " + partyId);
 
 		//파티찾기
 		PartyDTO partyDTO = partyRepository.findById(partyId).get().entityToDto();
+		System.out.println("찾아온 PartyDTO : " + partyDTO);
 
 		//파티멤버 찾아넣기
 		List<PartyMember> partyMemberList = partyMemberRepository.findAllByPartyId(partyDTO.getId());
@@ -211,4 +213,24 @@ public class PartyServiceImpl implements PartyService {
 		String partyId = getPartyIdByInviteUrlParam(encryptedPartyId);
 		return partyMemberRepository.existsActivePartyWithLeader(partyId, memberDTO.getMemberId());
 	}
+
+	// [검증] 파티 초대가 가능한 상태인지 확인 (파티 인원수 조회)
+	@Override
+	public boolean isPartyMemberFull(String encryptedPartyId) {
+		//파티 정보값 DB에서 불러오기
+		System.out.println("지금 파티아이디 : " + encryptedPartyId);
+		PartyDTO partyDTO = findParty(encryptedPartyId);
+		int maxPartyMemberCount = partyDTO.getMaxMemberCount();
+		int nowPartyMemberCount = partyMemberRepository.countByPartyId(partyDTO.getId());
+
+		System.out.println("maxPartyMemberCount: " + maxPartyMemberCount);
+		System.out.println("maxPartyMemberCount: " + maxPartyMemberCount);
+
+		// 파티가 가득찼다면
+		if (nowPartyMemberCount + 1 > maxPartyMemberCount) {
+			return true;
+		}
+		return false;
+	}
+
 }

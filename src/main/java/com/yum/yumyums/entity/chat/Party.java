@@ -5,15 +5,10 @@ import com.yum.yumyums.enums.PayType;
 import com.yum.yumyums.entity.seller.Store;
 import com.yum.yumyums.enums.RandomType;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Getter @Setter
@@ -35,11 +30,20 @@ public class Party {
 	@Column(columnDefinition = "varchar(50)")
 	private RandomType randomType;
 
-	@Column(columnDefinition = "boolean DEFAULT true", nullable = false)
-	private boolean isActive;
 
 	@Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", nullable = false)
 	private LocalDateTime createTime = LocalDateTime.now();
+
+	@Column(columnDefinition = "INT DEFAULT 30", nullable = false)
+	private int maxMemberCount = 30;
+
+
+	@Column(columnDefinition = "boolean DEFAULT true", nullable = false)
+	private boolean isActive = true; //활성화 여부 (모집중)
+
+	@Column(columnDefinition = "BOOLEAN DEFAULT false", nullable = false)
+	private boolean isMatching = false; // 랜덤매칭인 파티
+
 
 
 	public PartyDTO entityToDto() {
@@ -48,20 +52,24 @@ public class Party {
 		partyDTO.setStoreDTO(store.entityToDto());
 		partyDTO.setPayType(payType);
 		partyDTO.setRandomType(randomType);
-		partyDTO.setActive(isActive);
 		partyDTO.setCreateTime(createTime);
+		partyDTO.setMaxMemberCount(maxMemberCount);
+
+		partyDTO.setActive(isActive);
+		partyDTO.setMatching(isMatching);
 
 		return partyDTO;
 	}
 
 	// 생성 메소드
-	public static Party createParty(String partyId, Store store, PayType payType) {
+	public static Party createParty(String partyId, Store store, PayType payType, int maxMemberCount) {
 		Party party = new Party();
 		party.setId(partyId);
 		party.setStore(store);
 		party.setPayType(payType);
 		party.setActive(true);
 		party.setCreateTime(LocalDateTime.now());
+		party.setMaxMemberCount(maxMemberCount);
 
 		return party;
 	}
@@ -73,6 +81,7 @@ public class Party {
 		party.setPayType(partyDTO.getPayType());
 		party.setRandomType(partyDTO.getRandomType());
 		party.setActive(true);
+		party.setMaxMemberCount(partyDTO.getMaxMemberCount());
 
 		return party;
 	}

@@ -150,20 +150,22 @@ public class StoreController extends ImageDefaultUrl {
                                   HttpServletRequest request){
 
         HttpSession session = request.getSession();
-        SellerDTO seller = (SellerDTO)session.getAttribute("loginUser");
-        System.out.println(seller);
-        String sellerName = seller.getMasterName();
 
         if(session.getAttribute("loginType") == null || !session.getAttribute("loginType").equals("s")){
             templateData.setMessage("판매자 계정이 아닙니다.");
             templateData.setUrl("/");
             return "inc/alert";
-        }else{
-            if(!session.getAttribute("storeId").equals(storeId)){
-                templateData.setMessage(sellerName + "님의 매장이 아닙니다.");
-                templateData.setUrl("/stores");
-                return "inc/alert";
-            }
+        }
+
+        SellerDTO seller = (SellerDTO)session.getAttribute("loginUser");
+        System.out.println(seller);
+        String sellerName = seller.getMasterName();
+
+
+        if(session.getAttribute("storeId") == null ||!session.getAttribute("storeId").equals(storeId)){
+            templateData.setMessage(sellerName + "님의 매장이 아닙니다.");
+            templateData.setUrl("/stores");
+            return "inc/alert";
         }
 
         int pageSize = 8; // 페이지 크기 설정

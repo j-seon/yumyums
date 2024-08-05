@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface MenuRepository extends JpaRepository<Menu, Integer> {
 
@@ -51,6 +52,25 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
         List<Menu> findAllOrderedByStoreBusyAndCookingTime(@Param("category") String category,
                                                            @Param("priceRange") String priceRange,
                                                            @Param("isAlone") Boolean isAlone);
+
+        @Query("SELECT m.id AS id, " +
+                "m.store.id AS storeId, " +
+                "m.category AS category, " +
+                "m.price AS price, " +
+                "m.name AS name, " +
+                "m.cookingTime AS cookingTime, " +
+                "m.isAlone AS isAlone, " +
+                "m.isActive AS isActive, " +
+                "COALESCE(SUM(od.menuCount), 0) AS orderCount, " +
+                "COALESCE(AVG(r.rate), 0) AS avgRate " +
+                "FROM Menu m " +
+                "LEFT JOIN OrdersDetail od ON m.id = od.menu.id " +
+                "LEFT JOIN Review r ON m.id = r.menu.id " +
+                "WHERE m.store.id = :storeId " +
+                "GROUP BY m.id, m.store.id, m.category, m.price, m.name, m.cookingTime, " +
+                "m.isAlone, m.isActive")
+        List<Map<String,Object>> findMenuStatsByStoreId(@Param("storeId") int storeId);
+
 
         @Query("SELECT m FROM Menu m WHERE m.store.id = :storeId ORDER BY m.category, m.name")
         Page<Menu> findMenusByStoreIdOrderedByCategory(int storeId, Pageable pageable);

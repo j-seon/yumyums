@@ -3,7 +3,7 @@ package com.yum.yumyums.controller;
 import com.yum.yumyums.dto.FaqDTO;
 import com.yum.yumyums.dto.TemplateData;
 import com.yum.yumyums.dto.orders.OrdersDetailDTO;
-import com.yum.yumyums.enums.FoodState;
+import com.yum.yumyums.enums.FoodCategory;
 import com.yum.yumyums.enums.PayType;
 import com.yum.yumyums.service.DashBoardService;
 import com.yum.yumyums.service.FaqService;
@@ -64,8 +64,20 @@ public class DashBoardController {
     public String analysisStorePage(Model model, TemplateData templateData,@PathVariable String storeId) {
         int intStoreId = Integer.parseInt(storeId);
         List<OrdersDetailDTO> ordersDetailList = dashBoardService.findAllByStoreId(intStoreId);
+        List<Map<String,Object>> findMenuInfoList = dashBoardService.findMenuInfoList(intStoreId);
+
+
+        for(Map<String, Object> t:findMenuInfoList){
+            System.out.println(t.get("category"));
+            System.out.println(t.get("price"));
+            System.out.println(t.get("name"));
+            System.out.println(t.get("cookingTime"));
+            System.out.println(t.get("orderCount"));
+            System.out.println(t.get("avgRate"));
+        }
 
         model.addAttribute("ordersDetailList", ordersDetailList);
+        model.addAttribute("findMenuInfoList", findMenuInfoList);
 
         templateData.setViewPath("dashboard/analysis");
 

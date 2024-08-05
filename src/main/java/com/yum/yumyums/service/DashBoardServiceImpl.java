@@ -14,6 +14,7 @@ import com.yum.yumyums.repository.orders.OrdersRepository;
 import com.yum.yumyums.repository.orders.OrdersStatusRepository;
 import com.yum.yumyums.repository.review.ReviewRepository;
 import com.yum.yumyums.repository.seller.StoreRepository;
+import com.yum.yumyums.repository.seller.MenuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +44,9 @@ public class DashBoardServiceImpl implements DashBoardService {
 
     @Autowired
     private StoreRepository storeRepository;
+
+    @Autowired
+    private MenuRepository menuRepository;
 
     public List<Review> getReviewsAfter(LocalDateTime createTime) {
         return reviewRepository.findByCreateTimeAfter(createTime);
@@ -138,6 +142,21 @@ public class DashBoardServiceImpl implements DashBoardService {
         }
         System.out.println(returnDTOList);
         return returnDTOList;
+    }
+
+    @Override
+    public List<Map<String, Object>> findMenuInfoList(int intStoreId) {
+        //        for(Map<String, Object> t:test){
+//            System.out.println(t.get("category"));
+//            System.out.println(t.get("price"));
+//            System.out.println(t.get("name"));
+//            System.out.println(t.get("cookingTime"));
+//            System.out.println(t.get("orderCount"));
+//            System.out.println(t.get("avgRate"));
+//        }
+
+
+        return menuRepository.findMenuStatsByStoreId(intStoreId);
     }
 
     private String formatToOneDecimalPlace(Double value) {
