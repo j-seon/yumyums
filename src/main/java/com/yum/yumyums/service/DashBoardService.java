@@ -35,4 +35,8 @@ public interface DashBoardService {
     List<Map<String, Object>> findDailySumsByStoreId(int intStoreId);
 
     List<OrdersDetailDTO> findAllByStoreId(int intStoreId);
+
+    List<Map<String, Object>> findMenuInfoList(int intStoreId);
+
+
 }
