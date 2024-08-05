@@ -16,5 +16,6 @@ public interface MenuService {
     List<MenuDTO> getMenusByFilters(String category, String priceRange, Boolean isAlone, String sort);
     OptionalDouble getAverageRateForMenu(int menuId);
 
-    Page<MenuDTO> getMenusByStoreId(int storeId, int page, int pageSize);
+    List<MenuDTO> getMenusByStoreId(int storeId);
+    void save(MenuDTO menuDTO);
 }

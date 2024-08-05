@@ -1,36 +1,15 @@
 <div class="container">
     <div class="page-inner">
-        <div class="page-header">
-            <h3 class="fw-bold mb-3">DataTables.Net</h3>
-            <ul class="breadcrumbs mb-3">
-                <li class="nav-home">
-                    <a href="#">
-                        <i class="icon-home"></i>
-                    </a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="#">Tables</a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="#">Datatables</a>
-                </li>
-            </ul>
-        </div>
+
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex align-items-center">
-                            <h4 class="card-title">Basic</h4>
+                            <h4 class="card-title">메뉴목록</h4>
                             <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal" data-bs-target="#addRowModal">
                                 <i class="fa fa-plus"></i>
-                                Add Row
+                                메뉴 등록
                             </button>
                         </div>
                     </div>
@@ -41,36 +20,71 @@
                                 <div class="modal-content">
                                     <div class="modal-header border-0">
                                         <h5 class="modal-title">
-                                            <span class="fw-mediumbold"> New</span>
-                                            <span class="fw-light"> Row </span>
+                                            <span class="fw-mediumbold"> 메뉴</span>
+                                            <span class="fw-light"> 등록 </span>
                                         </h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">×</span>
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <p class="small">
-                                            Create a new row using this form, make sure you
-                                            fill them all
-                                        </p>
+
                                         <form>
+                                            <div id="imagePreviewBox" class="row g-2 justify-content-center">
+                                                <img src="/img/yumyums_default.jpg" class="col-4 p-0 shadow">
+                                            </div>
+                                            <div class="form-item my-3">
+                                                <label class="form-label" for="image">메뉴 이미지</label>
+                                                <input type="file" class="form-control" id="image" name="menuImg" accept="image/*" onchange="previewImage(event)">
+                                                <div class="form-text">이미지 파일을 업로드하세요 (JPG, PNG 형식)</div>
+                                            </div>
+
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <div class="form-group form-group-default">
-                                                        <label>Name</label>
-                                                        <input id="addName" type="text" class="form-control" placeholder="fill name">
+                                                        <label class="form-label" for="name">카테고리 <sup>*</sup></label>
+                                                        <select class="form-select" name="category" required>
+                                                            <option value="" selected disabled hidden>카테고리 선택</option>
+                                                            <option th:each="category : ${categories}"
+                                                                    th:value="${category.name()}"
+                                                                    th:text="${category.korName}"></option>
+                                                        </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6 pe-0">
+                                                <div class="col-sm-12">
                                                     <div class="form-group form-group-default">
-                                                        <label>Position</label>
-                                                        <input id="addPosition" type="text" class="form-control" placeholder="fill position">
+                                                        <label>메뉴명</label>
+                                                        <input id="addName" type="text" class="form-control" name="name" placeholder="메뉴명">
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-4 pe-0 form-item">
                                                     <div class="form-group form-group-default">
-                                                        <label>Office</label>
-                                                        <input id="addOffice" type="text" class="form-control" placeholder="fill office">
+                                                        <label>조리시간</label>
+                                                        <input id="addPosition" name="cookingTime" type="text" class="form-control" placeholder="(분)">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 pe-0 form-item">
+                                                    <div class="form-group form-group-default">
+                                                        <label>혼밥여부</label>
+                                                        <select class="form-select" name="isAlone" required>
+                                                            <option value="true" selected> O</option>
+                                                            <option value="false"> X</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group form-group-default">
+                                                        <label>판매여부</label>
+                                                        <select class="form-select" name="isActive" required>
+                                                            <option value="true" selected> O</option>
+                                                            <option value="false"> X</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group form-group-default">
+                                                        <label>가격</label>
+                                                        <input id="addOffice" name="price" type="text" class="form-control" placeholder="판매가(원)">
                                                     </div>
                                                 </div>
                                             </div>
@@ -80,171 +94,69 @@
                                         <button type="button" id="addRowButton" class="btn btn-primary">
                                             Add
                                         </button>
-                                        <button type="button" class="btn btn-danger" data-dismiss="modal">
+                                        <!--<button type="button" class="btn btn-danger" data-dismiss="modal">
                                             Close
-                                        </button>
+                                        </button>-->
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
-                                <div class="row">
-<!--                                    <div class="col-sm-12 col-md-6">
-                                        <div class="dataTables_length" id="basic-datatables_length">
-                                            <label>Show
-                                                <select name="basic-datatables_length" aria-controls="basic-datatables" class="form-control form-control-sm">
-                                                    <option value="10">10</option>
-                                                    <option value="25">25</option>
-                                                    <option value="50">50</option>
-                                                    <option value="100">100</option>
-                                                </select> entries
-                                            </label>
-                                        </div>
-                                    </div>-->
-                                    <div class="col-sm-12">
-                                        <div id="basic-datatables_filter" class="dataTables_filter">
-                                            <label>Search:
-                                                <input type="search" class="form-control form-control-sm" placeholder="" aria-controls="basic-datatables">
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <table id="basic-datatables" class="display table table-striped table-hover dataTable" role="grid" aria-describedby="basic-datatables_info">
-                                            <thead>
-                                                <tr role="row">
-                                                    <th class="sorting" tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-label="Name: activate to sort column ascending" style="width: 242.312px;">카테고리</th>
-                                                    <th class="sorting_asc" tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-label="Position: activate to sort column descending" style="width: 366.031px;" aria-sort="ascending">메뉴명</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 187.375px;">조리시간</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 84.3125px;">혼밥</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 183.922px;">가격</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 156.047px;">판매</th>
-                                                </tr>
-                                            </thead>
-                                            <tfoot>
-                                                <tr>
-                                                    <th rowspan="1" colspan="1">카테고리</th>
-                                                    <th rowspan="1" colspan="1">메뉴명</th>
-                                                    <th rowspan="1" colspan="1">조리시간</th>
-                                                    <th rowspan="1" colspan="1">혼밥</th>
-                                                    <th rowspan="1" colspan="1">가격</th>
-                                                    <th rowspan="1" colspan="1">판매</th>
-                                                </tr>
-                                            </tfoot>
-                                            <tbody>
-                                                <tr role="row" class="odd">
-                                                    <td class="">Airi Satou</td>
-                                                    <td class="sorting_1">Accountant</td>
-                                                    <td class="">Tokyo</td>
-                                                    <td class="">33</td>
-                                                    <td class="">2008/11/28</td>
-                                                    <td class="">$162,700</td>
-                                                </tr><tr role="row" class="even">
-                                                    <td class="">Garrett Winters</td>
-                                                    <td class="sorting_1">Accountant</td>
-                                                    <td class="">Tokyo</td>
-                                                    <td class="">63</td>
-                                                    <td class="">2011/07/25</td>
-                                                    <td class="">$170,750</td>
-                                                </tr><tr role="row" class="odd">
-                                                    <td class="">Angelica Ramos</td>
-                                                    <td class="sorting_1">Chief Executive Officer (CEO)</td>
-                                                    <td class="">London</td>
-                                                    <td class="">47</td>
-                                                    <td class="">2009/10/09</td>
-                                                    <td class="">$1,200,000</td>
-                                                </tr><tr role="row" class="even">
-                                                    <td class="">Paul Byrd</td>
-                                                    <td class="sorting_1">Chief Financial Officer (CFO)</td>
-                                                    <td class="">New York</td>
-                                                    <td class="">64</td>
-                                                    <td class="">2010/06/09</td>
-                                                    <td class="">$725,000</td>
-                                                </tr><tr role="row" class="odd">
-                                                    <td class="">Yuri Berry</td>
-                                                    <td class="sorting_1">Chief Marketing Officer (CMO)</td>
-                                                    <td class="">New York</td>
-                                                    <td class="">40</td>
-                                                    <td class="">2009/06/25</td>
-                                                    <td class="">$675,000</td>
-                                                </tr><tr role="row" class="even">
-                                                    <td class="">Fiona Green</td>
-                                                    <td class="sorting_1">Chief Operating Officer (COO)</td>
-                                                    <td class="">San Francisco</td>
-                                                    <td class="">48</td>
-                                                    <td class="">2010/03/11</td>
-                                                    <td class="">$850,000</td>
-                                                </tr><tr role="row" class="odd">
-                                                    <td class="">Donna Snider</td>
-                                                    <td class="sorting_1">Customer Support</td>
-                                                    <td class="">New York</td>
-                                                    <td class="">27</td>
-                                                    <td class="">2011/01/25</td>
-                                                    <td class="">$112,000</td>
-                                                </tr><tr role="row" class="even">
-                                                    <td class="">Serge Baldwin</td>
-                                                    <td class="sorting_1">Data Coordinator</td>
-                                                    <td class="">Singapore</td>
-                                                    <td class="">64</td>
-                                                    <td class="">2012/04/09</td>
-                                                    <td class="">$138,575</td>
-                                                </tr><tr role="row" class="odd">
-                                                    <td class="">Gavin Joyce</td>
-                                                    <td class="sorting_1">Developer</td>
-                                                    <td class="">Edinburgh</td>
-                                                    <td class="">42</td>
-                                                    <td class="">2010/12/22</td>
-                                                    <td class="">$92,575</td>
-                                                </tr><tr role="row" class="even">
-                                                    <td class="">Jonas Alexander</td>
-                                                    <td class="sorting_1">Developer</td>
-                                                    <td class="">San Francisco</td>
-                                                    <td class="">30</td>
-                                                    <td class="">2010/07/14</td>
-                                                    <td class="">$86,500</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-5">
-                                        <div class="dataTables_info" id="basic-datatables_info" role="status" aria-live="polite">Showing 1 to 10 of 57 entries</div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-7">
-                                        <div class="dataTables_paginate paging_simple_numbers" id="basic-datatables_paginate">
-                                            <ul class="pagination">
-                                                <li class="paginate_button page-item previous disabled" id="basic-datatables_previous">
-                                                    <a href="#" aria-controls="basic-datatables" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
-                                                </li>
-                                                <li class="paginate_button page-item active">
-                                                    <a href="#" aria-controls="basic-datatables" data-dt-idx="1" tabindex="0" class="page-link">1</a>
-                                                </li>
-                                                <li class="paginate_button page-item ">
-                                                    <a href="#" aria-controls="basic-datatables" data-dt-idx="2" tabindex="0" class="page-link">2</a>
-                                                </li>
-                                                <li class="paginate_button page-item ">
-                                                    <a href="#" aria-controls="basic-datatables" data-dt-idx="3" tabindex="0" class="page-link">3</a>
-                                                </li>
-                                                <li class="paginate_button page-item ">
-                                                    <a href="#" aria-controls="basic-datatables" data-dt-idx="4" tabindex="0" class="page-link">4</a>
-                                                </li>
-                                                <li class="paginate_button page-item ">
-                                                    <a href="#" aria-controls="basic-datatables" data-dt-idx="5" tabindex="0" class="page-link">5</a>
-                                                </li>
-                                                <li class="paginate_button page-item ">
-                                                    <a href="#" aria-controls="basic-datatables" data-dt-idx="6" tabindex="0" class="page-link">6</a>
-                                                </li>
-                                                <li class="paginate_button page-item next" id="basic-datatables_next">
-                                                    <a href="#" aria-controls="basic-datatables" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div th:if="${#lists.isEmpty(menus)}" class="col-12 text-center mt-5">
+                                <p>등록된 매뉴가 없습니다.</p>
                             </div>
+                            <table
+                                    id="basic-datatables"
+                                    class="display table table-striped table-hover"
+                            >
+                                <thead>
+                                <tr>
+                                    <th>카테고리</th>
+                                    <th>메뉴명</th>
+                                    <th>조리시간</th>
+                                    <th>혼밥</th>
+                                    <th>판매</th>
+                                    <th>가격</th>
+                                </tr>
+                                </thead>
+                                <tfoot>
+                                <tr>
+                                    <th>카테고리</th>
+                                    <th>메뉴명</th>
+                                    <th>조리시간</th>
+                                    <th>혼밥</th>
+                                    <th>판매</th>
+                                    <th>가격</th>
+                                </tr>
+                                </tfoot>
+                                <tbody>
+                                <tr th:each="menu : ${menus}">
+                                    <td th:text="${menu.categoryKorName}"></td>
+                                    <td th:text="${menu.name}"></td>
+                                    <td th:text="${menu.cookingTime}"></td>
+                                    <td th:text="${menu.isAlone} ? 'O':'X"></td>
+                                    <td th:text="${menu.isActive} ? 'O':'X"></td>
+                                    <td th:text="|${#numbers.formatInteger(menu.price, 0, 'COMMA')}|"></td>
+                                </tr>
+
+                                <tr>
+                                    <td>Michael Bruce</td>
+                                    <td>Javascript Developer</td>
+                                    <td>Singapore</td>
+                                    <td>29</td>
+                                    <td>2011/06/27</td>
+                                    <td>$183,000</td>
+                                </tr>
+                                <tr>
+                                    <td>Donna Snider</td>
+                                    <td>Customer Support</td>
+                                    <td>New York</td>
+                                    <td>27</td>
+                                    <td>2011/01/25</td>
+                                    <td>$112,000</td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -253,3 +165,62 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+      $("#basic-datatables").DataTable();
+
+      $("#multi-filter-select").DataTable({
+        pageLength: 5,
+        initComplete: function () {
+          this.api()
+            .columns()
+            .every(function () {
+              var column = this;
+              var select = $(
+                '<select class="form-select"><option value=""></option></select>'
+              )
+                .appendTo($(column.footer()).empty())
+                .on("change", function () {
+                  var val = $.fn.dataTable.util.escapeRegex($(this).val());
+
+                  column
+                    .search(val ? "^" + val + "$" : "", true, false)
+                    .draw();
+                });
+
+              column
+                .data()
+                .unique()
+                .sort()
+                .each(function (d, j) {
+                  select.append(
+                    '<option value="' + d + '">' + d + "</option>"
+                  );
+                });
+            });
+        },
+      });
+
+      // Add Row
+      $("#add-row").DataTable({
+        pageLength: 5,
+      });
+
+      var action =
+        '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
+
+      $("#addRowButton").click(function () {
+        $("#add-row")
+          .dataTable()
+          .fnAddData([
+            $("#addName").val(),
+            $("#addPosition").val(),
+            $("#addOffice").val(),
+            action,
+          ]);
+        $("#addRowModal").modal("hide");
+      });
+    });
+</script>
+<script src="../../js/common/images.js"></script>

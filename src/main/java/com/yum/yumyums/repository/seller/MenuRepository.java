@@ -73,7 +73,7 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
 
 
         @Query("SELECT m FROM Menu m WHERE m.store.id = :storeId ORDER BY m.category, m.name")
-        Page<Menu> findMenusByStoreIdOrderedByCategory(int storeId, Pageable pageable);
+        List<Menu> findMenusByStoreIdOrderedByCategory(int storeId);
 }
 
 

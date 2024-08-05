@@ -1,11 +1,13 @@
 package com.yum.yumyums.service.seller;
 
 import com.yum.yumyums.dto.seller.MenuDTO;
+import com.yum.yumyums.entity.Images;
 import com.yum.yumyums.entity.review.Review;
 import com.yum.yumyums.entity.seller.Menu;
 import com.yum.yumyums.enums.Busy;
 import com.yum.yumyums.repository.review.ReviewRepository;
 import com.yum.yumyums.repository.seller.MenuRepository;
+import com.yum.yumyums.service.ImagesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 public class MenuServiceImpl implements MenuService {
     private final MenuRepository menuRepository;
     private final ReviewRepository reviewRepository;
+    private final ImagesService imagesService;
 
     public Optional<MenuDTO> findById(int id) {
         return menuRepository.findById(id)
@@ -65,17 +68,21 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public Page<MenuDTO> getMenusByStoreId(int storeId, int page, int pageSize) {
-        Pageable pageable = PageRequest.of(page, pageSize, Sort.by("category", "name"));
-        Page<Menu> menuPage = menuRepository.findMenusByStoreIdOrderedByCategory(storeId, pageable);
+    public List<MenuDTO> getMenusByStoreId(int storeId) {
+        List<Menu> menus = menuRepository.findMenusByStoreIdOrderedByCategory(storeId);
 
-        List<MenuDTO> menuDTOs = menuPage.getContent().stream()
-                .map(menu -> {
-                    MenuDTO dto = menu.entityToDto();
-                    return dto;
-                })
+        List<MenuDTO> menuDTOs = menus.stream()
+                .map(menu -> menu.entityToDto())
                 .collect(Collectors.toList());
-        return new PageImpl<>(menuDTOs, menuPage.getPageable(), menuPage.getTotalElements());
+        return menuDTOs;
+    }
+
+    @Override
+    public void save(MenuDTO menuDTO) {
+        Images savedImages = imagesService.saveImage(menuDTO.getImagesDTO());
+        Menu menu = menuDTO.dtoToEntity();
+        menu.setImages(savedImages);
+        menuRepository.save(menu);
     }
 
 }

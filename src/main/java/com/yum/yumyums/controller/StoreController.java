@@ -142,9 +142,9 @@ public class StoreController extends ImageDefaultUrl {
         return "redirect:/stores";
     }
 
+    /*매장-메뉴목록*/
     @GetMapping("{storeId}/menu")
     public String manageMenusList(@PathVariable int storeId,
-                                  @RequestParam(defaultValue = "0") int page,
                                   Model model,
                                   TemplateData templateData,
                                   HttpServletRequest request){
@@ -168,15 +168,36 @@ public class StoreController extends ImageDefaultUrl {
             return "inc/alert";
         }
 
-        int pageSize = 8; // 페이지 크기 설정
-        Page<MenuDTO> menuPage = menuService.getMenusByStoreId(storeId, page, pageSize);
+        List<MenuDTO> menus = menuService.getMenusByStoreId(storeId);
 
-        model.addAttribute("menus", menuPage.getContent());
-        model.addAttribute("totalPages", menuPage.getTotalPages());
-        model.addAttribute("currentPage", menuPage.getNumber());
+        model.addAttribute("menus", menus);
+        model.addAttribute("categories", FoodCategory.values());
         model.addAttribute("templateData", templateData);
 
         templateData.setViewPath("store/manageMenu/list");
         return "dashBoardTemplate";
+    }
+
+    /*매장-메뉴등록*/
+    @PostMapping("{storeId}/menu")
+    public String menuSaveSubmit(MenuDTO menuDTO, @RequestParam("menuImg") MultipartFile imgFile , HttpServletRequest request){
+        HttpSession session = request.getSession();
+        SellerDTO sellerDTO = (SellerDTO)session.getAttribute("loginUser");
+        int storeId = (int) session.getAttribute("storeId");
+        StoreDTO storeDTO = storeService.findById(storeId);
+
+        if(!imgFile.isEmpty()){
+            imgUrl = "seller/"+sellerDTO.getSellerId()+"/"+storeDTO.getName()+"/"+imgFile.getOriginalFilename();
+        }
+
+        String savedImgUrl = imagesService.uploadImage(imgFile, imgUrl);
+
+        ImagesDTO imagesDTO = new ImagesDTO();
+        imagesDTO.setImgUrl(savedImgUrl);
+        menuDTO.setStoreDTO(storeDTO);
+        menuDTO.setImagesDTO(imagesDTO);
+        menuService.save(menuDTO);
+
+        return "redirect:/stores";
     }
 }
