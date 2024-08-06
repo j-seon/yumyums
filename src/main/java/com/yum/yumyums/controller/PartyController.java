@@ -2,6 +2,7 @@ package com.yum.yumyums.controller;
 
 import com.yum.yumyums.dto.TemplateData;
 import com.yum.yumyums.dto.chat.PartyDTO;
+import com.yum.yumyums.dto.chat.PartyMatchWebSocketMessageDTO;
 import com.yum.yumyums.dto.user.MemberDTO;
 import com.yum.yumyums.enums.FixUrl;
 import com.yum.yumyums.enums.PayType;
@@ -10,6 +11,7 @@ import com.yum.yumyums.service.chat.PartyService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +35,7 @@ public class PartyController {
 	 * DELETE /party/${partyId} : 파티탈퇴 (파티장탈퇴 = 파티삭제)
 	**/
 
+	private final SimpMessagingTemplate messagingTemplate;
 	private final PartyService partyService;
 
 	// 파티 홈페이지 조회
@@ -236,8 +239,14 @@ public class PartyController {
 			//파티원이 여러명이라면, 파티 탈퇴 후 위임
 			partyService.deleteMemberToParty(encryptedPartyId, memberDTO, true);
 			templateData.setUrl("/party");
+
 			return "inc/redirect"; // 해당 파티 상세페이지로 이동
 		}
+
+
+		// 웹소켓으로 파티원들에게 탈퇴한 사용자 알림
+		messagingTemplate.convertAndSend("/topic/party/" + encryptedPartyId,
+				new PartyMatchWebSocketMessageDTO("leaveParty", memberDTO.getMemberId()));
 
 		//파티장이 아니라면 파티탈퇴
 		partyService.deleteMemberToParty(encryptedPartyId, memberDTO, true);

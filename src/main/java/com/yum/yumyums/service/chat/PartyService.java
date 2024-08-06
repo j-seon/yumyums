@@ -1,6 +1,8 @@
 package com.yum.yumyums.service.chat;
 
+import com.yum.yumyums.dto.chat.MatchRequestDTO;
 import com.yum.yumyums.dto.chat.PartyDTO;
+import com.yum.yumyums.dto.chat.PartyMemberDTO;
 import com.yum.yumyums.dto.user.MemberDTO;
 
 public interface PartyService {
@@ -18,6 +20,7 @@ public interface PartyService {
 	//select
 	String findEncryptedPartyIdByMemberId(MemberDTO memberDTO);
 	PartyDTO findParty(String encryptedPartyId);
+	PartyMemberDTO findPartyMemberDtoByPartyIdAndMemberId(String encryptedPartyId, MemberDTO memberDTO);
 
 
 	//검증 (DB 데이터 확인)
@@ -25,4 +28,7 @@ public interface PartyService {
 	boolean isThisPartyMember(String partyId, MemberDTO memberDTO);
 	boolean isThisPartyLeader(String encryptedPartyId, MemberDTO memberDTO);
 	boolean isPartyMemberFull(String encryptedPartyId);
+
+	// 매칭
+	String addPartyMemberToOptionalPartyOrCreateParty(MatchRequestDTO matchRequestDTO);
 }

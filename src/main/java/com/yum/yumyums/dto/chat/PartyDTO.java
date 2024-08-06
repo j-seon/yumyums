@@ -36,13 +36,27 @@ public class PartyDTO {
         party.setActive(isActive);
         party.setMatching(isMatching);
 
-        // 파티멤버 저장
-        List<PartyMember> partyMembers = new ArrayList<>();
-        for (PartyMemberDTO partyMemberDTO : partyMemberDTOs) {
-            PartyMember partyMember = partyMemberDTO.dtoToEntity();
-            partyMembers.add(partyMember);
+        if(partyMemberDTOs.size() > 1) {
+            // 파티멤버 저장
+            List<PartyMember> partyMembers = new ArrayList<>();
+            for (PartyMemberDTO partyMemberDTO : partyMemberDTOs) {
+                PartyMember partyMember = partyMemberDTO.dtoToEntity();
+                partyMembers.add(partyMember);
+            }
         }
+
         return party;
+    }
+
+    public static PartyDTO createPartyDtoFromMatchRequest(StoreDTO storeDTO, MatchRequestDTO matchRequestDTO) {
+        PartyDTO partyDTO = new PartyDTO();
+        partyDTO.setStoreDTO(storeDTO);
+        partyDTO.setPayType(matchRequestDTO.getPayType());
+        partyDTO.setMaxMemberCount(matchRequestDTO.getMaxMemberCount());
+        partyDTO.setMatching(true);
+        partyDTO.setCreateTime(LocalDateTime.now());
+
+        return partyDTO;
     }
 
     //== 연관관계 메소드 ==//
@@ -70,6 +84,9 @@ public class PartyDTO {
 
     @JsonGetter("randomTypeKorName")
     public String getRandomTypeKorName() {
+        if(randomType == null) {
+            return null;
+        }
         return randomType.getKorName();
     }
 }

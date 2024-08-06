@@ -27,4 +27,6 @@ public interface PartyMemberRepository extends JpaRepository<PartyMember, Intege
 	void deleteByMemberId(String MemberId);
 
 	int countByPartyId(String partyId);
+
+	PartyMember findByPartyIdAndMemberId(String partyId, String memberId);
 }
