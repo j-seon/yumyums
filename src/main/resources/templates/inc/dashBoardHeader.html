@@ -3,7 +3,7 @@
     <div class="sidebar-logo">
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="dark">
-            <a th:href="|/dashboard/${storeId}|" class="logo">
+            <a th:href="|/dashboard/${session.storeId}|" class="logo">
                 <img
                         src="/img/logo_400.png"
                         alt="navbar brand"
@@ -29,19 +29,19 @@
         <div class="sidebar-content">
             <ul class="nav nav-secondary">
                 <li class="nav-item">
-                    <a th:href="|/dashboard/${storeId}|">
+                    <a th:href="|/dashboard/${session.storeId}|">
                         <i class="fas fa-desktop"></i>
                         <p>대시보드</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a th:href="|/dashboard/${storeId}/analysis|">
+                    <a th:href="|/dashboard/${session.storeId}/analysis|">
                         <i class="fas fa-chart-line"></i>
                         <p>매출통계</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a th:href="|/stores/${storeId}/menu|">
+                    <a th:href="|/stores/${session.storeId}/menu|">
                         <i class="fas fa-utensils"></i>
                         <p>메뉴관리</p>
                     </a>
