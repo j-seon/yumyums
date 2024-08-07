@@ -65,6 +65,22 @@ public class Member {
         return member;
     }
 
+    public MemberDTO entityToDto(){
+        MemberDTO memberDTO = new MemberDTO();
+
+        memberDTO.setMemberId(this.getId());
+        memberDTO.setPassword(this.getPassword());
+        memberDTO.setName(this.getName());
+        memberDTO.setBirth(this.getBirth());
+        memberDTO.setGender(this.getGender().name());
+        memberDTO.setEmail(this.getEmail());
+        memberDTO.setPhone(this.getPhone());
+        memberDTO.setJoinTime(this.getJoinTime());
+        memberDTO.setActive(this.isActive());
+
+        return memberDTO;
+    }
+
 
 
 }
