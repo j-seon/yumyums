@@ -1,15 +1,19 @@
 package com.yum.yumyums.service.seller;
 
 import com.yum.yumyums.dto.seller.MenuDTO;
+import com.yum.yumyums.entity.Images;
 import com.yum.yumyums.entity.review.Review;
 import com.yum.yumyums.entity.seller.Menu;
 import com.yum.yumyums.enums.Busy;
 import com.yum.yumyums.repository.review.ReviewRepository;
 import com.yum.yumyums.repository.seller.MenuRepository;
+import com.yum.yumyums.service.ImagesService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -17,6 +21,7 @@ import java.util.*;
 public class MenuServiceImpl implements MenuService {
     private final MenuRepository menuRepository;
     private final ReviewRepository reviewRepository;
+    private final ImagesService imagesService;
 
     public Optional<MenuDTO> findById(int id) {
         return menuRepository.findById(id)
@@ -60,6 +65,24 @@ public class MenuServiceImpl implements MenuService {
         return reviews.stream()
                 .mapToDouble(Review::getRate)
                 .average();
+    }
+
+    @Override
+    public List<MenuDTO> getMenusByStoreId(int storeId) {
+        List<Menu> menus = menuRepository.findMenusByStoreIdOrderedByIdDesc(storeId);
+
+        List<MenuDTO> menuDTOs = menus.stream()
+                .map(menu -> menu.entityToDto())
+                .collect(Collectors.toList());
+        return menuDTOs;
+    }
+
+    @Override
+    public void save(MenuDTO menuDTO) {
+        Images savedImages = imagesService.saveImage(menuDTO.getImagesDTO());
+        Menu menu = menuDTO.dtoToEntity();
+        menu.setImages(savedImages);
+        menuRepository.save(menu);
     }
 
 }

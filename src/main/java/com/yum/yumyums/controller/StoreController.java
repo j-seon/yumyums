@@ -2,10 +2,12 @@ package com.yum.yumyums.controller;
 
 import com.yum.yumyums.dto.ImagesDTO;
 import com.yum.yumyums.dto.TemplateData;
+import com.yum.yumyums.dto.seller.MenuDTO;
 import com.yum.yumyums.dto.seller.SellerDTO;
 import com.yum.yumyums.dto.seller.StoreDTO;
 import com.yum.yumyums.enums.FoodCategory;
 import com.yum.yumyums.service.ImagesService;
+import com.yum.yumyums.service.seller.MenuService;
 import com.yum.yumyums.service.seller.SellerService;
 import com.yum.yumyums.service.seller.StoreService;
 import com.yum.yumyums.util.ImageDefaultUrl;
@@ -30,11 +32,14 @@ public class StoreController extends ImageDefaultUrl {
     판매자 매장 목록 - GET : /stores
     팬매자 매장 추가 - POST : /stores
     팬매자 매장 입장 - POST : /stores/login
+
+    매장내 메뉴 리스트 - GET : /stores/{storeId}/menu
     */
 
     private final StoreService storeService;
     private final SellerService sellerService;
     private final ImagesService imagesService;
+    private final MenuService menuService;
 
     @GetMapping("")
     public String storesList(@RequestParam(defaultValue = "0") int page, Model model, TemplateData templateData, HttpServletRequest request){
@@ -116,7 +121,7 @@ public class StoreController extends ImageDefaultUrl {
         return "template";
     }
 
-
+    //TODO 주소입력시 지도API 활용.
     @PostMapping("")
     public String storeSaveSubmit(StoreDTO storeDTO, @RequestParam("storeImg") MultipartFile imgFile , HttpServletRequest request){
         HttpSession session = request.getSession();
@@ -137,5 +142,68 @@ public class StoreController extends ImageDefaultUrl {
         return "redirect:/stores";
     }
 
-    //TODO 주소입력시 지도API 활용.
+    /*매장-메뉴목록*/
+    @GetMapping("{storeId}/menu")
+    public String manageMenusList(@PathVariable int storeId,
+                                  Model model,
+                                  TemplateData templateData,
+                                  HttpServletRequest request){
+
+        HttpSession session = request.getSession();
+
+        if(session.getAttribute("loginType") == null || !session.getAttribute("loginType").equals("s")){
+            templateData.setMessage("판매자 계정이 아닙니다.");
+            templateData.setUrl("/");
+            return "inc/alert";
+        }
+
+        SellerDTO seller = (SellerDTO)session.getAttribute("loginUser");
+        System.out.println(seller);
+        String sellerName = seller.getMasterName();
+
+
+        if(session.getAttribute("storeId") == null ||!session.getAttribute("storeId").equals(storeId)){
+            templateData.setMessage(sellerName + "님의 매장이 아닙니다.");
+            templateData.setUrl("/stores");
+            return "inc/alert";
+        }
+
+        List<MenuDTO> menus = menuService.getMenusByStoreId(storeId);
+
+        for(MenuDTO menu : menus){
+            System.out.println(menu.toString());
+        }
+
+        model.addAttribute("menus", menus);
+        model.addAttribute("categories", FoodCategory.values());
+        model.addAttribute("templateData", templateData);
+
+        templateData.setViewPath("store/manageMenu/list");
+        return "dashBoardTemplate";
+    }
+
+    /*매장-메뉴등록*/
+    @PostMapping("{storeId}/menu")
+    public String menuSaveSubmit(MenuDTO menuDTO, @RequestParam("menuImg") MultipartFile imgFile, HttpServletRequest request){
+        HttpSession session = request.getSession();
+        SellerDTO sellerDTO = (SellerDTO)session.getAttribute("loginUser");
+        int storeId = (int)session.getAttribute("storeId");
+        StoreDTO storeDTO = storeService.findById(storeId);
+        System.out.println("menuDTO : " + menuDTO);
+        System.out.println("stordId : " + storeId);
+
+        if(!imgFile.isEmpty()){
+            imgUrl = "seller/"+sellerDTO.getSellerId()+"/"+storeDTO.getName()+"/"+imgFile.getOriginalFilename();
+        }
+
+        String savedImgUrl = imagesService.uploadImage(imgFile, imgUrl);
+
+        ImagesDTO imagesDTO = new ImagesDTO();
+        imagesDTO.setImgUrl(savedImgUrl);
+        menuDTO.setStoreDTO(storeDTO);
+        menuDTO.setImagesDTO(imagesDTO);
+        menuService.save(menuDTO);
+
+        return "redirect:/stores/"+storeId+"/menu";
+    }
 }

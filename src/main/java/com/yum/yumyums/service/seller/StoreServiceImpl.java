@@ -15,6 +15,7 @@ import com.yum.yumyums.repository.seller.StoreLikeRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -115,6 +116,12 @@ public class StoreServiceImpl implements StoreService {
         Store store = storeDTO.dtoToEntity();
         store.setImages(savedImages);
         storeRepository.save(store);
+    }
+
+    @Override
+    public StoreDTO findById(int storeId) {
+        Optional<Store> store = storeRepository.findById(storeId);
+        return store.get().entityToDto();
     }
 
 }

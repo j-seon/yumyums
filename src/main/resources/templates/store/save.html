@@ -5,15 +5,17 @@
             <div class="row g-5 align-items-center justify-content-center">
                 <div class="col-md-12 col-lg-6 col-xl-7">
 
-                    <div id="imagePreviewBox" class="row g-2 justify-content-center"></div>
+                    <div id="imagePreviewBox" class="row g-2 justify-content-center">
+                        <img src="/img/yumyums_default.jpg" class="col-4 p-0 shadow">
+                    </div>
                     <div class="form-item">
-                        <label class="form-label my-3" for="image">매장 이미지</label>
+                        <label class="form-label" for="image">매장 이미지</label>
                         <input type="file" class="form-control" id="image" name="storeImg" accept="image/*" onchange="previewImage(event)">
                         <div class="form-text">이미지 파일을 업로드하세요 (JPG, PNG 형식)</div>
                     </div>
 
                     <div class="form-item">
-                        <label class="form-label my-3" for="name">카테고리(업종) <sup>*</sup></label>
+                        <label class="form-label" for="name">카테고리(업종) <sup>*</sup></label>
                         <select class="form-select" name="category" required>
                             <option value="" selected disabled hidden>카테고리 선택</option>
                             <option th:each="category : ${categories}"
@@ -82,6 +84,8 @@
 </div>
 
 <script src="../../js/common/duplicate.js"></script>
+<script src="../../js/common/images.js"></script>
+<!--
 <script>
     function previewImage(event) {
         const files = event.target.files;
@@ -101,4 +105,4 @@
             }
         }
     }
-</script>
+</script>-->

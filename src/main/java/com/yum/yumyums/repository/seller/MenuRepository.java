@@ -1,6 +1,8 @@
 package com.yum.yumyums.repository.seller;
 
 import com.yum.yumyums.entity.seller.Menu;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -69,6 +71,9 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
                 "m.isAlone, m.isActive")
         List<Map<String,Object>> findMenuStatsByStoreId(@Param("storeId") int storeId);
 
+
+        @Query("SELECT m FROM Menu m WHERE m.store.id = :storeId ORDER BY m.id desc")
+        List<Menu> findMenusByStoreIdOrderedByIdDesc(int storeId);
 }
 
 

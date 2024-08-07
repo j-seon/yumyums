@@ -17,4 +17,6 @@ public interface StoreService {
 	List<StoreDTO> getStoresOnMap();
 
 	void save(StoreDTO storeDTO);
+
+	StoreDTO findById(int storeId);
 }

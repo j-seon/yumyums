@@ -1,0 +1,144 @@
+<div class="container">
+    <div class="page-inner">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex align-items-center">
+                            <h4 class="card-title">메뉴목록</h4>
+                            <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal" data-bs-target="#addRowModal">
+                                <i class="fa fa-plus"></i>
+                                메뉴 등록
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Modal -->
+                        <div class="modal fade" id="addRowModal" tabindex="-1" style="display: none;" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header border-0">
+                                        <h5 class="modal-title">
+                                            <span class="fw-mediumbold"> 메뉴</span>
+                                            <span class="fw-light"> 등록 </span>
+                                        </h5>
+                                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <form th:action="|/stores/${storeId}/menu|" method="post" enctype="multipart/form-data">
+                                            <div id="imagePreviewBox" class="row g-2 justify-content-center">
+                                                <img src="/img/yumyums_default.jpg" class="col-4 p-0 shadow">
+                                            </div>
+                                            <div class="form-item my-3">
+                                                <label class="form-label" for="image">메뉴 이미지</label>
+                                                <input type="file" class="form-control" id="image" name="menuImg" accept="image/*" onchange="previewImage(event)">
+                                                <div class="form-text">이미지 파일을 업로드하세요 (JPG, PNG 형식)</div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="form-group form-group-default">
+                                                        <label class="form-label" >카테고리 <sup>*</sup></label>
+                                                        <select class="form-select" name="category" required>
+                                                            <option value="" selected disabled hidden>카테고리 선택</option>
+                                                            <option th:each="category : ${categories}"
+                                                                    th:value="${category.name()}"
+                                                                    th:text="${category.korName}"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group form-group-default">
+                                                        <label>메뉴명 <sup>*</sup></label>
+                                                        <input id="addName" type="text" class="form-control" name="name" placeholder="메뉴명" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 pe-0 form-item">
+                                                    <div class="form-group form-group-default">
+                                                        <label>조리시간 <sup>*</sup></label>
+                                                        <input id="addPosition" name="cookingTime" type="text" class="form-control" placeholder="조리시간(분)" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 pe-0 form-item">
+                                                    <div class="form-group form-group-default">
+                                                        <label>혼밥여부 <sup>*</sup></label>
+                                                        <select class="form-select" name="isAlone" required>
+                                                            <option value="true"> O</option>
+                                                            <option value="false"> X</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group form-group-default">
+                                                        <label>판매여부 <sup>*</sup></label>
+                                                        <select class="form-select" name="isActive" required>
+                                                            <option value="true"> O</option>
+                                                            <option value="false"> X</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group form-group-default">
+                                                        <label>가격 <sup>*</sup></label>
+                                                        <input id="addOffice" name="price" type="text" class="form-control" placeholder="판매가(원)" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group form-group-default">
+                                                        <label for="content">메뉴 소개글</label>
+                                                        <textarea class="form-control" id="content" name="content" rows="2"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer border-0">
+                                                <input type="submit" class="btn btn-primary" value="등록">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <div th:if="${#lists.isEmpty(menus)}" class="col-12 text-center mt-5">
+                                <p>등록된 매뉴가 없습니다.</p>
+                            </div>
+                            <table
+                                    id="basic-datatables"
+                                    class="display table table-striped table-hover"
+                            >
+                                <thead>
+                                    <tr>
+                                        <th>카테고리</th>
+                                        <th>메뉴명</th>
+                                        <th>조리시간</th>
+                                        <th>혼밥여부</th>
+                                        <th>판매여부</th>
+                                        <th>가격</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="menu : ${menus}">
+                                        <td th:text="${menu.categoryKorName}"></td>
+                                        <td th:text="${menu.name}"></td>
+                                        <td th:text="${menu.cookingTime}"></td>
+                                        <td th:text="${menu.isAlone} ? 'O':'X'"></td>
+                                        <td th:text="${menu.isActive} ? 'O':'X'"></td>
+                                        <td th:text="|${#numbers.formatInteger(menu.price, 0, 'COMMA')}|"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script src="../../js/common/images.js"></script>
