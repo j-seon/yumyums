@@ -60,6 +60,12 @@ public class ChatController {
         }
 
     }
+    //페이지 호출
+    @GetMapping("/test")
+    public String test(Model model, TemplateData templateData,HttpSession session) {
+            return "/chat/test";
+
+    }
 
     //채팅방 참가
     //추후 추가

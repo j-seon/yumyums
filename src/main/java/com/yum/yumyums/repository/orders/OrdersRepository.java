@@ -20,7 +20,7 @@ public interface OrdersRepository extends JpaRepository<Orders, String> {
                                             @Param("endOfDay") LocalDateTime endOfDay);
 
     // 금일 주문 건수
-    @Query("SELECT COUNT(o) FROM Orders o WHERE o.ordersTime >= :startOfDay AND o.ordersTime < :endOfDay AND o.store.id = :storeId")
+    @Query("SELECT COALESCE(COUNT(o), 0) FROM Orders o WHERE o.ordersTime >= :startOfDay AND o.ordersTime < :endOfDay AND o.store.id = :storeId")
     Long countOrdersForTodayByStoreId(@Param("storeId") int storeId,
                                       @Param("startOfDay") LocalDateTime startOfDay,
                                       @Param("endOfDay") LocalDateTime endOfDay);

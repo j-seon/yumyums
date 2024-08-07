@@ -58,10 +58,12 @@ public class DashBoardServiceImpl implements DashBoardService {
     }
 
     public String getAverageRateByStoreId(int storeId) {
+        System.out.println("getAverageRateByStoreId");
         return formatToOneDecimalPlace(reviewRepository.findAverageByStoreId(storeId));
     }
 
     public String getAverageRateBeforeTodayByStoreId(int storeId) {
+        System.out.println("getAverageRateBeforeTodayByStoreId");
         return formatToOneDecimalPlace(reviewRepository.findAverageRateBeforeTodayByStoreId(storeId));
     }
 
