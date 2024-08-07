@@ -13,7 +13,7 @@ var table
     $.ajax({
         url: "/api/v1/"+goUrl , // URL 경로에 categoryText를 포함
         method: "get", // GET 메소드 사용
-        data:{storeId : '3'},
+        data:{storeId : storeId},
         success: function(data, status, xhr) {
             var labels = data.map(function(item) {
                 return item.date;
@@ -92,14 +92,8 @@ var goUrl=''
     $.ajax({
         url: "/api/v1/menuInfo" , // URL 경로에 categoryText를 포함
         method: "get", // GET 메소드 사용
-        data:{storeId : '3'},
+        data:{storeId : storeId},
         success: function(data, status, xhr) {
-console.log(data[0].name)
-//            console.log(data.name)
-//            console.log(data.avgRate)
-//            console.log(data.orderCount)
-//            console.log(data.price)
-
             data.forEach((menuInfo) => {
                 table.row.add([menuInfo.name, menuInfo.price, menuInfo.orderCount ,menuInfo.avgRate]).draw();
              });
@@ -115,9 +109,6 @@ $(document).ready(function() {
     setChart("day");
     createTable();
     setTable();
-
-
-
 
     $('.nav-link').on('click', function(e) {
         e.preventDefault();
