@@ -3,9 +3,17 @@
 <div class="container-fluid py-5">
     <div class="container py-5">
         <h1 class="mb-4">일반회원 가입</h1>
-        <form action="/member" method="post" id="memberSaveForm">
+        <form action="/member" method="post" enctype="multipart/form-data" id="memberSaveForm">
             <div class="row g-5 justify-content-center">
                 <div class="col-md-12 col-lg-6 col-xl-7">
+                    <div id="imagePreviewBox" class="row g-2 justify-content-center">
+                        <img src="/img/yumyums_default.jpg" class="col-4 p-0 shadow">
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="image">매장 이미지</label>
+                        <input type="file" class="form-control" id="image" name="memberImg" accept="image/*" onchange="previewImage(event)">
+                        <div class="form-text">이미지 파일을 업로드하세요 (JPG, PNG 형식)</div>
+                    </div>
                     <div class="form-item">
                         <label class="form-label my-3" for="memberId">아이디<sup>*</sup></label>
                         <input type="text" class="form-control" id="memberId" name="memberDTO.memberId">
@@ -81,5 +89,6 @@
 <!-- Checkout Page End -->
 <th:block  th:replace="/user/addStation"></th:block>
 <script src="js/user/emailVerification.js"></script>
+<script src="../../js/common/images.js"></script>
 
 
