@@ -126,7 +126,7 @@ public class StoreController extends ImageDefaultUrl {
     public String storeSaveSubmit(StoreDTO storeDTO, @RequestParam("storeImg") MultipartFile imgFile , HttpServletRequest request){
         HttpSession session = request.getSession();
         SellerDTO sellerDTO = (SellerDTO)session.getAttribute("loginUser");
-
+        System.out.println(storeDTO);
         if(!imgFile.isEmpty()){
             imgUrl = "seller/"+sellerDTO.getSellerId()+"/"+imgFile.getOriginalFilename();
         }
@@ -206,4 +206,5 @@ public class StoreController extends ImageDefaultUrl {
 
         return "redirect:/stores/"+storeId+"/menu";
     }
+
 }

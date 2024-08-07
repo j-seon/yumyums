@@ -29,6 +29,8 @@ public class StoreDTO {
     private Busy busy = Busy.CROWDED;
     private int likes;
     private ImagesDTO imagesDTO;
+    private double convX;
+    private double convY;
 
     public Store dtoToEntity() {
         Store store = new Store();
@@ -42,6 +44,9 @@ public class StoreDTO {
         store.setOpenTime(openTime);
         store.setCloseTime(closeTime);
         store.setBusy(busy);
+        store.setConvX(convX);
+        store.setConvY(convY);
+
         if(imagesDTO != null){
             store.setImages(imagesDTO.dtoToEntity());
         }
