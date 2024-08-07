@@ -72,8 +72,8 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
         List<Map<String,Object>> findMenuStatsByStoreId(@Param("storeId") int storeId);
 
 
-        @Query("SELECT m FROM Menu m WHERE m.store.id = :storeId ORDER BY m.category, m.name")
-        List<Menu> findMenusByStoreIdOrderedByCategory(int storeId);
+        @Query("SELECT m FROM Menu m WHERE m.store.id = :storeId ORDER BY m.id desc")
+        List<Menu> findMenusByStoreIdOrderedByIdDesc(int storeId);
 }
 
 

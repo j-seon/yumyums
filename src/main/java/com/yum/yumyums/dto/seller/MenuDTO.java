@@ -17,8 +17,8 @@ public class MenuDTO {
     private String content;
     private int price;
     private int cookingTime;
-    private boolean isAlone;
-    private boolean isActive;
+    private String isAlone;
+    private String isActive;
     private ImagesDTO imagesDTO;
 
     public Menu dtoToEntity(){
@@ -29,8 +29,8 @@ public class MenuDTO {
         menu.setContent(content);
         menu.setPrice(price);
         menu.setCookingTime(cookingTime);
-        menu.setAlone(isAlone);
-        menu.setActive(isActive);
+        menu.setAlone(Boolean.parseBoolean(isAlone));
+        menu.setActive(Boolean.parseBoolean(isActive));
         menu.setImages(imagesDTO.dtoToEntity());
         return menu;
     }

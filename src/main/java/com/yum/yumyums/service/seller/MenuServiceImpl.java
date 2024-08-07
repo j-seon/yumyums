@@ -69,7 +69,7 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<MenuDTO> getMenusByStoreId(int storeId) {
-        List<Menu> menus = menuRepository.findMenusByStoreIdOrderedByCategory(storeId);
+        List<Menu> menus = menuRepository.findMenusByStoreIdOrderedByIdDesc(storeId);
 
         List<MenuDTO> menuDTOs = menus.stream()
                 .map(menu -> menu.entityToDto())

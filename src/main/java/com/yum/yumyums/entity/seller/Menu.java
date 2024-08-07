@@ -56,8 +56,8 @@ public class Menu {
         menuDTO.setContent(this.getContent());
         menuDTO.setPrice(this.getPrice());
         menuDTO.setCookingTime(this.getCookingTime());
-        menuDTO.setAlone(this.isAlone());
-        menuDTO.setActive(this.isActive());
+        menuDTO.setIsAlone(String.valueOf(this.isAlone()));
+        menuDTO.setIsActive(String.valueOf(this.isActive()));
 
         if (this.images != null) {
             menuDTO.setImagesDTO(this.images.entityToDto());

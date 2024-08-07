@@ -170,6 +170,10 @@ public class StoreController extends ImageDefaultUrl {
 
         List<MenuDTO> menus = menuService.getMenusByStoreId(storeId);
 
+        for(MenuDTO menu : menus){
+            System.out.println(menu.toString());
+        }
+
         model.addAttribute("menus", menus);
         model.addAttribute("categories", FoodCategory.values());
         model.addAttribute("templateData", templateData);
@@ -180,11 +184,13 @@ public class StoreController extends ImageDefaultUrl {
 
     /*매장-메뉴등록*/
     @PostMapping("{storeId}/menu")
-    public String menuSaveSubmit(MenuDTO menuDTO, @RequestParam("menuImg") MultipartFile imgFile , HttpServletRequest request){
+    public String menuSaveSubmit(MenuDTO menuDTO, @RequestParam("menuImg") MultipartFile imgFile, HttpServletRequest request){
         HttpSession session = request.getSession();
         SellerDTO sellerDTO = (SellerDTO)session.getAttribute("loginUser");
-        int storeId = (int) session.getAttribute("storeId");
+        int storeId = (int)session.getAttribute("storeId");
         StoreDTO storeDTO = storeService.findById(storeId);
+        System.out.println("menuDTO : " + menuDTO);
+        System.out.println("stordId : " + storeId);
 
         if(!imgFile.isEmpty()){
             imgUrl = "seller/"+sellerDTO.getSellerId()+"/"+storeDTO.getName()+"/"+imgFile.getOriginalFilename();
@@ -198,6 +204,6 @@ public class StoreController extends ImageDefaultUrl {
         menuDTO.setImagesDTO(imagesDTO);
         menuService.save(menuDTO);
 
-        return "redirect:/stores";
+        return "redirect:/stores/"+storeId+"/menu";
     }
 }
