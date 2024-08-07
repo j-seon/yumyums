@@ -1,5 +1,6 @@
 package com.yum.yumyums.dto.user;
 
+import com.yum.yumyums.dto.ImagesDTO;
 import com.yum.yumyums.entity.user.Member;
 import com.yum.yumyums.enums.Gender;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,7 @@ public class MemberDTO {
     private String phone;
     private LocalDateTime joinTime;
     private boolean isActive;
+    private ImagesDTO imagesDTO;
    /* private List<MarkStationDTO> markStations;*/
 
     public static MemberDTO entityToDto(Member member) {
@@ -38,9 +40,12 @@ public class MemberDTO {
         memberDTO.setPhone(member.getPhone());
         memberDTO.setJoinTime(member.getJoinTime());
         memberDTO.setActive(member.isActive());
-/*        memberDTO.setMarkStations(member.getMarkStations().stream()
-                .map(MarkStationDTO::entityToDto)
-                .collect(Collectors.toList()));*/
+        if(member.getImages() != null){
+            memberDTO.setImagesDTO(member.getImages().entityToDto());
+        } else {
+            memberDTO.setImagesDTO(null);
+        }
+
         return memberDTO;
     }
 
@@ -55,6 +60,11 @@ public class MemberDTO {
         memberDTO.setPhone(member.getPhone());
         memberDTO.setJoinTime(member.getJoinTime());
         memberDTO.setActive(member.isActive());
+        if(member.getImages() != null){
+            memberDTO.setImagesDTO(member.getImages().entityToDto());
+        } else {
+            memberDTO.setImagesDTO(null);
+        }
         return memberDTO;
     }
 

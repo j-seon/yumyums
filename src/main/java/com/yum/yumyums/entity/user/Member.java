@@ -2,6 +2,7 @@ package com.yum.yumyums.entity.user;
 
 import com.yum.yumyums.dto.user.MarkStationDTO;
 import com.yum.yumyums.dto.user.MemberDTO;
+import com.yum.yumyums.entity.Images;
 import com.yum.yumyums.enums.Gender;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -50,6 +51,10 @@ public class Member {
     @Column(nullable = false)
     private boolean isActive;
 
+    @ManyToOne
+    @JoinColumn(name = "images_id")
+    private Images images;
+
     public static Member dtoToEntity(MemberDTO memberDTO){
         Member member = new Member();
 
@@ -62,6 +67,7 @@ public class Member {
         member.setPhone(memberDTO.getPhone());
         member.setJoinTime(memberDTO.getJoinTime());
         member.setActive(memberDTO.isActive());
+        member.setImages(memberDTO.getImagesDTO().dtoToEntity());
         return member;
     }
 
