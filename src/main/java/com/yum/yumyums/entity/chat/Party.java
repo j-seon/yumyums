@@ -74,15 +74,4 @@ public class Party {
 		return party;
 	}
 
-	public static Party createPartyByPartyDTO(PartyDTO partyDTO) {
-		Party party = new Party();
-		party.setId(partyDTO.getId());
-		party.setStore(partyDTO.getStoreDTO().dtoToEntity());
-		party.setPayType(partyDTO.getPayType());
-		party.setRandomType(partyDTO.getRandomType());
-		party.setActive(true);
-		party.setMaxMemberCount(partyDTO.getMaxMemberCount());
-
-		return party;
-	}
 }

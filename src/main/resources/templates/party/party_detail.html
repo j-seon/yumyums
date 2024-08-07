@@ -7,6 +7,9 @@
 	// 파티멤버의 인원수 가져오기
 	var partyMembersSize = [[${partyDTO.partyMemberCount}]]; // 리스트 크기를 JavaScript 변수로 가져옵니다.
 </script>
+
+<script src="../../js/chat/sockjs.js"></script>
+<script src="../../js/chat/stomp.js"></script>
 <script src="../../js/party/partyDetail.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
@@ -16,14 +19,14 @@
 <div class="container-fluid py-5">
 	<div class="container">
 		<!-- 파티 창 -->
-		<div class="bg-light p-5 rounded">
+		<div class="bg-light p-5 rounded ">
 			<!-- 상점 제목 -->
 			<div class="store-container mb-4 d-flex justify-content-between">
 				<h2 th:text="${partyDTO.storeDTO.name}"></h2>
 			</div>
 			<!-- //상점 제목 -->
 			<!-- 회원목록 -->
-			<div class="row g-4 justify-content-center">
+			<div class="row g-4 justify-content-center" id="party-member-container">
 				<!-- 파티장 정보 -->
 				<div class="col-md-6 col-lg-6 col-xl-3" th:each="partyMember : ${partyDTO.partyMemberDTOs}" th:if="${partyMember.isPartyLeader}">
 					<div class="counter bg-white rounded p-5">

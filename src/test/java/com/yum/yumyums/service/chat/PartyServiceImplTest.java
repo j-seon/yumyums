@@ -71,7 +71,7 @@ class PartyServiceImplTest {
 
 		partyDTO = new PartyDTO();
 		partyDTO.setId(partyId);
-		partyDTO.setPayType(PayType.DOUTCH);
+		partyDTO.setPayType(PayType.DUTCH);
 		partyDTO.setStoreDTO(storeDTO);
 		partyDTO.setActive(true);
 		partyDTO.setRandomType(RandomType.DICE);
