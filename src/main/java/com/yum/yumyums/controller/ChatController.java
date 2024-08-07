@@ -6,7 +6,6 @@ import com.yum.yumyums.dto.chat.ChatMessageDTO;
 import com.yum.yumyums.dto.user.MemberDTO;
 import com.yum.yumyums.entity.chat.Chat;
 import com.yum.yumyums.entity.chat.ChatMember;
-import com.yum.yumyums.entity.chat.ChatMessage;
 import com.yum.yumyums.entity.user.Member;
 import com.yum.yumyums.service.chat.ChatMemberService;
 import com.yum.yumyums.service.chat.ChatMessageService;
@@ -27,7 +26,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 @RequiredArgsConstructor
 @Controller
