@@ -43,8 +43,11 @@
     <link rel="stylesheet" href="../../dashboard/assets/css/demo.css" />
 </head>
 <body>
-    <div class="main-panel">
-        <th:block th:replace="~{|${templateData.viewPath}|}"></th:block>
+    <div class="wrapper">
+        <th:block th:replace="~{inc/dashBoardHeader}"></th:block>
+        <div class="main-panel">
+            <th:block th:replace="~{|${templateData.viewPath}|}"></th:block>
+        </div>
     </div>
 </body>
 <!--   jquery File   -->
