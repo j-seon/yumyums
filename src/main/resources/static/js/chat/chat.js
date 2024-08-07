@@ -92,8 +92,9 @@ function sendChat() {
         return;
     }
     var activeChatMemberId = $('.nav-item a.active').data('chat-member-id');
+    const messageContent = $("#message").val();
     if ($("#message").val() != "" && stompClientList[activeRoomId]) {
-        const messageContent = $("#message").val();
+
         const chatMessage = {
             chat : {
                 id :activeRoomId
@@ -112,6 +113,27 @@ function sendChat() {
         };
         stompClientList[activeRoomId].send(`/send/${activeRoomId}`, {}, JSON.stringify(chatMessage));
         $("#message").val('');
+    }else if (activeChatMemberId == "-1"){
+        $("#chatting").append(
+            "<div class='chat-box'><div class='chatting_own'><tr><td>" + messageContent + "</td></tr></div></div>"
+        );
+           $.ajax({
+               url: "http://192.168.0.106:5000/embedding",
+               method: "GET",
+               data: { question: messageContent },
+               success: function(response) {
+                   console.log("Response:", response.answer);
+                   parsedResponse = JSON.parse(response);
+
+                   // 응답 처리 로직
+                   $("#chatting").append(
+                        "<div class='chat-box'><div class='chatting'><tr><td>" + "[냠냠이] " + parsedResponse.answer  + "</td></tr></div></div>"
+                    );
+               },
+               error: function(xhr, status, error) {
+                   console.log("Error occurred:"+error);
+               }
+           });
     }
 }
 
@@ -242,29 +264,35 @@ $(document).ready(function() {
           console.log(roomId);
           $(this).addClass('active');
           $('#room-member').empty();
-          // 채팅 불러오기
-          $.ajax({
-               url: '/chat/findChatMessage',
-               data: {roomId : roomId },
-               success: (data) => {
-                   data.chatMessageList.forEach((message) => {
-                      showChat(message);
-                   });
-                   data.chatMemberList.forEach((member) => {
-                        $('#room-member').append(`
-                             <li class=" chat-member-id"
-                                 style="cursor:pointer;">${member.member.memberId} 님</li>
-                        `);
-                        if(member.member.memberId==loginUserId){
-                            $("#room-info").text(member.memberSavedRoomName)
-                        }
-                  });
-               }, error: (xhr, status, error) => {
-                    console.error('Error: ' + error);
-                    console.error('Status: ' + status);
-                    console.error(xhr);
-               }
-          });
+          if (roomId!="chat-bot"){
+            // 채팅 불러오기
+              $.ajax({
+                   url: '/chat/findChatMessage',
+                   data: {roomId : roomId },
+                   success: (data) => {
+                       data.chatMessageList.forEach((message) => {
+                          showChat(message);
+                       });
+                       data.chatMemberList.forEach((member) => {
+                            $('#room-member').append(`
+                                 <li class=" chat-member-id"
+                                     style="cursor:pointer;">${member.member.memberId} 님</li>
+                            `);
+                            if(member.member.memberId==loginUserId){
+                                $("#room-info").text(member.memberSavedRoomName)
+                            }
+                      });
+                   }, error: (xhr, status, error) => {
+                        console.error('Error: ' + error);
+                        console.error('Status: ' + status);
+                        console.error(xhr);
+                   }
+              });
+          }else{
+            console.log('ss')
+            $("#room-info").text("채팅 봇입니다.")
+          }
+
     });
 
     //채팅 추가

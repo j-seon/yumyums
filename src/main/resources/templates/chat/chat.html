@@ -9,6 +9,13 @@
             <div class="row ">
                 <ul class="nav nav-pills d-inline-flex text-center mb-5 chat-room-list">
                     <button type="button" class="btn btn-secondary add-chat-room" onclick="initModal()"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">채팅방 추가</button>
+                    <li class="nav-item">
+                        <a class="d-flex m-2 py-2 bg-light rounded-pill " data-bs-toggle="pill" data-room-id="chat-bot" data-chat-member-id="-1" >
+                            <span class="text-dark" style="width: 125px;">
+                                챗봇
+                            </span>
+                        </a>
+                    </li>
                     <li class="nav-item" th:each="chatRoomHash : ${chatRoomHashList}">
                         <a class="d-flex m-2 py-2 bg-light rounded-pill " data-bs-toggle="pill" th:data-room-id="${chatRoomHash.chatInfo.chat.id}" th:data-chat-member-id="${chatRoomHash.chatInfo.id}" >
                             <span class="text-dark" style="width: 125px;">
