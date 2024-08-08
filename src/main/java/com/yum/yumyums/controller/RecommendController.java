@@ -2,6 +2,7 @@ package com.yum.yumyums.controller;
 
 import com.yum.yumyums.dto.TemplateData;
 import com.yum.yumyums.dto.seller.MenuDTO;
+import com.yum.yumyums.enums.FoodCategory;
 import com.yum.yumyums.service.seller.MenuService;
 import com.yum.yumyums.service.seller.StoreService;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class RecommendController {
 
     @GetMapping
     public String getMenusByFilters(
-            @RequestParam(required = false) String category,
+            @RequestParam(required = false) FoodCategory category,
             @RequestParam(required = false) String priceRange,
             @RequestParam(required = false) Boolean isAlone,
             @RequestParam(required = false) String sort,

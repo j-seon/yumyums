@@ -1,6 +1,7 @@
 package com.yum.yumyums.repository.seller;
 
 import com.yum.yumyums.entity.seller.Menu;
+import com.yum.yumyums.enums.FoodCategory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,7 +22,7 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
                 "(m.price > 10000 AND m.price <= 20000 AND :priceRange = '10000_20000') OR " +
                 "(m.price > 20000 AND :priceRange = 'above_20000')) " +
                 "AND (:isAlone IS NULL OR m.isAlone = :isAlone)")
-        List<Menu> findAllByFilters(@Param("category") String category,
+        List<Menu> findAllByFilters(@Param("category") FoodCategory category,
                                     @Param("priceRange") String priceRange,
                                     @Param("isAlone") Boolean isAlone);
 
@@ -37,7 +38,7 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
                 "AND (:isAlone IS NULL OR m.isAlone = :isAlone) " +
                 "GROUP BY m.id " +
                 "ORDER BY COUNT(sl.id) DESC")
-        List<Menu> findAllByFiltersAndSortByLikes(@Param("category") String category,
+        List<Menu> findAllByFiltersAndSortByLikes(@Param("category") FoodCategory category,
                                                   @Param("priceRange") String priceRange,
                                                   @Param("isAlone") Boolean isAlone);
 
@@ -49,7 +50,7 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
                 "WHEN 'FULL' THEN 4 " +
                 "END, " +
                 "m.cookingTime ASC")
-        List<Menu> findAllOrderedByStoreBusyAndCookingTime(@Param("category") String category,
+        List<Menu> findAllOrderedByStoreBusyAndCookingTime(@Param("category") FoodCategory category,
                                                            @Param("priceRange") String priceRange,
                                                            @Param("isAlone") Boolean isAlone);
 

@@ -57,7 +57,7 @@
     <tr th:each="menu : ${menus}" th:attr="data-menu-id=${menu.id}">
         <td><a th:href="@{/menu/{id}(id=${menu.id})}" th:text="${menu.name}"></a></td>
         <td th:text="${menu.storeDTO.name}"></td>
-        <td th:text="${menu.storeDTO.categoryKorName}"></td>
+        <td th:text="${menu.categoryKorName}"></td>
         <td th:text="${menu.content}"></td>
         <td th:text="${menu.price}"></td>
         <td th:text="${menu.cookingTime}"></td>
