@@ -23,17 +23,6 @@ public class MenuServiceImpl implements MenuService {
     private final ReviewRepository reviewRepository;
     private final ImagesService imagesService;
 
-    public List<MenuDTO> getMenusByStoreId(int storeId) {
-        List<MenuDTO> returnDto = new ArrayList<>();
-        List<Menu> findAll = menuRepository.findByStoreId(storeId);
-
-        for (Menu findEntity : findAll) {
-            returnDto.add(findEntity.entityToDto());
-        }
-
-        return returnDto;
-    }
-
 
     public Optional<MenuDTO> findById(int id) {
         return menuRepository.findById(id)

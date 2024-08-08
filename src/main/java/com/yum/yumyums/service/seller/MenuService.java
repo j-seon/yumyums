@@ -11,11 +11,9 @@ import java.util.OptionalDouble;
 
 @Service
 public interface MenuService {
-    List<MenuDTO> getMenusByStoreId(int storeId);
     Optional<MenuDTO> findById(int id);
     List<MenuDTO> getMenusByFilters(String category, String priceRange, Boolean isAlone, String sort);
     OptionalDouble getAverageRateForMenu(int menuId);
     List<MenuDTO> getMenusByStoreId(int storeId);
     void save(MenuDTO menuDTO);
-
 }

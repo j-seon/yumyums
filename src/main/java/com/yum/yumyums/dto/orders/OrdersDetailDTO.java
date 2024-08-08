@@ -12,7 +12,6 @@ public class OrdersDetailDTO {
     private OrdersDTO ordersDTO;
     private StoreDTO storeDTO;
     private MenuDTO menuDTO;
-    private StoreDTO storeDTO;
     private String menuName;
     private int menuPrice;
     private int menuCount;
