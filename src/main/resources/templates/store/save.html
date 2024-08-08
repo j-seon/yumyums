@@ -48,7 +48,7 @@
                         <label class="form-label my-3" for="address">주소 <sup>*</sup></label>
                         <div class="d-flex justify-content-between align-items-center">
                             <input type="text" class="form-control" id="address" name="address" readonly>
-                            <input type="button" class="btn btn-secondary py-1 px-2 w-20" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
+                            <input type="button" class="btn btn-secondary py-1 px-2 w-20" onclick="searchAddressSetCoords()" value="주소 검색"><br>
                             <input type="hidden" id="convX" name="convX">
                             <input type="hidden" id="convY" name="convY">
                         </div>
@@ -98,7 +98,7 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="../../js/common/maps.js"></script>
 <script>
-    function sample5_execDaumPostcode() {
+    function searchAddressSetCoords() {
         new daum.Postcode({
             oncomplete: function(data) {
                 var addr = data.address; // 최종 주소 변수
