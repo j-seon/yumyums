@@ -137,11 +137,19 @@
 
     function updateTotalPrice(element) {
         const row = element.closest('tr');
-        const price = parseFloat(row.querySelector('[data-price]').getAttribute('data-price'));
-        const quantity = parseInt(element.value);
-        const totalPriceElement = row.querySelector('.total-price');
+        const price = parseInt(row.querySelector('[data-price]').getAttribute('data-price'));
+        console.log('query :',row.querySelector('[data-price]'));
+        console.log('getAtt :',row.querySelector('[data-price]').getAttribute('data-price'));
 
-        const totalPrice = price * quantity;
+        const quantity = parseInt(element.value);
+        console.log("quantity : ",quantity);
+
+        const totalPriceElement = row.querySelector('.total-price');
+        console.log("tPE : " ,totalPriceElement);
+
+
+        const totalPrice = parseInt(price * quantity); //
+        console.log("* : " ,price * quantity);
         totalPriceElement.innerText = totalPrice + ' 원';
 
         // 서버에 업데이트 요청 보내기
