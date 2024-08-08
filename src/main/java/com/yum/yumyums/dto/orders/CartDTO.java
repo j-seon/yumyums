@@ -11,4 +11,5 @@ public class CartDTO {
     private MemberDTO memberDTO;
     private MenuDTO menuDTO;
     private int menuCount;
+    private int totalPrice;
 }

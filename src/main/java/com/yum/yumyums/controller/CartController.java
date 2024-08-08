@@ -30,7 +30,15 @@ public class CartController {
         }
         String memberId = loginUser.getMemberId();
         List<CartDTO> cartItems = cartService.getCartItems(memberId);
+
+
+        String storeName = "";
+        if (!cartItems.isEmpty()) {
+            storeName = cartItems.get(0).getMenuDTO().getStoreDTO().getName();
+        }
+
         model.addAttribute("cartItems", cartItems);
+        model.addAttribute("storeName", storeName);
         model.addAttribute("templateData", templateData);
         return "template";
     }
