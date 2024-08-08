@@ -57,4 +57,6 @@ public class StoreDTO {
     public String getBusyKorName() {
         return busy.getKorName();
     }
+
+
 }

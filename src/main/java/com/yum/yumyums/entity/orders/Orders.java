@@ -1,21 +1,22 @@
 package com.yum.yumyums.entity.orders;
 
-import com.yum.yumyums.dto.FaqDTO;
+
 import com.yum.yumyums.dto.orders.OrdersDTO;
 import com.yum.yumyums.dto.user.MemberDTO;
 import com.yum.yumyums.entity.seller.Store;
 import com.yum.yumyums.entity.user.Member;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.Data;
+
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "orders")
-@Getter
+@Data
 public class Orders {
 
-	//주문ID
+    //주문ID
     @Id
     @Column(length = 50)
     private String id;
@@ -45,6 +46,11 @@ public class Orders {
     @Column(name = "waiting_num")
     private int waitingNum;
 
+
+    @Column(name = "payment_method")
+    private String paymentMethod;
+
+
     public OrdersDTO entityToDto() {
         OrdersDTO ordersDTO = new OrdersDTO();
         System.out.println("this.getOrdersTime() : "+this.getOrdersTime());
@@ -54,7 +60,12 @@ public class Orders {
         ordersDTO.setDiscount(this.getDiscount());
         ordersDTO.setWaitingNum(this.getWaitingNum());
         ordersDTO.setTotalPrice(this.getTotalPrice());
+
+        ordersDTO.setPaymentMethod(this.getPaymentMethod());
         ordersDTO.setMemberDTO(MemberDTO.entityToDto(this.member));
+
         return ordersDTO;
     }
+
+
 }

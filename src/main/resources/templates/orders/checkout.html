@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Fruitables - Vegetable Website Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="../../lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <link href="../../lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="../../css/style.css" rel="stylesheet">
+</head>
+<body>
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">주문확인</h1>
+    <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Pages</a></li>
+        <li class="breadcrumb-item active text-white">Shop</li>
+    </ol>
+</div>
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="rounded shadow-sm p-4">
+                <h4 class="mb-4">주문 메뉴 정보</h4>
+                <ul class="list-group mb-5">
+                    <li class="list-group-item d-flex justify-content-between align-items-center p-3" th:each="item : ${cartItems}">
+                        <div class="d-flex align-items-center">
+                            <img src="img/sundaeguk.jpg" alt="" class="img-fluid m-2" style="width: 60px;">
+                            <div>
+                                <h5 class="mb-1" th:text="${item.menuDTO.name}"></h5>
+                                <p class="mb-0" th:text="${item.menuDTO.price + ' x ' + item.menuCount + '개 = ' + (item.menuDTO.price * item.menuCount) + '원'}"></p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+
+                <h4 class="mb-4">주문자 정보</h4>
+                <ul class="list-group mb-5">
+                    <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                        <div>
+                            <p class="mb-1" th:text="'이름: ' + ${loginUser.name}"></p>
+                            <p class="mb-1" th:text="'연락처: ' + ${loginUser.phone}"></p>
+                        </div>
+                    </li>
+                </ul>
+
+                <h4 class="mb-4">판매자 정보</h4>
+                <ul class="list-group mb-5">
+                    <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                        <div>
+                            <p class="mb-1" th:text="'상호명: ' + ${cartItems[0].menuDTO.storeDTO.name}"></p>
+                            <p class="mb-1" th:text="'주소: ' + ${cartItems[0].menuDTO.storeDTO.address}"></p>
+                            <p class="mb-1" th:text="'전화번호: ' + ${cartItems[0].menuDTO.storeDTO.sellerDTO.phone}"></p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="payment-methods">
+                <div class="p-4">
+                    <h4 class="mt-4 mb-4">결제 방법</h4>
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-warning active">
+                            <input type="radio" name="paymentMethod" id="option1" value="card"> 신용, 체크카드
+                        </label>
+                        <label class="btn btn-outline-secondary">
+                            <input type="radio" name="paymentMethod" id="option2" value="cash"> 계좌이체
+                        </label>
+                        <label class="btn btn-outline-secondary">
+                            <input type="radio" name="paymentMethod" id="option3" value="meet"> 만나서 결제
+                        </label>
+                        <label class="btn btn-outline-success">
+                            <input type="radio" name="paymentMethod" id="option4" value="pay"> N Pay
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 총 결제 금액 -->
+        <div class="col-lg-4 col-md-12">
+            <div class="sticky-top">
+                <div class="rounded shadow-sm">
+                    <div class="p-4">
+                        <h2 class="mb-5">총 결제 금액</h2>
+                        <div class="d-flex justify-content-between mb-3">
+                            <h5 class="mb-0">총 주문금액:</h5>
+                            <p class="mb-0" th:text="${totalPrice} + '원'"></p>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <h5 class="mb-0">할인금액:</h5>
+                            <p class="mb-0 text-secondary">-0 원</p>
+                        </div>
+
+                        <div class="py-4 border-top d-flex justify-content-between">
+                            <h5 class="mb-0">최종 결제예정금액</h5>
+                            <h3 class="mb-0 text-danger" id="totalAmount" th:text="${totalPrice} + '원'"></h3>
+                        </div>
+
+                        <form id="orderForm" th:action="@{/orders/success}" method="post">
+                            <input type="hidden" id="hiddenPaymentMethod" name="paymentMethod" value="">
+                            <button class="btn btn-secondary text-white w-100 rounded mt-4" type="submit">전체상품 주문하기</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("input[name='paymentMethod']").on("change", function() {
+            var selectedPaymentMethod = $("input[name='paymentMethod']:checked").val();
+            $("#hiddenPaymentMethod").val(selectedPaymentMethod);
+        });
+
+        $("#orderForm").on("submit", function(event) {
+            event.preventDefault();
+            alert("주문 완료되었습니다");
+
+            if (confirm("주문을 확인하시겠습니까?")) {
+                this.submit();
+            } else {
+                window.location.href = "/menu";
+            }
+        });
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
