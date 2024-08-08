@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -29,12 +31,17 @@ public class PartyMember {
 	@Column(columnDefinition = "boolean DEFAULT false", nullable = false)
 	private boolean isPartyLeader = false;
 
+	@Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", nullable = false)
+	private LocalDateTime joinTime = LocalDateTime.now();
+
+
 	public PartyMemberDTO entityToDto() {
 		PartyMemberDTO partyMemberDTO = new PartyMemberDTO();
 		partyMemberDTO.setId(id);
 		partyMemberDTO.setPartyDTO(party.entityToDto());
 		partyMemberDTO.setMemberDTO(MemberDTO.toMemberDTO(member));
 		partyMemberDTO.setPartyLeader(isPartyLeader);
+		partyMemberDTO.setJoinTime(joinTime);
 
 		return partyMemberDTO;
 	}
@@ -44,6 +51,7 @@ public class PartyMember {
 		partyMember.setPartyLeader(isPartyLeader);
 		partyMember.setMember(member);
 		partyMember.setParty(party);
+		partyMember.setJoinTime(LocalDateTime.now());
 
 		return partyMember;
 	}

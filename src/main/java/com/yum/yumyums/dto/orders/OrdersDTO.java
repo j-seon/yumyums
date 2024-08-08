@@ -19,4 +19,5 @@ public class OrdersDTO {
     private int waitingNum;
     private List<OrdersDetailDTO> ordersDetails;
     private String paymentMethod;
+
 }

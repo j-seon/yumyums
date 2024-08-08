@@ -1,0 +1,60 @@
+<!-- Sidebar -->
+<div class="sidebar" data-background-color="dark">
+    <div class="sidebar-logo">
+        <!-- Logo Header -->
+        <div class="logo-header" data-background-color="dark">
+            <a th:href="|/dashboard/${session.storeId}|" class="logo">
+                <img
+                        src="/img/logo_400.png"
+                        alt="navbar brand"
+                        class="navbar-brand"
+                        height="80"
+                />
+            </a>
+            <div class="nav-toggle">
+                <button class="btn btn-toggle toggle-sidebar">
+                    <i class="gg-menu-right"></i>
+                </button>
+                <button class="btn btn-toggle sidenav-toggler">
+                    <i class="gg-menu-left"></i>
+                </button>
+            </div>
+            <button class="topbar-toggler more">
+                <i class="gg-more-vertical-alt"></i>
+            </button>
+        </div>
+        <!-- End Logo Header -->
+    </div>
+    <div class="sidebar-wrapper scrollbar scrollbar-inner">
+        <div class="sidebar-content">
+            <ul class="nav nav-secondary">
+                <li class="nav-item">
+                    <a th:href="|/dashboard/${session.storeId}|">
+                        <i class="fas fa-desktop"></i>
+                        <p>대시보드</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="|/dashboard/${session.storeId}/analysis|">
+                        <i class="fas fa-chart-line"></i>
+                        <p>매출통계</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="|/stores/${session.storeId}/menu|">
+                        <i class="fas fa-utensils"></i>
+                        <p>메뉴관리</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                    <!--<a th:href="|/dashboard/${storeId}/info|">-->
+                        <i class="fas fa-store"></i>
+                        <p>매장정보</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- End Sidebar -->
