@@ -15,7 +15,7 @@
                     </div>
 
                     <div class="form-item">
-                        <label class="form-label" for="name">카테고리(업종) <sup>*</sup></label>
+                        <label class="form-label my-3" for="name">카테고리(업종) <sup>*</sup></label>
                         <select class="form-select" name="category" required>
                             <option value="" selected disabled hidden>카테고리 선택</option>
                             <option th:each="category : ${categories}"
@@ -41,9 +41,17 @@
                         <label class="form-label my-3" for="passwordChk">비밀번호 확인 <sup>*</sup></label>
                         <input type="password" class="form-control" name="passwordChk" id="passwordChk" placeholder="비밀번호 입력" disabled>
                     </div>
-                    <div class="form-item">
+                    <div class="form-item mt-3">
+                        <div class="row g-2 justify-content-center">
+                            <div id="map" class="shadow" style="width:300px;height:300px;margin-top:10px;"></div>
+                        </div>
                         <label class="form-label my-3" for="address">주소 <sup>*</sup></label>
-                        <input type="text" class="form-control" id="address" name="address" required>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <input type="text" class="form-control" id="address" name="address" readonly>
+                            <input type="button" class="btn btn-secondary py-1 px-2 w-20" onclick="searchAddressSetCoords()" value="주소 검색"><br>
+                            <input type="hidden" id="convX" name="convX">
+                            <input type="hidden" id="convY" name="convY">
+                        </div>
                     </div>
                     <div class="row">
                         <div class="my-3">
@@ -85,24 +93,39 @@
 
 <script src="../../js/common/duplicate.js"></script>
 <script src="../../js/common/images.js"></script>
-<!--
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=085a096f7e5948cab899f39d4bc642d1&libraries=services"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="../../js/common/maps.js"></script>
 <script>
-    function previewImage(event) {
-        const files = event.target.files;
-        const imagePreviewBox = $('#imagePreviewBox');
-        imagePreviewBox.empty(); // 기존 이미지를 초기화
+    function searchAddressSetCoords() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                var addr = data.address; // 최종 주소 변수
 
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            const reader = new FileReader();
+                // 주소 정보를 해당 필드에 넣는다.
+                document.getElementById("address").value = addr;
+                // 주소로 상세 정보를 검색
+                geocoder.addressSearch(data.address, function(results, status) {
+                    // 정상적으로 검색이 완료됐으면
+                    if (status === kakao.maps.services.Status.OK) {
 
-            reader.onload = function(e) {
-                imagePreviewBox.append(`<img src="${e.target.result}" class="col-4 p-0 shadow">`); // 이미지 추가
-            }
+                        var result = results[0]; // 첫번째 결과의 값을 활용
 
-            if (file) {
-                reader.readAsDataURL(file); // 파일을 읽어서 Data URL로 변환
-            }
+                    // 해당 주소에 대한 좌표를 받아서
+                    var coords = new kakao.maps.LatLng(result.y, result.x);
+                    document.getElementById("convX").value = result.x;
+                    document.getElementById("convY").value = result.y;
+                    // 지도를 보여준다.
+                    mapContainer.style.display = "block";
+                    map.relayout();
+                    // 지도 중심을 변경한다.
+                    map.setCenter(coords);
+                    // 마커를 결과값으로 받은 위치로 옮긴다.
+                    marker.setPosition(coords);
+                }
+            });
         }
-    }
-</script>-->
+    }).open();
+}
+</script>

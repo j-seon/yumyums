@@ -56,6 +56,12 @@ public class Store {
 	@JoinColumn(name = "images_id")
 	private Images images;
 
+	@Column(nullable = false)
+	private double convX;
+
+	@Column(nullable = false)
+	private double convY;
+
 	public StoreDTO entityToDto() {
 		StoreDTO storeDTO = new StoreDTO();
 		storeDTO.setStoreId(this.id);
@@ -67,6 +73,8 @@ public class Store {
 		storeDTO.setOpenTime(this.openTime);
 		storeDTO.setCloseTime(this.closeTime);
 		storeDTO.setBusy(this.busy);
+		storeDTO.setConvX(this.convX);
+		storeDTO.setConvY(this.convY);
 		
 		// Null 체크 추가 기존 작업 중인 더미데이터에는 images 값이 없어서 부득이하게 설정
 		if (this.images != null) {
