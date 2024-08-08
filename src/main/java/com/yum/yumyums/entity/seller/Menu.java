@@ -74,8 +74,8 @@ public class Menu {
         menu.setContent(menuDTO.getContent());
         menu.setPrice(menuDTO.getPrice());
         menu.setCookingTime(menuDTO.getCookingTime());
-        menu.setAlone(menuDTO.isAlone());
-        menu.setActive(menuDTO.isActive());
+        menu.setAlone(Boolean.parseBoolean(menuDTO.getIsAlone()));
+        menu.setActive(Boolean.parseBoolean(menuDTO.getIsActive()));
         return menu;
     }
 
