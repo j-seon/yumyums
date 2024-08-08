@@ -26,8 +26,14 @@
     <title>Yumyums</title>
 </head>
 <body>
+    <th:block th:replace="~{inc/spinner}"></th:block>
+    <th:block th:replace="~{inc/header}"></th:block>
+    <div class="hero-header"></div>
     <th:block th:replace="~{|${templateData.viewPath}|}"></th:block>
 </body>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+<!-- Template Stylesheet -->
+<script src="../../js/main.js" ></script>
 </html>
