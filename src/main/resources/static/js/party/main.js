@@ -34,7 +34,7 @@
 			data: { targetPage: targetPage },
 			method: 'GET',
 			success: function(data) {
-				$('.container').html(data);
+				$('#party-container').html(data);
 
 				// 이동할 페이지가 파티생성 페이지라면
 				if (targetPage === 'create_party') {
