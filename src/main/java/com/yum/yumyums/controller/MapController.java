@@ -14,16 +14,23 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/map")
+@RequestMapping("/maps")
 public class MapController {
     private final StoreService storeService;
 
-    @GetMapping
+    @GetMapping("/test")
     public String showOnMap(Model model, TemplateData templateData) {
 
         templateData.setViewPath("map/address");
         List<StoreDTO> stores = storeService.getStoresOnMap();
         model.addAttribute("stores", stores);
+        return "template";
+    }
+
+    @GetMapping("")
+    public String storesOnMap(Model model, TemplateData templateData){
+        templateData.setViewPath("map/maps");
+        model.addAttribute("templateData",templateData);
         return "template";
     }
 
