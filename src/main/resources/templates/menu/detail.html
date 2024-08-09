@@ -57,9 +57,8 @@
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <h3 class="fw-bold mb-3"  th:text="${menu.storeDTO.name}"></h3>
-                        <p class="mb-3" th:text="${menu.storeDTO.categoryKorName}"></p>
-                        <h4 class="fw-bold mb-3" th:text="${averageRate}"></h4>
+                        <h3 class="fw-bold mb-3"  th:text="${store.name}"></h3>
+                        <p class="mb-3" th:text="${store.categoryKorName}"></p>
                         <div class="d-flex mb-4" id="starRating">
                             <i class="fa fa-star text-secondary"></i>
                             <i class="fa fa-star text-secondary"></i>
@@ -87,10 +86,10 @@
                         </nav>
                         <div class="tab-content mb-5">
                             <div class="tab-pane active" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
-                                <p>주소: <span th:text="${menu.storeDTO.address}"></span></p>
-                                <p>영업 시간: <span th:text="${menu.storeDTO.openTime}"></span> - <span th:text="${menu.storeDTO.closeTime}"></span></p>
-                                <p>혼잡도: <span th:text="${menu.storeDTO.busyKorName}"></span></p>
-                                <p class="mb-1" th:text="${menu.storeDTO.content}"></p>
+                                <p>주소: <span th:text="${store.address}"></span></p>
+                                <p>영업 시간: <span th:text="${store.openTime}"></span> - <span th:text="${store.closeTime}"></span></p>
+                                <p>혼잡도: <span th:text="${store.busyKorName}"></span></p>
+                                <p class="mb-1" th:text="${store.content}"></p>
                             </div>
                             <div class="tab-pane" id="nav-mission" role="tabpanel" aria-labelledby="nav-mission-tab">
                                 <div class="d-flex">
@@ -175,7 +174,7 @@
                     <div class="vesitable-img">
                         <img src="img/vegetable-item-1.jpg" class="img-fluid w-100 rounded-top" alt="">
                     </div>
-                    <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;"  th:text="${averageRate}"></div>
+                    <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;" th:text="${averageRate[item.id]}" ></div>
                     <div class="p-4 pb-0 rounded-bottom">
                         <h4 th:text="${item.name}"></h4>
                         <div class="d-flex justify-content-between flex-lg-wrap">
