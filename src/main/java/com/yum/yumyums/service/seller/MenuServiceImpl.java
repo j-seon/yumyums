@@ -36,9 +36,9 @@ public class MenuServiceImpl implements MenuService {
 
         if ("rating".equals(sort)) {
             menus.sort((m1, m2) -> {
-                OptionalDouble avgRating1 = getAverageRateForMenu(m1.getId());
-                OptionalDouble avgRating2 = getAverageRateForMenu(m2.getId());
-                return Double.compare(avgRating2.orElse(0.0), avgRating1.orElse(0.0));
+                double avgRating1 = getAverageRateForMenu(m1.getId());
+                double avgRating2 = getAverageRateForMenu(m2.getId());
+                return Double.compare(avgRating2, avgRating1);
             });
         } else if ("likes".equals(sort)) {
             menus = menuRepository.findAllByFiltersAndSortByLikes(category, priceRange, isAlone);
@@ -54,14 +54,18 @@ public class MenuServiceImpl implements MenuService {
     }
 
 
+
     //리뷰 평균 평점 계산하기
     @Override
-    public OptionalDouble getAverageRateForMenu(int menuId) {
+    public double getAverageRateForMenu(int menuId) {
         var reviews = reviewRepository.findByMenuId(menuId);
-        return reviews.stream()
+        OptionalDouble averageRate = reviews.stream()
                 .mapToDouble(Review::getRate)
                 .average();
+
+        return averageRate.isPresent() ? Math.round(averageRate.getAsDouble() * 10) / 10.0 : 0.0;
     }
+
 
     @Override
     public List<MenuDTO> getMenusByStoreId(int storeId) {
