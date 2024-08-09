@@ -66,7 +66,6 @@ public class RecommendController {
             MenuDTO menu = menuOptional.get();
             model.addAttribute("menu", menu);
 
-
             int storeId = menu.getStoreDTO().getStoreId();
             List<MenuDTO> menuList = menuService.getMenusByStoreId(storeId);
             model.addAttribute("menulist", menuList);

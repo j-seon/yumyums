@@ -124,4 +124,16 @@ public class StoreServiceImpl implements StoreService {
         return store.get().entityToDto();
     }
 
+    public List<StoreDTO> findStoresWithinRadius(double lat, double lon, int radius) {
+        List<Store> stores = storeRepository.findStoresWithinRadius(lat, lon, radius);
+        List<StoreDTO> result = new ArrayList<>();
+
+        for (Store store : stores) {
+            StoreDTO dto = store.entityToDto();
+            result.add(dto);
+            System.out.println("store : "+ store);
+        }
+        return result;
+    }
+
 }
