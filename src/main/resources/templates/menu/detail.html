@@ -216,7 +216,12 @@
 <!-- Back to Top -->
 <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
 <script>
+
     function addToCart(menuId) {
+
+        const joinPage = "[[${joinPage}]]";
+        const partyId = "[[${partyId}]]";
+
         const row = $("tr[data-menu-id='" + menuId + "']");
         const quantity = row.find('input[name="quantity"]').val();
 
@@ -225,8 +230,10 @@
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify({
-                menuDTO: {id: menuId},
-                menuCount: quantity
+                menuDTO: { id: menuId },
+                menuCount: quantity,
+                partyDTO: { id: partyId },
+                joinPage: joinPage
             }),
             success: function (response) {
                 alert(response); // 성공 메시지

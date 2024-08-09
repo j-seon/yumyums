@@ -11,4 +11,7 @@ public interface CartService {
     void removeMenuFromCart(String memberId, int menuId);
     void updateMenuCount(CartDTO cartDTO);
     int getCartItemCount(String memberId);
+
+    //[Party] 파티 장바구니에 추가
+    void addMenuToPartyCart(CartDTO cartDTO);
 }
