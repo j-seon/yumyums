@@ -124,11 +124,25 @@ public class CartServiceImpl implements CartService {
         Menu menu = menuRepository.findById(cartDTO.getMenuDTO().getId())
                 .orElseThrow(() -> new RuntimeException("메뉴 없음: " + cartDTO.getMenuDTO().getId()));
 
+
         // DTO를 엔티티로 변환
         cartDTO.setMemberDTO(MemberDTO.toMemberDTO(member));
         cartDTO.setMenuDTO(menu.entityToDto());
 
         PartyCart partyCart = cartDTO.dtoToPartyCartEntity();
+
+        //이미 카트에 추가된 메뉴라면
+        Optional<PartyCart> existingPartyCartItem = partyCartRepository.findByMemberIdAndMenuId(member.getId(), menu.getId());
+        if (existingPartyCartItem.isPresent()) {
+
+            // 기존 메뉴의 갯수에 추가된 개수 가져옴
+            PartyCart existingPartyCartItemEntity = existingPartyCartItem.get();
+            int existingMenuCount = existingPartyCartItemEntity.getMenuCount();
+
+            // entity 기존 값으로 덮어씌우고 개수 증가
+            partyCart = existingPartyCartItemEntity;
+            partyCart.setMenuCount(existingMenuCount + cartDTO.getMenuCount());
+        }
 
         // PartyCart 상태 검증
         if (partyCart.getParty() == null || partyCart.getMember() == null || partyCart.getMenu() == null) {
