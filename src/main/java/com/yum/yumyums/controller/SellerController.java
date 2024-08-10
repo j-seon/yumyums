@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
@@ -42,19 +43,22 @@ public class SellerController {
     }
 
     @PostMapping("/login")
-    public String sellerLogin(HttpServletRequest request, SellerDTO sellerDTO, Model model, TemplateData templateData){
+    public String sellerLogin(@RequestParam("redirect") String redirectUrl, HttpServletRequest request, SellerDTO sellerDTO, Model model, TemplateData templateData){
         HttpSession session = request.getSession();
         String sellerId = sellerDTO.getSellerId();
         String sellerPw = sellerDTO.getPassword();
-
+        if(redirectUrl.isEmpty()){
+            redirectUrl = "/";
+        }
+        System.out.println("redirectUrl :" + redirectUrl);
         SellerDTO seller = sellerService.findById(sellerId);
         if(seller != null && seller.getPassword().equals(sellerPw)){
             session.setAttribute("loginUser",seller);
             session.setAttribute("loginType","s");
-            return "redirect:/";
+            return "redirect:" + redirectUrl;
         }else{
             templateData.setMessage("아이디 또는 비밀번호가 일치하지 않습니다.");
-            templateData.setUrl("/login");
+            templateData.setUrl("/login?redirect=" + redirectUrl);
             model.addAttribute("templateData", templateData);
             return "/inc/alert";
         }

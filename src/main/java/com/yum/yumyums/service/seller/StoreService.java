@@ -19,4 +19,6 @@ public interface StoreService {
 	void save(StoreDTO storeDTO);
 
 	StoreDTO findById(int storeId);
+
+	List<StoreDTO> findStoresWithinRadius(double lat, double lon, int radius);
 }

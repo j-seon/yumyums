@@ -1,0 +1,43 @@
+<style>
+    .wrap {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
+    .wrap * {padding: 0;margin: 0;}
+    .wrap .info {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
+    .wrap .info:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;}
+    .info .title {padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;}
+    .info .close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
+    .info .close:hover {cursor: pointer;}
+    .info .body {position: relative;overflow: hidden;}
+    .info .desc {position: relative;margin: 13px 0 0 90px;height: 75px;}
+    .desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+    .desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}
+    .info .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
+    .info:after {content: '';position: absolute;margin-left: -12px;left: 50%;bottom: 0;width: 22px;height: 12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+    .info .link {color: #5085BB;}
+</style>
+<!-- Single Page Header start -->
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">지도 탐색</h1>
+    <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item active text-white">Maps</li>
+    </ol>
+</div>
+<!-- Single Page Header End -->
+<div class="container-fluid fruite py-5">
+    <div class="container py-5">
+        <div class="row g-2 justify-content-center p-5 mb-5 border-bottom border-primary">
+            <div class="col-12">
+                <label for="radiusRange" class="form-label">반경(미터) : <span id="radiusValue">300</span> m </label>
+                <input type="range" id="radiusRange" class="form-range" min="100" max="1000" value="300" step="100">
+            </div>
+            <div class="col-12 text-end">
+                <button class="btn btn-secondary py-1 px-2 w-20" onclick="searchAddressSetCenter()"><i class="fas fa-search"></i> 주소 검색</button>
+            </div>
+        </div>
+        <div class="row g-2 justify-content-center">
+            <div id="map" class="shadow" style="width:85%;height:640px;margin-top:10px;"></div>
+        </div>
+    </div>
+</div>
+
+
+<script defer src="../../js/maps/maps.js"></script>
