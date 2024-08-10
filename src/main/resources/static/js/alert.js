@@ -2,10 +2,6 @@
 function loadSweetAlert() {
     const script = document.createElement('script');
     script.src = "https://cdn.jsdelivr.net/npm/sweetalert2@9";
-    script.onload = function() {
-        // 스크립트 로드 후 사용할 수 있는 코드
-        Swal.fire('SweetAlert2 Loaded!');
-    };
     document.head.appendChild(script);
 }
 // 함수 호출
