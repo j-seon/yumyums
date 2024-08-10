@@ -67,4 +67,11 @@
           }
       }
   }
+
+  document.querySelectorAll('.nav-tabs a').forEach(tab => {
+      tab.addEventListener('click', function(event) {
+          event.stopPropagation(); // 이벤트 전파 방지
+      });
+  });
+
 </script>
