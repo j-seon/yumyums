@@ -2,6 +2,7 @@ package com.yum.yumyums.entity.chat;
 
 import com.yum.yumyums.dto.FaqDTO;
 import com.yum.yumyums.dto.chat.ChatMessageDTO;
+import com.yum.yumyums.entity.user.Member;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -14,8 +15,8 @@ public class ChatMessage {
 	private int id;
 
 	@ManyToOne
-	@JoinColumn(name = "chat_member_id")
-	private ChatMember chatMember;
+	@JoinColumn(name = "member_id", nullable = false)
+	private Member member;
 
 	@Column(columnDefinition = "TEXT", nullable = false)
 	private String content;
@@ -28,7 +29,7 @@ public class ChatMessage {
 
 		ChatMessageDTO chatMessageDTO = new ChatMessageDTO();
 
-		chatMessageDTO.setChatMember(this.getChatMember().entityToDto());
+		chatMessageDTO.setMember(this.getMember().entityToDto());
 		chatMessageDTO.setChat(this.chat.entityToDto());
 		chatMessageDTO.setId(this.getId());
 		chatMessageDTO.setContent(this.getContent());
