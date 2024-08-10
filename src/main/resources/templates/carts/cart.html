@@ -1,39 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <title>Fruitables - Vegetable Website Template</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
-
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap" rel="stylesheet">
-
-    <!-- Icon Font Stylesheet -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
-    <link href="../../lib/lightbox/css/lightbox.min.css" rel="stylesheet">
-    <link href="../../lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="../../css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Template Stylesheet -->
-    <link href="../../css/style.css" rel="stylesheet">
-    <style>
-        .align-middle {
-            vertical-align: middle !important;
-        }
-
-    </style>
-</head>
-<body>
+<style>
+    .align-middle {
+        vertical-align: middle !important;
+    }
+</style>
 
 <div class="container-fluid page-header py-5">
     <h1 class="text-center text-white display-6">장바구니 </h1>
@@ -65,7 +35,7 @@
                                 <p class="mb-0" th:text="${cartItem.menuDTO.name}"></p>
                             </td>
                             <td class="align-middle">
-                                <p class="mb-0" th:text="${cartItem.menuDTO.price} + '원'" data-price="${cartItem.menuDTO.price}"></p>
+                                <p class="mb-0" th:text="${cartItem.menuDTO.price} + '원'" th:attr="data-price=${cartItem.menuDTO.price}"></p>
                             </td>
                             <td class="align-middle">
                                 <input type="number" name="menuCount" min="1" th:value="${cartItem.menuCount}" class="form-control text-center border-0" data-price="${cartItem.menuDTO.price}" data-menu-id="${cartItem.menuDTO.id}" oninput="updateTotalPrice(this)">
@@ -126,82 +96,6 @@
         </div>
     </div>
 </div>
-<!-- Copyright End -->
 
-<!-- Back to Top -->
 <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
-<script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        updateOrderSummary();
-    });
-
-    function updateTotalPrice(element) {
-        const row = element.closest('tr');
-        const price = parseFloat(row.querySelector('[data-price]').getAttribute('data-price'));
-        const quantity = parseInt(element.value);
-        const totalPriceElement = row.querySelector('.total-price');
-
-        const totalPrice = price * quantity;
-        totalPriceElement.innerText = totalPrice + ' 원';
-
-        // 서버에 업데이트 요청 보내기
-        const menuId = row.querySelector('input[name="menuId"]').value;
-        updateMenuCountOnServer(menuId, quantity);
-    }
-
-    function updateMenuCountOnServer(menuId, quantity) {
-        fetch('/cart/update', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: new URLSearchParams({
-                'menuId': menuId,
-                'menuCount': quantity
-            })
-        }).then(response => {
-            if (response.ok) {
-                updateOrderSummary();
-            } else {
-                console.error('수량변경 에러');
-            }
-        }).catch(error => {
-            console.error('Error:', error);
-        });
-    }
-
-    function updateOrderSummary() {
-        const quantityInputs = document.querySelectorAll('input[name="menuCount"]');
-        let totalOrderAmount = 0;
-        let totalItems = 0;
-
-        quantityInputs.forEach(input => {
-            const quantity = parseInt(input.value);
-            const price = parseInt(input.getAttribute('data-price'));
-            totalOrderAmount += quantity * price;
-            totalItems += quantity;
-        });
-
-        document.getElementById('totalOrderAmount').innerText = totalOrderAmount + ' 원';
-        document.getElementById('totalAmount').innerText = totalOrderAmount + ' 원';
-        document.getElementById('orderButton').innerText = '총 ' + totalItems + '개 주문하기';
-    }
-
-    function confirmDeletion(event) {
-        return confirm('정말로 삭제하시겠습니까?');
-    }
-</script>
-
-<!-- JavaScript Libraries -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../../lib/easing/easing.min.js"></script>
-<script src="../../lib/waypoints/waypoints.min.js"></script>
-<script src="../../lib/lightbox/js/lightbox.min.js"></script>
-<script src="../../lib/owlcarousel/owl.carousel.min.js"></script>
-
-<!-- Template Javascript -->
-<script src="../js/main.js"></script>
-
-</body>
-</html>
+<script defer src="../../js/cart/cart.js"></script>

@@ -92,4 +92,13 @@ public class APIController {
         return dashBoardService.findMenuInfoList(intStoreId);
     }
 
+    @GetMapping("/maps")
+    public List<StoreDTO> getStores(@RequestParam double lat, @RequestParam double lon, @RequestParam int radius) {
+        List<StoreDTO> stores = storeService.findStoresWithinRadius(lat, lon, radius);
+        System.out.println(stores.size());
+        for(StoreDTO store: stores){
+            System.out.println("store in Controller : "+store.toString());
+        }
+        return stores;
+    }
 }
