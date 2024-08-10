@@ -8,7 +8,7 @@
             <div class="row ">
                 <ul class="nav nav-pills d-inline-flex text-center mb-5 chat-room-list">
                     <button type="button" class="btn btn-secondary add-chat-room" onclick="initModal()"  data-bs-toggle="modal" data-bs-target="#staticBackdrop" disabled id="btn-add-chat">채팅방 추가</button>
-                    <li class="nav-item">
+                    <li class="nav-item" id="chat-bot-room">
                         <a class="d-flex m-2 py-2 bg-light rounded-pill " data-bs-toggle="pill" data-room-id="chat-bot" data-chat-member-id="-1"  >
                             <span class="text-dark" style="width: 125px;">
                                 챗봇
@@ -23,8 +23,17 @@
     <!--채팅 창-->
     <div class="inline-block">
         <div id="room-info-box">
-            <div id="room-info" class="d-flex m-2 py-2  rounded-pill ">room-info</div>
-            <div id="room-member" class="d-flex m-2 py-2  ">room-member</div>
+            <div class="d-flex justify-content-between bd-highlight mb-3">
+                <div id="room-info"   class="p-2 bd-highlight ">방 이름</div>
+                <div class="dropdown border border-secondary rounded-pill" >
+                    <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-users text-secondary inline-block"></i><div class="inline-block" id="room-member"></div>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    </div>
+                </div>
+            </div>
+
         </div>
         <div class="col-md-12 chat-window" id="conversation" >
             <div id="chatting"></div>
@@ -90,4 +99,5 @@
 <link href="../../css/chat/chat.css" rel="stylesheet">
 <script src="../../js/chat/chat.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" ></script>
 

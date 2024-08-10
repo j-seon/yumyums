@@ -25,7 +25,8 @@
 }
 
 #chat-page #chatting{
-    width: 278px;
+    /*width: 278px;*/
+    width: 326px;
 }
 #chat-page .chatting, #chat-page .chatting_own {
     max-width: 60%; /* 최대 너비 설정 */
@@ -48,7 +49,7 @@
 }
 
 #chat-page .chat-window {
-   height: 300px;
+   height: 350px;
    overflow-y: auto;
    border: 1px solid #ddd;
    padding: 10px;
@@ -74,13 +75,12 @@
 }
 
 #chat-page #room-info-box {
-   height: 88px;
+   height: 40px;
 }
 
 #chat-page {
    width: 429px;
    height: 488px;
-   background-color : white;
 }
 .chat-room-list{
 
@@ -100,4 +100,15 @@
     right: 24px;
     bottom: 94px;
     z-index: 50;
+    background-color : white;
+}
+#chat-page #chat-member-icon{
+    width: 24px;
+   height: 24px;
+}
+#room-member{
+    width: 50px;
+}
+#chat-page .nav{
+    padding-left: 12px;
 }

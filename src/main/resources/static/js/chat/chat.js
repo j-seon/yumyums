@@ -168,7 +168,7 @@ $(document).ready(function() {
                 loginUserId=data.loginUser;
                 data.chatRoomHashList.forEach((chatRoomHash) => {
 
-                    $('.chat-room-list').append(`
+                    $('#chat-bot-room').after(`
                         <li class="nav-item" >
                             <a class="d-flex m-2 py-2 bg-light rounded-pill " data-bs-toggle="pill" data-room-id=${chatRoomHash.chatInfo.chat.id} data-chat-member-id=${chatRoomHash.chatInfo.id} >
                                 <span class="text-dark" style="width: 101px;">
@@ -191,7 +191,7 @@ $(document).ready(function() {
                         const receivedMessage = chatMessage.body;
                         const receivedMessageList = receivedMessage.split('/');
                         if(receivedMessageList[0]=='c'){
-                            $('.chat-room-list').append(`
+                            $('#chat-bot-room').after(`
                                                         <li class="nav-item">
                                                             <a class="d-flex m-2 py-2 bg-light rounded-pill " data-bs-toggle="pill" data-room-id="${receivedMessageList[3]}" data-chat-member-id="${receivedMessageList[5]}">
                                                                 <span class="text-dark" style="width: 101px;">
@@ -297,6 +297,8 @@ $(document).ready(function() {
           console.log(roomId);
           $(this).addClass('active');
           $('#room-member').empty();
+          $('.dropdown-menu').empty();
+
           if (roomId!="chat-bot"){
             // 채팅 불러오기
               $.ajax({
@@ -306,15 +308,18 @@ $(document).ready(function() {
                        data.chatMessageList.forEach((message) => {
                           showChat(message);
                        });
+                       $('#room-member').text(data.chatMemberList.length+" 명");
+                       console.log(data.chatMemberList.length);
                        data.chatMemberList.forEach((member) => {
-                            $('#room-member').append(`
-                                 <li class=" chat-member-id"
-                                     style="cursor:pointer;">${member.member.memberId} 님</li>
+                            $('.dropdown-menu').append(`
+                                 <a class="dropdown-item" href="#">${member.member.memberId} 님</a>
                             `);
+
                             if(member.member.memberId==loginUserId){
                                 $("#room-info").text(member.memberSavedRoomName)
                             }
                       });
+
                    }, error: (xhr, status, error) => {
                         console.error('Error: ' + error);
                         console.error('Status: ' + status);
