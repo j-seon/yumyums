@@ -1,10 +1,13 @@
 package com.yum.yumyums.controller;
 
 import com.yum.yumyums.dto.TemplateData;
+import com.yum.yumyums.dto.chat.PartyDTO;
 import com.yum.yumyums.dto.orders.CartDTO;
 import com.yum.yumyums.dto.seller.MenuDTO;
 import com.yum.yumyums.dto.user.MemberDTO;
+import com.yum.yumyums.service.chat.PartyService;
 import com.yum.yumyums.service.orders.CartService;
+import com.yum.yumyums.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CartController {
     private final CartService cartService;
+    private final PartyService partyService;
 
     @GetMapping
     public String getCart(Model model, HttpSession session, TemplateData templateData) {
@@ -49,15 +53,32 @@ public class CartController {
             @RequestBody CartDTO cartDTO,
             HttpSession session
     ) {
+        // 회원 정보값 받아오기
         MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
-        if (loginUser == null) {
+
+        // 로그인 상태가 아니라면
+        if (!SessionUtil.isLoginAsMember(session)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 해주세요");
         }
 
+        // 회원 정보값 카트에 저장
         cartDTO.setMemberDTO(loginUser);
 
         try {
-            cartService.addMenuToCart(cartDTO);
+            switch (cartDTO.getJoinPage()) {
+                // 파티에서 메뉴 담기로 접근했다면
+                case "party" :
+                    PartyDTO partyDTO = partyService.findParty(cartDTO.getPartyDTO().getId());
+                    cartDTO.setPartyDTO(partyDTO);
+                    cartService.addMenuToPartyCart(cartDTO);
+                    break;
+                // 기본 주문으로 들어왔다면
+                case "none" :
+                    cartService.addMenuToCart(cartDTO);
+                    break;
+                default:
+                    throw new IllegalArgumentException("잘못된 방식으로 접근했습니다");
+            }
             return ResponseEntity.ok("장바구니에 상품이 담겼습니다");
         } catch (IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
