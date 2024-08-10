@@ -28,4 +28,13 @@ public class SessionUtil {
 				&& loginType.equals(LOGIN_TYPE_MEMBER);
 	}
 
+	public static boolean isLoginAsStore(HttpSession session) {
+		String loginType = (String) session.getAttribute("loginType");
+		String storeId = String.valueOf(session.getAttribute("storeId"));
+		return isLogin(session)
+				&& loginType != null
+				&& loginType.equals(LOGIN_TYPE_SELLER)
+				&& storeId != null;
+	}
+
 }
