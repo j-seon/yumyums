@@ -75,6 +75,7 @@ public class RecommendController {
         model.addAttribute("likeCount", likeCount);
         model.addAttribute("templateData", templateData);
 
+
         return "template";
     }
 }
