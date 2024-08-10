@@ -1,5 +1,6 @@
 package com.yum.yumyums.controller;
 
+import com.yum.yumyums.dto.TemplateData;
 import com.yum.yumyums.dto.orders.CartDTO;
 import com.yum.yumyums.dto.orders.OrdersDTO;
 import com.yum.yumyums.dto.user.MemberDTO;
@@ -20,7 +21,8 @@ public class OrdersController {
     private final OrdersService ordersService;
 
     @GetMapping("/checkout")
-    public String checkout(Model model, HttpSession session) {
+    public String checkout(Model model, HttpSession session, TemplateData templateData) {
+        templateData.setViewPath("orders/checkout");
         MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
         if (loginUser == null) {
             return "redirect:/login";
@@ -38,29 +40,25 @@ public class OrdersController {
         model.addAttribute("loginUser", loginUser);
         model.addAttribute("cartItems", cartItems);
         model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("templateData", templateData);
 
-        return "orders/checkout";
+        return "template";
     }
 
 
     @PostMapping("/success")
     public String confirmOrder(@RequestParam("paymentMethod") String paymentMethod,
-                               HttpSession session, Model model) {
+                               HttpSession session, Model model, TemplateData templateData) {
         MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
         if (loginUser == null) {
             return "redirect:/login";
         }
 
-        try {
-            OrdersDTO order = ordersService.placeOrder(loginUser.getMemberId(), paymentMethod);
-            String formattedOrderTime = order.getOrdersTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            model.addAttribute("order", order);
-            model.addAttribute("formattedOrderTime", formattedOrderTime);
-            return "orders/success";
-        } catch (Exception e) {
-            e.printStackTrace(); // 에러 로그 추가
-            model.addAttribute("errorMessage", e.getMessage());
-            return "orders/checkout";
-        }
+        templateData.setViewPath("orders/success");
+        OrdersDTO order = ordersService.placeOrder(loginUser.getMemberId(), paymentMethod);
+        String formattedOrderTime = order.getOrdersTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        model.addAttribute("order", order);
+        model.addAttribute("formattedOrderTime", formattedOrderTime);
+        return "template";
     }
 }

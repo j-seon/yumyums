@@ -1,5 +1,4 @@
 
-<!-- Single Page Header start -->
 <div class="container-fluid page-header py-5">
     <h1 class="text-center text-white display-6">메뉴 추천 받기</h1>
     <ol class="breadcrumb justify-content-center mb-0">
@@ -8,10 +7,7 @@
         <li class="breadcrumb-item active text-white">Shop</li>
     </ol>
 </div>
-<!-- Single Page Header End -->
 
-
-<!-- Fruits Shop Start-->
 <div id="cart-link">
     <a href="/cart">장바구니로 이동</a>
     <span id="cart-count">장바구니에 0개의 상품이 있습니다.</span>
@@ -43,7 +39,9 @@
                 </div>
                 <div class="row g-4">
                     <div class="col-lg-3">
+
                         <div class="row g-4">
+                            <form th:action="@{/menu}" method="get">
                             <div class="col-lg-12">
                                 <div class="mb-3">
                                     <h4>분류</h4>
@@ -81,6 +79,8 @@
                                     </ul>
                                 </div>
                             </div>
+
+
                             <div class="col-lg-12">
                                 <div class="mb-3">
                                     <h4 class="mb-2">가격대</h4>
@@ -111,13 +111,14 @@
                                     <h4>혼밥 가능여부</h4>
                                     <div class="mb-2">
                                         <input type="radio" name="isAlone" value="true"> 가능
-
                                     </div>
                                     <div class="mb-2">
                                         <input type="radio" name="isAlone" value="false"> 불가능
                                     </div>
                                 </div>
                             </div>
+                                <button type="submit">조회</button>
+                            </form>
                         </div>
                     </div>
                     <div class="col-lg-9">
@@ -180,7 +181,5 @@
 </div>
 
 
-
-<!-- Back to Top -->
 <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
 <script defer src="../../js/menu/menu.js"></script>
