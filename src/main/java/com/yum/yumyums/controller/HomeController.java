@@ -20,8 +20,9 @@ public class HomeController {
     @GetMapping("join")
     public String join(Model model, TemplateData templateData, HttpServletRequest request) {
         HttpSession session = request.getSession();
-        if(SessionUtil.isLoginAsSeller(session) || SessionUtil.isLoginAsMember(session)){
+        if(SessionUtil.isLogin(session)){
             String refererUrl = request.getHeader("Referer");
+            System.out.println("refererUrl : "+ refererUrl);
             if (refererUrl != null) {
                 return "redirect:"+refererUrl; // 이전 URL로 리다이렉트
             } else {
@@ -34,9 +35,9 @@ public class HomeController {
     @GetMapping("/login")
     public String login(Model model, TemplateData templateData, HttpServletRequest request){
         HttpSession session = request.getSession();
-        String currentUrl = request.getRequestURI();
-        if(SessionUtil.isLoginAsSeller(session) || SessionUtil.isLoginAsMember(session)){
-            String refererUrl = request.getHeader("Referer");
+        String refererUrl = request.getHeader("Referer");
+        System.out.println("refererUrl : "+ refererUrl);
+        if(SessionUtil.isLogin(session)){
             if (refererUrl != null) {
                 return "redirect:"+refererUrl; // 이전 URL로 리다이렉트
             } else {
