@@ -170,8 +170,9 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public List<CartDTO> getPartyCartItems(MemberDTO memberDTO) {
-        List<PartyCart> partyCarts = partyCartRepository.findByMemberId(memberDTO.getMemberId());
+    public List<CartDTO> getPartyCartItems(String encryptedPartyId) {
+        String partyId = SecureUtil.calcDecrypt(encryptedPartyId);
+        List<PartyCart> partyCarts = partyCartRepository.findByPartyId(partyId);
         return partyCarts.stream()
                 .map(partyCart -> {
                     CartDTO cartDTO = partyCart.entityToDto();

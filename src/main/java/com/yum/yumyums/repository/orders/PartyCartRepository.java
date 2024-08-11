@@ -11,8 +11,8 @@ public interface PartyCartRepository extends JpaRepository<PartyCart, Integer> {
 	Optional<PartyCart> findByMemberIdAndMenuId(String memberId, int menuId);
 
 
-    List<PartyCart> findByMemberId(String memberId);
 
     void deleteAllByMemberIdAndPartyId(String memberId, String partyId);
 
+	List<PartyCart> findByPartyId(String partyId);
 }

@@ -4,16 +4,10 @@ import com.yum.yumyums.dto.TemplateData;
 import com.yum.yumyums.dto.chat.PartyDTO;
 import com.yum.yumyums.dto.orders.CartDTO;
 import com.yum.yumyums.dto.user.MemberDTO;
-import com.yum.yumyums.entity.orders.PartyCart;
 import com.yum.yumyums.service.chat.PartyService;
 import com.yum.yumyums.service.orders.CartService;
-import com.yum.yumyums.util.SessionUtil;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,7 +41,7 @@ public class PartyCartController {
 
 		// 파티, 파티 카트 정보값 가져오기
 		PartyDTO partyDTO = partyService.findParty(encryptedPartyId);
-		List<CartDTO> partyCartItems = cartService.getPartyCartItems(memberDTO);
+		List<CartDTO> partyCartItems = cartService.getPartyCartItems(encryptedPartyId);
 
 		// 스토어 이름값을 가져옴
 		String storeName = "";
