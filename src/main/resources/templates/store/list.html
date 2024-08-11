@@ -26,7 +26,7 @@
                                 <div class="col-md-6 col-lg-4 col-xl-3" th:each="store : ${stores}">
                                     <div class="rounded position-relative fruite-item h-100">
                                         <div class="fruite-img w-100 d-flex justify-content-center align-items-center" style="height:300px;">
-                                            <img th:if="${store.imagesDTO != null}" th:src="|/img${store.imagesDTO.imgUrl}|" class="d-block w-100 h-100" style="object-fit:contain;">
+                                            <img th:if="${store.imagesDTO != null}" th:src="|/img/${store.imagesDTO.imgUrl}|" class="d-block w-100 h-100" style="object-fit:contain;">
                                             <img th:if="${store.imagesDTO == null}" src="/img/yumyums_default.jpg" class="d-block w-100 h-100" style="object-fit:contain;">
                                         </div>
                                         <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;" th:text="${store.categoryKorName}"/>
