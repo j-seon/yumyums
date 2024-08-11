@@ -1,49 +1,3 @@
-<!--
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Index</title>
-</head>
-<body>
-    <button onclick="goRef()">참고용</button>
-    <a href="/stations">지하철db</a>
-
-    &lt;!&ndash;세션에 loginUser가 null이 아니라면 (값이 있다면) &ndash;&gt;
-    <th:block th:if="${session.loginUser != null}">
-        <a href="/logout">로그아웃</a>
-    </th:block>
-
-    &lt;!&ndash;세션에 loginUser가 null이 아닌게 아니라면 (값이 없다면)&ndash;&gt;
-    <th:block th:unless="${session.loginUser != null}">
-        <a href="/join">회원가입</a>
-        <a href="/login">로그인</a>
-    </th:block>
-
-    <th:block th:if="${session.loginType} eq 'm'">
-        <span th:text="|${session.loginUser.name} 회원님|"></span>
-        <ul>
-            <li>멤버메뉴1</li>
-            <li>멤버메뉴2</li>
-            <li><a href="/party">파티</a></li>
-        </ul>
-    </th:block>
-
-    <th:block th:if="${session.loginType} eq 's'">
-        <span th:text="|${session.loginUser.masterName} 판매자님|"></span>
-        <ul>
-            <li><a href="/stores">매장목록</a></li>
-            <li>판매자메뉴2</li>
-            <li>판매자메뉴3</li>
-        </ul>
-    </th:block>
-<script>
-    const goRef = () => {
-        location.href= "/board";
-    }
-</script>
-</body>
-</html>-->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -285,63 +239,8 @@
     </div>
 </div>
 <!-- Banner-Chart Section End -->
-
-<!--주변탐색, 파티매칭, 채팅-->
-<!--매장관리, 매장현황관리, 매출분석-->
-<!-- Service Start -->
-<div class="container-fluid service py-5">
-    <div class="container py-5">
-        <div class="text-center mx-auto mb-5" style="max-width: 700px;">
-            <h1 class="display-4">yumyums Services</h1>
-            <p>yumyums의 다양한 서비스를 통해 편안한 어쩌구저쩌구 ......</p>
-        </div>
-        <div class="row g-4 justify-content-center">
-            <div class="col-md-6 col-lg-4">
-                <a href="#">
-                    <div class="service-item bg-secondary rounded border border-secondary">
-                        <img src="img/featur-1.jpg" class="img-fluid rounded-top w-100" alt="">
-                        <div class="px-4 rounded-bottom">
-                            <div class="service-content bg-primary text-center p-4 rounded">
-                                <h5 class="text-white">주변탐색</h5>
-                                <h3 class="mb-0">20% OFF</h3>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-6 col-lg-4">
-                <a href="#">
-                    <div class="service-item bg-dark rounded border border-dark">
-                        <img src="img/featur-2.jpg" class="img-fluid rounded-top w-100" alt="">
-                        <div class="px-4 rounded-bottom">
-                            <div class="service-content bg-light text-center p-4 rounded">
-                                <h5 class="text-primary">Tasty Fruits</h5>
-                                <h3 class="mb-0">Free delivery</h3>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-6 col-lg-4">
-                <a href="#">
-                    <div class="service-item bg-primary rounded border border-primary">
-                        <img src="img/featur-3.jpg" class="img-fluid rounded-top w-100" alt="">
-                        <div class="px-4 rounded-bottom">
-                            <div class="service-content bg-secondary text-center p-4 rounded">
-                                <h5 class="text-white">Exotic Vegitable</h5>
-                                <h3 class="mb-0">Discount 30$</h3>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Service End -->
-
-
 </body>
+    
 <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
 <script src="../../js/common/popper.js" ></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
