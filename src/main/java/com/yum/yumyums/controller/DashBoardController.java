@@ -1,25 +1,18 @@
 package com.yum.yumyums.controller;
 
-import com.yum.yumyums.dto.FaqDTO;
 import com.yum.yumyums.dto.TemplateData;
 import com.yum.yumyums.dto.orders.OrdersDetailDTO;
 import com.yum.yumyums.dto.seller.StoreDTO;
-import com.yum.yumyums.enums.FoodCategory;
-import com.yum.yumyums.enums.PayType;
+import com.yum.yumyums.enums.Busy;
 import com.yum.yumyums.service.DashBoardService;
-import com.yum.yumyums.service.FaqService;
+import com.yum.yumyums.service.ImagesService;
+import com.yum.yumyums.service.seller.StoreService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @Controller
@@ -28,6 +21,8 @@ import java.util.*;
 public class DashBoardController {
 
     private final DashBoardService dashBoardService;
+    private final StoreService storeService;
+    private final ImagesService imagesService;
 
     @GetMapping("/{storeIdx}")
     public String showDashboard(Model model, TemplateData templateData,@PathVariable String storeIdx, HttpServletRequest request) {
@@ -44,7 +39,6 @@ public class DashBoardController {
             model.addAttribute("templateData", templateData);
             return "/inc/alert";
         }else{
-//            int intStoreId = Integer.parseInt(sessionStoreId);
             int intStoreId = sessionStoreId;
             //금일 평점
             String todayRating = dashBoardService.getAverageRateByStoreId(intStoreId);
@@ -59,19 +53,17 @@ public class DashBoardController {
             storeInfo.put("differRate",differRate);
             storeInfo.put("todaySaleVolume",todaySaleVolume);
             storeInfo.put("todayOrderCount",todayOrderCount);
+            storeInfo.put("storeBusy",storeService.findById(Integer.parseInt(storeIdx)).getBusy());
 
             ordersHashList = dashBoardService.getOrderHashListByStoreId(intStoreId);
-
             model.addAttribute("storeInfo", storeInfo);
+            model.addAttribute("storeId", storeIdx);
             model.addAttribute("ordersHashList", ordersHashList);
 
             templateData.setViewPath("dashboard/index");
 
             model.addAttribute("templateData", templateData);
-            System.out.println(ordersHashList);
         }
-
-
         return "dashBoardTemplate";
     }
 
@@ -99,6 +91,19 @@ public class DashBoardController {
 
         model.addAttribute("templateData", templateData);
         return "dashBoardTemplate";
+    }
+
+    @PutMapping("")
+    @ResponseBody
+    public String updateBusy(@RequestParam("busy") String busy, @RequestParam("storeId") int storeId) {
+        try {
+            StoreDTO storeDTO = storeService.findById(storeId);
+            storeDTO.setBusy(Busy.valueOf(busy));
+            storeService.update(storeDTO.dtoToEntity());
+            return  "success";
+        }catch (Exception e){
+            return  "fail";
+        }
     }
 }
 

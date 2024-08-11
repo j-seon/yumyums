@@ -1,46 +1,78 @@
-<h2>로그인</h2>
-<div>
-  <h3>일반회원 로그인</h3>
-  <form action="/member/login" id="memberLogin" method="post">
-    <input type="hidden" name="redirect" th:value="${param.redirect}">
-    <div class="form-item">
-      <label class="form-label my-3" for="memberId">아이디<sup>*</sup></label>
-      <input type="text" class="form-control" id="memberId" name="memberId">
-    </div>
-    <div class="form-item">
-      <label class="form-label my-3" for="memberPassword">비밀번호 <sup>*</sup></label>
-      <input type="password" class="form-control" name="password" id="memberPassword" placeholder="비밀번호 입력">
-    </div>
-    <button type="submit" form="memberLogin" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">로그인</button>
-  </form>
+
+<!-- Single Page Header start -->
+<div class="container-fluid page-header py-5">
+  <h1 class="text-center text-white display-6">로그인</h1>
+  <ol class="breadcrumb justify-content-center mb-0">
+    <li class="breadcrumb-item active text-white">Login</li>
+  </ol>
 </div>
-<div>
-  <h3>판매자 로그인</h3>
-  <form action="/seller/login" id="sellerLogin" method="post">
-    <input type="hidden" name="redirect" th:value="${param.redirect}">
-    <div class="form-item">
-      <label class="form-label my-3" for="sellerId">아이디<sup>*</sup></label>
-      <input type="text" class="form-control" id="sellerId" name="sellerId">
+<!-- Single Page Header End -->
+
+<div class="container col-lg-4 col-md-6 col-sm-12 mt-5 py-5">
+  <ul class="nav nav-tabs" id="loginTab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="member-tab" data-bs-toggle="tab" href="#member" role="tab" aria-controls="member" aria-selected="true">일반회원 로그인</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="seller-tab" data-bs-toggle="tab" href="#seller" role="tab" aria-controls="seller" aria-selected="false">판매자 로그인</a>
+    </li>
+  </ul>
+  <div class="tab-content" id="loginTabContent">
+    <div class="tab-pane fade show active" id="member" role="tabpanel" aria-labelledby="member-tab">
+      <form class="mt-5" action="/member/login" id="memberLogin" method="post">
+        <input type="hidden" name="redirect" th:value="${param.redirect}">
+        <div class="form-item my-3">
+          <label class="form-label" for="memberId">아이디<sup>*</sup></label>
+          <input type="text" class="form-control" id="memberId" name="memberId" placeholder="회원아이디 입력">
+        </div>
+        <div class="form-item my-3">
+          <label class="form-label" for="memberPassword">비밀번호 <sup>*</sup></label>
+          <input type="password" class="form-control" name="password" id="memberPassword" placeholder="비밀번호 입력">
+        </div>
+        <button type="submit" form="memberLogin" class="btn border-secondary mt-4 px-4 text-uppercase w-100 text-primary">로그인</button>
+      </form>
     </div>
-    <div class="form-item">
-      <label class="form-label my-3" for="sellerPassword">비밀번호 <sup>*</sup></label>
-      <input type="password" class="form-control" name="password" id="sellerPassword" placeholder="비밀번호 입력">
+    <div class="tab-pane fade" id="seller" role="tabpanel" aria-labelledby="seller-tab">
+      <form class="mt-5" action="/seller/login" id="sellerLogin" method="post">
+        <input type="hidden" name="redirect" th:value="${param.redirect}">
+        <div class="form-item my-3">
+          <label class="form-label" for="sellerId">아이디<sup>*</sup></label>
+          <input type="text" class="form-control" id="sellerId" name="sellerId" placeholder="판매자아이디 입력">
+        </div>
+        <div class="form-item my-3">
+          <label class="form-label" for="sellerPassword">비밀번호 <sup>*</sup></label>
+          <input type="password" class="form-control" name="password" id="sellerPassword" placeholder="비밀번호 입력">
+        </div>
+        <button type="submit" form="sellerLogin" class="btn border-secondary mt-4 px-4 text-uppercase w-100 text-primary">로그인</button>
+      </form>
     </div>
-    <button type="submit" form="sellerLogin" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">로그인</button>
-  </form>
+  </div>
+  <div class="text-center mt-3"><span>아직 회원이 아니라면? </span> <a class="fw-bold" href="/join">회원가입</a></div>
 </div>
 <script>
   window.onload = function() {
-      const params = new URLSearchParams(window.location.search);
-      const msg = params.get('msg');
+      const msg = new URLSearchParams(window.location.search).get('msg');
+      const tabLink = msg ? document.querySelector(`a[href="#${msg}"]`) : null;
 
-      switch(msg){
-        case 'member':
-          alert('일반회원계정으로 로그인 해주세요')
-          break;
-        case 'seller':
-          alert('판매자계정으로 로그인 해주세요')
-          break;
+      if (tabLink) {
+          tabLink.click();
+
+          switch (msg) {
+              case 'member':
+                  alert('일반회원계정으로 로그인 해주세요');
+                  break;
+              case 'seller':
+                  alert('판매자계정으로 로그인 해주세요');
+                  break;
+          }
       }
-  };
+  }
+
+  document.querySelectorAll('.nav-tabs a').forEach(tab => {
+      tab.addEventListener('click', function(event) {
+          event.stopPropagation(); // 이벤트 전파 방지
+      });
+  });
+
 </script>
+

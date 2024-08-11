@@ -8,4 +8,6 @@ public interface ImagesService {
     String uploadImage(MultipartFile imgFile, String imgUrl);
 
     Images saveImage(ImagesDTO imagesDTO);
+
+    Images findById(Long imgId);
 }

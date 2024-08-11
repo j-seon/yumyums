@@ -2,16 +2,23 @@ package com.yum.yumyums.controller;
 
 
 import com.yum.yumyums.dto.StationDTO;
+import com.yum.yumyums.dto.TemplateData;
+import com.yum.yumyums.dto.user.MemberDTO;
 import com.yum.yumyums.service.DashBoardService;
 import com.yum.yumyums.service.StationService;
 import com.yum.yumyums.dto.seller.StoreDTO;
+import com.yum.yumyums.service.chat.ChatMemberService;
 import com.yum.yumyums.service.seller.StoreService;
 import com.yum.yumyums.service.user.SearchService;
+import com.yum.yumyums.util.SessionUtil;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +30,7 @@ public class APIController {
     private final SearchService searchService;
     private final StoreService storeService;
     private final DashBoardService dashBoardService;
+    private final ChatMemberService chatMemberService;
 
     @GetMapping("/stations")
     @ResponseBody
@@ -91,7 +99,22 @@ public class APIController {
 
         return dashBoardService.findMenuInfoList(intStoreId);
     }
+    @GetMapping("/isLogin")
+    @ResponseBody
+    public HashMap<String, Object> isLogin(HttpSession session) {
+        SessionUtil sessionUtil = new SessionUtil();
+        HashMap<String, Object> returnHashMap=new HashMap<>();
 
+        if(SessionUtil.isLoginAsMember(session)){
+            MemberDTO memberDTO= (MemberDTO) session.getAttribute("loginUser");
+            List<HashMap<String, Object>> chatRoomHashList =  chatMemberService.findChatRoomInfoByMemberId(memberDTO.getMemberId());
+            returnHashMap.put("chatRoomHashList",chatRoomHashList);
+            returnHashMap.put("loginUser",memberDTO.getMemberId());
+            return returnHashMap;
+        }else{
+            return null;
+        }
+    }
     @GetMapping("/maps")
     public List<StoreDTO> getStores(@RequestParam double lat, @RequestParam double lon, @RequestParam int radius) {
         List<StoreDTO> stores = storeService.findStoresWithinRadius(lat, lon, radius);

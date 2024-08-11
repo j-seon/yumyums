@@ -77,7 +77,7 @@
                                 <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
                                     <li class="nav-item topbar-user dropdown hidden-caret">
                                         <button type="button"
-                                                class="icon-big text-center icon-secondary bubble-shadow-small btn btn-success dropdown-toggle profile-pic" id="alert_demo_3_3"
+                                                class="icon-big text-center icon-secondary bubble-shadow-small btn btn-success dropdown-toggle profile-pic main-busy-btn" id="alert_demo_3_3"
                                                 data-bs-toggle="dropdown"
                                                 href="#"
                                                 aria-expanded="false">
@@ -91,22 +91,22 @@
                                                             <h3>혼잡도 설정</h3>
                                                         </div>
                                                         <div class="user-box">
-                                                            <button type="button" class="btn btn-info busy-buttons" id="alert_demo_3_42">
+                                                            <button type="button" class="btn btn-info busy-buttons" id="alert_demo_3_42" data-busy="SPACIOUS">
                                                                 여유
                                                             </button> : 30% 이하의 포화도
                                                         </div>
                                                         <div class="user-box">
-                                                            <button type="button" class="btn btn-success busy-buttons" id="alert_demo_3_32-">
+                                                            <button type="button" class="btn btn-success busy-buttons" id="alert_demo_3_32-" data-busy="NOMAL">
                                                                 보통
                                                             </button> : 30% ~ 50% 의 포화도
                                                         </div>
                                                         <div class="user-box">
-                                                            <button type="button" class="btn btn-warning busy-buttons" id="alert_demo_3_12">
+                                                            <button type="button" class="btn btn-warning busy-buttons" id="alert_demo_3_12" data-busy="CROWDED">
                                                                 혼잡
                                                             </button> : 50% ~ 80%의 포화도
                                                         </div>
                                                         <div class="user-box">
-                                                            <button type="button" class="btn btn-danger busy-buttons" id="alert_demo_3_22">
+                                                            <button type="button" class="btn btn-danger busy-buttons" id="alert_demo_3_22" data-busy="FULL">
                                                                 불가능
                                                             </button> : 80% 이상의 포화도
                                                         </div>
@@ -157,10 +157,14 @@
         </div>
     </div>
 </div>
-
-<!--<script src="../../js/common/jquery.js"></script>-->
+<input type="hidden" th:value="${storeInfo.storeBusy}" id="storeBusy">
+<script src="../../js/common/jquery.js"></script>
 <script>
     var  differRate = "[[${storeInfo.differRate}]]";
+    var  storeId = "[[${session.storeId}]]";
+    var  storeBusy = "[[${session.storeBusy}]]";
+
 </script>
+
 <script src="../../js/dashboard/dashboard.js"></script>
 <link href="../../css/dashboard/dashboard.css" rel="stylesheet">

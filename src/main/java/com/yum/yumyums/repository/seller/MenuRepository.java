@@ -2,8 +2,6 @@ package com.yum.yumyums.repository.seller;
 
 import com.yum.yumyums.entity.seller.Menu;
 import com.yum.yumyums.enums.FoodCategory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -42,10 +40,17 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
                                                   @Param("priceRange") String priceRange,
                                                   @Param("isAlone") Boolean isAlone);
 
-        @Query("SELECT m FROM Menu m JOIN m.store s ORDER BY " +
+        @Query("SELECT m FROM Menu m JOIN m.store s WHERE m.isActive = true " +
+                "AND (:category IS NULL OR m.category = :category) " +
+                "AND (:priceRange IS NULL OR " +
+                "(m.price <= 10000 AND :priceRange = 'below_10000') OR " +
+                "(m.price > 10000 AND m.price <= 20000 AND :priceRange = '10000_20000') OR " +
+                "(m.price > 20000 AND :priceRange = 'above_20000')) " +
+                "AND (:isAlone IS NULL OR m.isAlone = :isAlone) " +
+                "ORDER BY " +
                 "CASE s.busy " +
                 "WHEN 'SPACIOUS' THEN 1 " +
-                "WHEN 'NOMAL' THEN 2 " +
+                "WHEN 'NORMAL' THEN 2 " +
                 "WHEN 'CROWDED' THEN 3 " +
                 "WHEN 'FULL' THEN 4 " +
                 "END, " +
