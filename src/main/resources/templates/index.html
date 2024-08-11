@@ -2,44 +2,250 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Index</title>
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="../../css/common/bs.css" rel="stylesheet" >
+    <script src="../../js/common/bs.js" ></script>
+    <!-- Libraries Stylesheet -->
+    <link href="../../lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <link href="../../lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="../../css/style.css" rel="stylesheet">
+    <link href="../../css/faq/faq.css" rel="stylesheet">
+
+    <!-- KakaoMap API-->
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=085a096f7e5948cab899f39d4bc642d1&libraries=services"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <title>Yumyums</title>
 </head>
 <body>
-    <button onclick="goRef()">참고용</button>
-    <a href="/stations">지하철db</a>
+<div id="home-chat" class="d-none rounded border border-secondary border-2 p-4">
+    <th:block th:replace="chat/chat"></th:block>
+</div>
+<div class="SettingView-module__layer_setting___JwfQs ">
+    <a href="#" class="btn  border-3 border-primary rounded-circle chat-btn" style=""><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat" viewBox="0 0 16 16">
+        <path d="M2.678 11.894a1 1 0 0 1 .287.801 11 11 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8 8 0 0 0 8 14c3.996 0 7-2.807 7-6s-3.004-6-7-6-7 2.808-7 6c0 1.468.617 2.83 1.678 3.894m-.493 3.905a22 22 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a10 10 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9 9 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105"/>
+    </svg></a>
+</div>
+<th:block th:replace="~{inc/spinner}"></th:block>
+<th:block th:replace="~{inc/header}"></th:block>
 
-    <!--세션에 loginUser가 null이 아니라면 (값이 있다면) -->
-    <th:block th:if="${session.loginUser != null}">
-        <a href="/logout">로그아웃</a>
-    </th:block>
+<!-- Hero Start -->
+<div class="container-fluid py-5 mb-5 hero-header">
+    <div class="container py-5">
+        <div class="row g-5 align-items-center">
+            <div class="col-md-12 col-lg-7">
+                <h4 class="mb-3 text-secondary">Welcome</h4>
+                <h1 class="mb-5 display-3 text-primary">어서오세요<br> yumyums 입니다 !</h1>
+                <div class="position-relative mx-auto">
+                    <input class="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill" type="number" placeholder="Search">
+                    <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 25%;">Submit Now</button>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-5">
+                <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
+                    <div class="carousel-inner" role="listbox">
+                        <div class="carousel-item active rounded">
+                            <img src="/img/member_join.jpg" class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide">
+                            <a href="member" class="btn px-4 py-2 text-white rounded">일반회원가입</a>
+                        </div>
+                        <div class="carousel-item rounded">
+                            <img src="/img/seller_join.jpg" class="img-fluid w-100 h-100 rounded" alt="Second slide">
+                            <a href="seller" class="btn px-4 py-2 text-white rounded">판매자회원가입</a>
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Hero End -->
 
-    <!--세션에 loginUser가 null이 아닌게 아니라면 (값이 없다면)-->
-    <th:block th:unless="${session.loginUser != null}">
-        <a href="/join">회원가입</a>
-        <a href="/login">로그인</a>
-    </th:block>
 
-    <th:block th:if="${session.loginType} eq 'm'">
-        <span th:text="|${session.loginUser.name} 회원님|"></span>
-        <ul>
-            <li>멤버메뉴1</li>
-            <li>멤버메뉴2</li>
-            <li><a href="/party">파티</a></li>
-        </ul>
-    </th:block>
+<div class="container-fluid pt-5">
+    <div class="container pt-5">
+        <div class="text-center mx-auto mb-5" style="max-width: 700px;">
+            <h1 class="display-4">yumyums Services</h1>
+            <p>yumyums의 다양한 서비스를 즐겨보세요.</p>
+        </div>
+    </div>
+</div>
 
-    <th:block th:if="${session.loginType} eq 's'">
-        <span th:text="|${session.loginUser.masterName} 판매자님|"></span>
-        <ul>
-            <li><a href="/stores">매장목록</a></li>
-            <li>판매자메뉴2</li>
-            <li>판매자메뉴3</li>
-        </ul>
-    </th:block>
-<script>
-    const goRef = () => {
-        location.href= "/board";
-    }
-</script>
+<!-- Banner-Menu Section Start-->
+<div class="container-fluid banner bg-secondary">
+    <div class="container py-5">
+        <div class="row g-4 align-items-center">
+            <div class="col-lg-6">
+                <div class="py-4">
+                    <h1 class="display-3 text-white">메뉴로 주변 탐색</h1>
+                    <p class="fw-normal display-3 text-dark mb-4">지도 탐색</p>
+                    <p class="mb-4 text-dark">내 주변의 맛있는 메뉴를 한눈에!</p>
+                    <a href="/menu" class="banner-btn btn border-2 border-white rounded-pill text-dark py-3 px-5">GO</a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="position-relative">
+                    <img src="/img/banner_menu.png" class="img-fluid w-100 rounded" alt="">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Banner-Menu Section End -->
+<!-- Banner-Maps Section Start-->
+<div class="container-fluid banner">
+    <div class="container py-5">
+        <div class="row g-4 align-items-center">
+            <div class="col-lg-6">
+                <div class="position-relative">
+                    <img src="/img/banner_maps.png" class="img-fluid w-100 rounded" alt="">
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="py-4">
+                    <h1 class="display-3 text-secondary">지도로 주변 탐색</h1>
+                    <p class="fw-normal display-3 text-dark mb-4">지도 탐색</p>
+                    <p class="mb-4 text-dark">지도로 보는 내 주변의 맛집!</p>
+                    <a href="/maps" class="banner-btn btn border-2 border-secondary rounded-pill text-dark py-3 px-5">GO</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Banner-Maps Section End -->
+<!-- Banner-Party Section Start-->
+<div class="container-fluid banner bg-secondary">
+    <div class="container py-5">
+        <div class="row g-4 align-items-center">
+            <div class="col-lg-6">
+                <div class="py-4">
+                    <h1 class="display-3 text-white">파티 매칭 시스템</h1>
+                    <p class="fw-normal display-3 text-dark mb-4">함께 주문</p>
+                    <p class="mb-4 text-dark">식사를 함께할 파티원 찾거나 생성</p>
+                    <a href="/party" class="banner-btn btn border-2 border-white rounded-pill text-dark py-3 px-5">GO</a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="position-relative">
+                    <img src="/img/banner_party.png" class="img-fluid w-100 rounded" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Banner-Party Section End -->
+<!-- Banner-Chat Section Start-->
+<div class="container-fluid banner">
+    <div class="container py-5">
+        <div class="row g-4 align-items-center">
+            <div class="col-lg-6">
+                <div class="position-relative">
+                    <img src="/img/banner_chat.png" class="img-fluid w-100 rounded" alt="">
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="py-4">
+                    <h1 class="display-3 text-secondary">채팅 시스템</h1>
+                    <p class="fw-normal display-3 text-dark mb-4">채팅방</p>
+                    <p class="mb-4 text-dark">회원들과 즐거운 대화!</p>
+                    <a href="#" class="chat-btn banner-btn btn border-2 border-secondary rounded-pill text-dark py-3 px-5">GO</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Banner-Chat Section End -->
+
+<!-- Banner-Seller Section Start-->
+<div class="container-fluid banner bg-primary">
+    <div class="container py-5">
+        <div class="row g-4 align-items-center">
+            <div class="col-lg-6">
+                <div class="py-4">
+                    <h1 class="display-3 text-white">사장님을 위한</h1>
+                    <p class="fw-normal display-3 text-dark mb-4">매장 관리</p>
+                    <p class="mb-4 text-dark">하나의 계정으로 여러개의 매장 관리</p>
+                    <a href="/stores" class="banner-btn btn border-2 border-secondary rounded-pill text-dark py-3 px-5">GO</a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="position-relative">
+                    <img src="/img/banner_seller.png" class="img-fluid w-100 rounded" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Banner-Seller Section End -->
+<!-- Banner-Store Section Start-->
+<div class="container-fluid banner bg-dark">
+    <div class="container py-5">
+        <div class="row g-4 align-items-center">
+            <div class="col-lg-6">
+                <div class="position-relative">
+                    <img src="/img/banner_store.png" class="img-fluid w-100 rounded" alt="">
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="py-4">
+                    <h1 class="display-3 text-primary">매장 업무 시스템</h1>
+                    <p class="fw-normal display-3 text-white mb-4">대시보드</p>
+                    <p class="mb-4 text-white">매장에서 이뤄지는 업무를 손쉽게 !</p>
+                    <a href="/stores" class="banner-btn btn border-2 border-secondary rounded-pill text-white py-3 px-5">GO</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Banner-Store Section End -->
+<!-- Banner-Chart Section Start-->
+<div class="container-fluid banner bg-primary">
+    <div class="container py-5">
+        <div class="row g-4 align-items-center">
+            <div class="col-lg-6">
+                <div class="py-4">
+                    <h1 class="display-3 text-white">매장매출 통계와 분석</h1>
+                    <p class="fw-normal display-3 text-dark mb-4">매출 분석</p>
+                    <p class="mb-4 text-dark">판매데이터를 통한 매출관리와 분석</p>
+                    <a href="/stores" class="banner-btn btn border-2 border-secondary rounded-pill text-dark py-3 px-5">GO</a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="position-relative">
+                    <img src="/img/banner_chart.png" class="img-fluid w-100 rounded" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Banner-Chart Section End -->
 </body>
+    
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+<script src="../../js/common/popper.js" ></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="../../lib/owlcarousel/owl.carousel.min.js"></script>
+
+<!-- Template Stylesheet -->
+<script src="../../js/main.js" ></script>
 </html>
