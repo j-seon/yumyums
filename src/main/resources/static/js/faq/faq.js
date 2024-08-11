@@ -1,5 +1,6 @@
 $(document).ready(function() {
     var srcFaq=[]
+
     $('#src-faq').on('click', function(e) {
         $.ajax({
            url: "http://192.168.0.106:5000/list",
@@ -39,13 +40,13 @@ $(document).ready(function() {
            }
         });
 
-        $('.category .nav-item a').removeClass('active');
-        $('.category .nav-item a#faq-src-tab').addClass('active');
+        $('.nav-item a').removeClass('active');
+        $('.nav-item a#faq-src-tab').addClass('active');
 
 
     })
 
-    $('.category .nav-item a').on('click', function(e) {
+    $('.nav-item a').on('click', function(e) {
         e.preventDefault();
         var categoryText = $(this).find('div').text();
         if(categoryText =='검색기록'){

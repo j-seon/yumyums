@@ -26,14 +26,14 @@ public class RecommendController {
 
     @GetMapping
     public String getMenusByFilters(
-            @RequestParam(required = false) FoodCategory category,
-            @RequestParam(required = false) String priceRange,
+            @RequestParam(required = false) List<FoodCategory> categories,
+            @RequestParam(required = false) List<String> priceRanges,
             @RequestParam(required = false) Boolean isAlone,
             @RequestParam(required = false) String sort,
             Model model, TemplateData templateData
     ) {
         templateData.setViewPath("menu/list");
-        List<MenuDTO> menus = menuService.getMenusByFilters(category, priceRange, isAlone, sort);
+        List<MenuDTO> menus = menuService.getMenusByFilters(categories, priceRanges, isAlone, sort);
         Map<Integer, Integer> likeCounts = new HashMap<>();
         Map<Integer, Double> averageRatings = new HashMap<>();
 
@@ -53,6 +53,7 @@ public class RecommendController {
 
         return "template";
     }
+
 
 
     @GetMapping("/{storeId}")

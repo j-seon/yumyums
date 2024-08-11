@@ -149,3 +149,22 @@
 
 })(jQuery);
 
+
+//장바구니 아이템 카운트
+function updateCartCount() {
+    $.get("/cart/count", function (count) {
+        $("#cart-count").text(count);
+    });
+}
+
+
+$(document).ready(function () {
+    updateCartCount();
+
+    // 이벤트 위임을 사용하여 장바구니 버튼 클릭 시 addToCart 함수 호출
+    $(document).on("click", "a[th\\:onclick^='addToCart(']", function (e) {
+        e.preventDefault(); // 기본 동작 막기
+        const menuId = $(this).attr('th:onclick').match(/\d+/)[0]; // 메뉴 ID 추출
+        addToCart(menuId);
+    });
+});
