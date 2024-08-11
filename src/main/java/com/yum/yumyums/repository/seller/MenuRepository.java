@@ -13,51 +13,55 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
 
         List<Menu> findByStoreId(int storeId);
 
+
         @Query("SELECT m FROM Menu m WHERE m.isActive = true " +
-                "AND (:category IS NULL OR m.category = :category) " +
-                "AND (:priceRange IS NULL OR " +
-                "(m.price <= 10000 AND :priceRange = 'below_10000') OR " +
-                "(m.price > 10000 AND m.price <= 20000 AND :priceRange = '10000_20000') OR " +
-                "(m.price > 20000 AND :priceRange = 'above_20000')) " +
+                "AND (:categories IS NULL OR m.category IN :categories) " +
+                "AND (:priceRanges IS NULL OR " +
+                "(m.price <= 10000 AND 'below_10000' IN :priceRanges) OR " +
+                "(m.price > 10000 AND m.price <= 20000 AND '10000_20000' IN :priceRanges) OR " +
+                "(m.price > 20000 AND 'above_20000' IN :priceRanges)) " +
                 "AND (:isAlone IS NULL OR m.isAlone = :isAlone)")
-        List<Menu> findAllByFilters(@Param("category") FoodCategory category,
-                                    @Param("priceRange") String priceRange,
+        List<Menu> findAllByFilters(@Param("categories") List<FoodCategory> categories,
+                                    @Param("priceRanges") List<String> priceRanges,
                                     @Param("isAlone") Boolean isAlone);
 
         @Query("SELECT m FROM Menu m " +
                 "LEFT JOIN m.store s " +
                 "LEFT JOIN StoreLike sl ON sl.store.id = s.id " +
                 "WHERE m.isActive = true " +
-                "AND (:category IS NULL OR m.category = :category) " +
-                "AND (:priceRange IS NULL OR " +
-                "(m.price <= 10000 AND :priceRange = 'below_10000') OR " +
-                "(m.price > 10000 AND m.price <= 20000 AND :priceRange = '10000_20000') OR " +
-                "(m.price > 20000 AND :priceRange = 'above_20000')) " +
+                "AND (:categories IS NULL OR m.category IN :categories) " +
+                "AND (:priceRanges IS NULL OR " +
+                "(m.price <= 10000 AND 'below_10000' IN :priceRanges) OR " +
+                "(m.price > 10000 AND m.price <= 20000 AND '10000_20000' IN :priceRanges) OR " +
+                "(m.price > 20000 AND 'above_20000' IN :priceRanges)) " +
                 "AND (:isAlone IS NULL OR m.isAlone = :isAlone) " +
                 "GROUP BY m.id " +
                 "ORDER BY COUNT(sl.id) DESC")
-        List<Menu> findAllByFiltersAndSortByLikes(@Param("category") FoodCategory category,
-                                                  @Param("priceRange") String priceRange,
+        List<Menu> findAllByFiltersAndSortByLikes(@Param("categories") List<FoodCategory> categories,
+                                                  @Param("priceRanges") List<String> priceRanges,
                                                   @Param("isAlone") Boolean isAlone);
 
         @Query("SELECT m FROM Menu m JOIN m.store s WHERE m.isActive = true " +
-                "AND (:category IS NULL OR m.category = :category) " +
-                "AND (:priceRange IS NULL OR " +
-                "(m.price <= 10000 AND :priceRange = 'below_10000') OR " +
-                "(m.price > 10000 AND m.price <= 20000 AND :priceRange = '10000_20000') OR " +
-                "(m.price > 20000 AND :priceRange = 'above_20000')) " +
+                "AND (:categories IS NULL OR m.category IN :categories) " +
+                "AND (:priceRanges IS NULL OR " +
+                "(m.price <= 10000 AND 'below_10000' IN :priceRanges) OR " +
+                "(m.price > 10000 AND m.price <= 20000 AND '10000_20000' IN :priceRanges) OR " +
+                "(m.price > 20000 AND 'above_20000' IN :priceRanges)) " +
                 "AND (:isAlone IS NULL OR m.isAlone = :isAlone) " +
                 "ORDER BY " +
                 "CASE s.busy " +
                 "WHEN 'SPACIOUS' THEN 1 " +
-                "WHEN 'NORMAL' THEN 2 " +
+                "WHEN 'NOMAL' THEN 2 " +
                 "WHEN 'CROWDED' THEN 3 " +
                 "WHEN 'FULL' THEN 4 " +
                 "END, " +
                 "m.cookingTime ASC")
-        List<Menu> findAllOrderedByStoreBusyAndCookingTime(@Param("category") FoodCategory category,
-                                                           @Param("priceRange") String priceRange,
+        List<Menu> findAllOrderedByStoreBusyAndCookingTime(@Param("categories") List<FoodCategory> categories,
+                                                           @Param("priceRanges") List<String> priceRanges,
                                                            @Param("isAlone") Boolean isAlone);
+
+
+
 
         @Query("SELECT m.id AS id, " +
                 "m.store.id AS storeId, " +
