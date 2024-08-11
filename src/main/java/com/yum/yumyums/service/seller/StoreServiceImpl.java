@@ -136,4 +136,10 @@ public class StoreServiceImpl implements StoreService {
         return result;
     }
 
+    @Override
+    public void update(Store store) {
+        System.out.println("update store : "+store.entityToDto());
+        storeRepository.save(store);
+    }
+
 }

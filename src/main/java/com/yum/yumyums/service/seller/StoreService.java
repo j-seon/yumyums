@@ -1,6 +1,7 @@
 package com.yum.yumyums.service.seller;
 
 import com.yum.yumyums.dto.seller.StoreDTO;
+import com.yum.yumyums.entity.seller.Store;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -21,4 +22,6 @@ public interface StoreService {
 	StoreDTO findById(int storeId);
 
 	List<StoreDTO> findStoresWithinRadius(double lat, double lon, int radius);
+
+    void update(Store store);
 }

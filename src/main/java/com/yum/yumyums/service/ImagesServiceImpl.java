@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import static com.yum.yumyums.util.ImageDefaultUrl.DEFAULT_IMAGE_FILENAME;
 
@@ -72,6 +73,13 @@ public class ImagesServiceImpl implements ImagesService{
         } else {
             return imagesRepository.save(imagesDTO.dtoToEntity());
         }
+    }
+
+    @Override
+    public Images findById(Long imgId) {
+        Optional<Images> images =  imagesRepository.findById(imgId);
+
+        return images.get();
     }
 
 }

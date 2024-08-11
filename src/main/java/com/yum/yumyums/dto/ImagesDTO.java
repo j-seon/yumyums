@@ -18,6 +18,7 @@ public class ImagesDTO {
         if(this.imgUrl == null) {
             this.imgUrl = DEFAULT_IMAGE_FILENAME;
         }
+        image.setId(this.imgId);
         image.setImgUrl(this.imgUrl);
         return image;
     }

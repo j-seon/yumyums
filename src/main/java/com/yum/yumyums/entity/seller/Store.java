@@ -67,6 +67,7 @@ public class Store {
 		storeDTO.setStoreId(this.id);
 		storeDTO.setSellerDTO(SellerDTO.toSellerDTO(this.seller));
 		storeDTO.setName(this.name);
+		storeDTO.setPassword(this.password);
 		storeDTO.setAddress(this.address);
 		storeDTO.setCategory(this.category);
 		storeDTO.setContent(this.content);
