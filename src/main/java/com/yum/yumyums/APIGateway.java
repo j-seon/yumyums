@@ -1,6 +1,8 @@
 package com.yum.yumyums;
 
 import com.yum.yumyums.dto.seller.StoreDTO;
+import com.yum.yumyums.dto.user.MemberDTO;
+import com.yum.yumyums.service.orders.CartService;
 import com.yum.yumyums.service.seller.StoreService;
 import com.yum.yumyums.service.user.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -13,18 +15,16 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class APIGateway {
-	// 타서비스에서 호출해야하는 클래스들 private final로 선언. (생성자로 받아오기 = @RequiredArgsConstructor)
-	// 호출해야하는 메소드를 생성하고 서비스의 메소드를 return (아래는 예시)
 
-	private final MemberService memberService;
 	private final StoreService storeService;
-
-	public boolean isValidMember(String memberId) {
-		return memberService.isValidMember(memberId);
-	}
+	private final CartService cartService;
 
 	public StoreDTO findStoreDtoByStoreName(String storeName) {
 		return storeService.findByName(storeName);
+	}
+
+	public void deleteAllPartyCartsByPartyIdAndMemberId(MemberDTO memberDTO, String partyId) {
+		cartService.deleteAllPartyCartsByPartyIdAndMemberId(memberDTO, partyId);
 	}
 
 }

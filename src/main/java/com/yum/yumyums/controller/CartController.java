@@ -71,15 +71,14 @@ public class CartController {
                     PartyDTO partyDTO = partyService.findParty(cartDTO.getPartyDTO().getId());
                     cartDTO.setPartyDTO(partyDTO);
                     cartService.addMenuToPartyCart(cartDTO);
-                    break;
+                    return ResponseEntity.ok("파티 장바구니에 상품이 담겼습니다");
                 // 기본 주문으로 들어왔다면
                 case "none" :
                     cartService.addMenuToCart(cartDTO);
-                    break;
+                    return ResponseEntity.ok("장바구니에 상품이 담겼습니다");
                 default:
                     throw new IllegalArgumentException("잘못된 방식으로 접근했습니다");
             }
-            return ResponseEntity.ok("장바구니에 상품이 담겼습니다");
         } catch (IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
@@ -132,3 +131,4 @@ public class CartController {
         return cartService.getCartItemCount(memberId);
     }
 }
+

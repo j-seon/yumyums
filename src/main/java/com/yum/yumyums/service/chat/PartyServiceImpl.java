@@ -135,6 +135,7 @@ public class PartyServiceImpl implements PartyService {
 		//복호화
 		String partyId = getPartyIdByInviteUrlParam(encryptedPartyId);
 
+		apiGateway.deleteAllPartyCartsByPartyIdAndMemberId(memberDTO, partyId);
 		partyMemberRepository.deleteByMemberId(memberDTO.getMemberId());
 		partyRepository.deleteById(partyId);
 	}
@@ -145,6 +146,10 @@ public class PartyServiceImpl implements PartyService {
 	public void deleteMemberToParty(String encryptedPartyId, MemberDTO memberDTO, boolean isPartyLeader) {
 		//탈퇴 정보값을 전송할 메세지DTO 생성
 		PartyMatchWebSocketMessageDTO messageDTO = new PartyMatchWebSocketMessageDTO("leaveParty", memberDTO.getMemberId());
+
+		//장바구니에 넣어놨던 메뉴들 모두 삭제
+		String partyId = SecureUtil.calcDecrypt(encryptedPartyId);
+		apiGateway.deleteAllPartyCartsByPartyIdAndMemberId(memberDTO, partyId);
 
 		//파티탈퇴
 		partyMemberRepository.deleteByMemberId(memberDTO.getMemberId());

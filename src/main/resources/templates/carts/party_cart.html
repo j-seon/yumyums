@@ -1,0 +1,125 @@
+
+
+
+<style>
+	.align-middle {
+		vertical-align: middle !important;
+	}
+</style>
+
+<div class="container-fluid page-header py-5">
+	<h1 class="text-center text-white display-6">장바구니 </h1>
+	<ol class="breadcrumb justify-content-center mb-0">
+		<li class="breadcrumb-item"><a href="#">Home</a></li>
+		<li class="breadcrumb-item"><a href="#">Pages</a></li>
+		<li class="breadcrumb-item active text-white">Cart</li>
+	</ol>
+</div>
+<div class="container-fluid py-5">
+	<div class="container py-5">
+		<div class="row">
+			<div class="col-lg-8 col-md-12">
+				<h3 class="fw-bold mb-3" th:text="${storeName}">식당이름</h3>
+				<!-- 파티원 목록 받아와서 for문 돌기, 파티원 장바구니 목록 -->
+				<div th:each="partyMember : ${partyDTO.partyMemberDTOs}" class="cart-items"
+					 th:data-member-name="${partyMember.memberDTO.name}">
+					<div class="p-4 border rounded shadow-sm mt-3">
+						<!-- 회원 닉네임 출력 -->
+						<h4 th:text="${partyMember.memberDTO.name}">회원 닉네임</h4>
+						<div class="table-responsive">
+							<table class="table">
+								<thead class="text-center">
+								<tr>
+									<th scope="col">메뉴</th>
+									<th scope="col">가격</th>
+									<th scope="col">수량</th>
+									<th scope="col">합계</th>
+								</tr>
+								</thead>
+
+								<tbody class="text-center">
+								<!-- 장바구니에 담은 메뉴를 파티원별로 나열 -->
+								<tr th:each="partyCartItem : ${partyCartItems}"
+									th:if="${partyCartItem.memberDTO.name} == ${partyMember.memberDTO.name}">
+									<td class="align-middle">
+										<p class="mb-0" th:text="${partyCartItem.menuDTO.name}"></p>
+									</td>
+									<td class="align-middle">
+										<p class="mb-0" th:text="${partyCartItem.menuDTO.price} + '원'"
+										   th:attr="data-price=${partyCartItem.menuDTO.price}"></p>
+									</td>
+									<td class="align-middle">
+										<input type="number" name="menuCount" min="1"
+											   th:value="${partyCartItem.menuCount}"
+											   class="form-control text-center border-0"
+											   data-price="${partyCartItem.menuDTO.price}"
+											   data-menu-id="${partyCartItem.menuDTO.id}"
+											   oninput="updateTotalPrice(this)"
+											   style="background-color: white;"
+											   readonly>
+									</td>
+									<td class="align-middle">
+										<p class="mb-0 total-price"
+										   th:text="${partyCartItem.menuDTO.price * partyCartItem.menuCount} + '원'"></p>
+									</td>
+								</tr>
+								<!-- 장바구니에 담은 메뉴 하나가 없을 경우 -->
+								<tr th:if="${#lists.isEmpty(partyCartItems)}">
+									<td colspan="4" class="text-center">장바구니에 담긴 메뉴가 없습니다.</td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<!-- 장바구니 목록 -->
+			</div>
+			<div class="col-lg-4 col-md-12">
+				<div class="rounded shadow-sm border mt-5">
+					<div class="p-4">
+						<h2 class="mb-5">결제예정금액</h2>
+						<div class="d-flex justify-content-between mb-3">
+							<h5 class="mb-0">담은 금액:</h5>
+							<p class="mb-0" id="totalOrderAmount">0 원</p>
+						</div>
+						<div class="d-flex justify-content-between mb-3">
+							<h5 class="mb-0">할인금액:</h5>
+							<p class="mb-0 text-secondary">0 원</p>
+						</div>
+
+						<div class="py-4 border-top d-flex justify-content-between">
+							<h5 class="mb-0">최종 결제예정금액</h5>
+							<h3 class="mb-0 text-danger" id="totalAmount" >0 원</h3>
+						</div>
+						<form th:action="@{/orders/checkout}" method="get">
+							<button id="orderButton" class="btn btn-secondary text-white w-100 rounded mt-4" type="submit">총 0개 주문하기</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Copyright Start -->
+<div class="container-fluid copyright bg-dark py-4">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+				<span class="text-light"><a href="#"><i class="fas fa-copyright text-light me-2"></i>Yumyums</a>, All right reserved.</span>
+			</div>
+			<div class="col-md-6 my-auto text-center text-md-end text-white">
+				Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a> Distributed By <a class="border-bottom" href="https://themewagon.com">ThemeWagon</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
+<script>
+	const partyId = "[[${partyId}]]";
+</script>
+<script src="../../js/chat/sockjs.js"></script>
+<script src="../../js/chat/stomp.js"></script>
+<script defer src="../../js/cart/cart.js"></script>
+<script defer src="../../js/cart/partyCart.js"></script>

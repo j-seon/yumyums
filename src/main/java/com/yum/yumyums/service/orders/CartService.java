@@ -1,6 +1,8 @@
 package com.yum.yumyums.service.orders;
 
 import com.yum.yumyums.dto.orders.CartDTO;
+import com.yum.yumyums.dto.user.MemberDTO;
+
 import java.util.List;
 
 public interface CartService {
@@ -14,4 +16,6 @@ public interface CartService {
 
     //[Party] 파티 장바구니에 추가
     void addMenuToPartyCart(CartDTO cartDTO);
+    List<CartDTO> getPartyCartItems(String partyId);
+    void deleteAllPartyCartsByPartyIdAndMemberId(MemberDTO memberDTO, String PartyId);
 }

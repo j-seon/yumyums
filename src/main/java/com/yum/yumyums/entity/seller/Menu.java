@@ -53,6 +53,7 @@ public class Menu {
         menuDTO.setId(this.getId());
         menuDTO.setName(this.getName());
         menuDTO.setCategory(this.getCategory());
+        menuDTO.setStoreDTO(this.store.entityToDto());
         menuDTO.setContent(this.getContent());
         menuDTO.setPrice(this.getPrice());
         menuDTO.setCookingTime(this.getCookingTime());
@@ -72,6 +73,7 @@ public class Menu {
         menu.setName(menuDTO.getName());
         menu.setCategory(menuDTO.getCategory());
         menu.setContent(menuDTO.getContent());
+        menu.setStore(menuDTO.getStoreDTO().dtoToEntity());
         menu.setPrice(menuDTO.getPrice());
         menu.setCookingTime(menuDTO.getCookingTime());
         menu.setAlone(Boolean.parseBoolean(menuDTO.getIsAlone()));
