@@ -135,6 +135,7 @@ public class PartyServiceImpl implements PartyService {
 		//복호화
 		String partyId = getPartyIdByInviteUrlParam(encryptedPartyId);
 
+		apiGateway.deleteAllPartyCartsByPartyIdAndMemberId(memberDTO, partyId);
 		partyMemberRepository.deleteByMemberId(memberDTO.getMemberId());
 		partyRepository.deleteById(partyId);
 	}

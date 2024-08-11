@@ -22,9 +22,12 @@ function addToCart(menuId) {
 
 			if (xhr.status === 400) {
 				alertErrorMessage("같은 가게의 메뉴만 담을 수 있습니다");
+			} else if (xhr.status === 401 && joinPage === "party") {
+				alertErrorMessage("로그인 해주세요");
+				window.location.href = "/login?redirect=/party/" + partyId + "&msg=member";
 			} else if (xhr.status === 401) {
 				alertErrorMessage("로그인 해주세요");
-				window.location.href = "/login";
+				window.location.href = "/login?redirect=/menu&msg=member";
 			} else {
 				alertErrorMessage("오류가 발생했습니다 다시 시도해 주세요");
 			}
