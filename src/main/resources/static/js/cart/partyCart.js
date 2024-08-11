@@ -45,10 +45,25 @@ function updatePartyCartItems(partyCartDTO) {
         // 신규 아이템이 없을 경우, 새 아이템 추가
         const newRow = document.createElement("tr");
         newRow.innerHTML = `
-            <td>${partyCartDTO.menuDTO.name}</td>
-            <td>${partyCartDTO.menuDTO.price} 원</td>
-            <td>${partyCartDTO.menuCount}</td>
-            <td>${partyCartDTO.menuDTO.price * partyCartDTO.menuCount} 원</td>
+            <td class="align-middle">
+                <p class="mb-0">${partyCartDTO.menuDTO.name}</p>
+            </td>
+            <td class="align-middle">
+                <p class="mb-0">${partyCartDTO.menuDTO.price} 원</p>
+            </td>
+            <td class="align-middle">
+                <input type="number" name="menuCount" min="1"
+                       value="${partyCartDTO.menuCount}"
+                       class="form-control text-center border-0"
+                       data-price="${partyCartDTO.menuDTO.price}"
+                       data-menu-id="${partyCartDTO.menuDTO.id}"
+                       oninput="updateTotalPrice(this)"
+                       style="background-color: white;"
+                       readonly>
+            </td>
+            <td class="align-middle">
+                <p class="mb-0 total-price">${partyCartDTO.menuDTO.price * partyCartDTO.menuCount} 원</p>
+            </td>
         `;
         cartItemsContainer.appendChild(newRow);
     }
