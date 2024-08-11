@@ -75,20 +75,22 @@ public class MemberController extends ImageDefaultUrl {
     }
 
     @PostMapping("/login")
-    public String memberLogin(HttpServletRequest request, MemberDTO memberDTO, Model model, TemplateData templateData){
+    public String memberLogin(@RequestParam("redirect") String redirectUrl, MemberDTO memberDTO,HttpServletRequest request, Model model, TemplateData templateData){
         HttpSession session = request.getSession();
         String memberId = memberDTO.getMemberId();
         String memberPw = memberDTO.getPassword();
-        System.out.println(memberId +" : "+memberDTO);
-
+        if(redirectUrl.isEmpty()){
+            redirectUrl = "/";
+        }
+        System.out.println("redirectUrl :" + redirectUrl);
         MemberDTO member = memberService.findById(memberId);
         if(member != null && member.getPassword().equals(memberPw)){
             session.setAttribute("loginUser",member);
             session.setAttribute("loginType", "m");
-            return "redirect:/";
+            return "redirect:" + redirectUrl;
         }else{
             templateData.setMessage("아이디 또는 비밀번호가 일치하지 않습니다.");
-            templateData.setUrl("/login");
+            templateData.setUrl("/login?redirect=" + redirectUrl);
             model.addAttribute("templateData", templateData);
             return "/inc/alert";
         }

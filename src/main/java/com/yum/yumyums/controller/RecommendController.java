@@ -56,7 +56,14 @@ public class RecommendController {
 
 
     @GetMapping("/{storeId}")
-    public String getStoreDetails(@PathVariable("storeId") int storeId, Model model, TemplateData templateData) {
+    public String getStoreDetails(
+			@PathVariable("storeId") int storeId,
+			Model model,
+			TemplateData templateData,
+			@RequestParam(name = "joinPage", required = false, defaultValue = "none") String joinPage,
+			@RequestParam(name = "partyId", required = false, defaultValue = "none") String encryptedPartyId
+
+	) {
         templateData.setViewPath("menu/detail");
         StoreDTO store = storeService.findById(storeId);
         model.addAttribute("store", store);
@@ -73,7 +80,19 @@ public class RecommendController {
 
         int likeCount = storeService.getLikesForStore(storeId);
         model.addAttribute("likeCount", likeCount);
-        model.addAttribute("templateData", templateData);
+
+		// 연관 페이지 이동을 위한 기본값 실어 보내기
+		model.addAttribute("partyId", "none");
+		model.addAttribute("joinPage", "none");
+
+		// 파티페이지에서 접근했다면
+		if(joinPage.equals("party")) {
+			//연관 페이지 정보값을 파티로 변경
+			model.addAttribute("partyId", encryptedPartyId);
+			model.addAttribute("joinPage", joinPage);
+		}
+
+		model.addAttribute("templateData", templateData);
 
 
         return "template";

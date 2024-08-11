@@ -1,63 +1,114 @@
-.row {
+#chat-page .row {
    width: 165px;
    overflow: auto;
 }
-.add-chat-room{
+
+#chat-page .add-chat-room {
    width: 125px;
-   padding-right : 8px;
-}
-.inline-block {
-       display: inline-block;
-       vertical-align: top;
-}
-.room-name {
-    width: 75px;
-    overflow: auto;
-  white-space: nowrap;
+   padding-right: 8px;
 }
 
-.chatting {
+#chat-page .inline-block {
+   display: inline-block;
+   vertical-align: top;
+}
+
+#chat-page .room-name {
+   width: 55px;
+   overflow: auto;
+   white-space: nowrap;
+}
+
+#chat-page .chat-box {
+   display: block;
+   margin-bottom: 10px; /* 메시지 간의 여백 추가 */
+}
+
+#chat-page #chatting{
+    /*width: 278px;*/
+    width: 326px;
+}
+#chat-page .chatting, #chat-page .chatting_own {
+    max-width: 60%; /* 최대 너비 설정 */
    margin: 5px;
    padding: 5px;
    border-radius: 5px;
    background-color: #f1f1f1;
-   width: fit-content;
-    margin-left :auto;
+   white-space: pre-wrap; /* 줄 바꿈 처리 */
+   word-wrap: break-word; /* 긴 단어 줄 바꿈 처리 */
 }
 
-.chatting_own {
-   margin: 5px;
-   padding: 5px;
-   border-radius: 5px;
-   background-color: #d1e7dd;
-   width: fit-content;
-   align-self: flex-end;
-
+#chat-page .chatting {
+   background-color: #f1f1f1; /* 다른 사용자의 채팅 배경색 */
+   align-self: flex-end; /* 오른쪽 정렬 */
 }
 
-.chat-window {
-   height: 400px;
+#chat-page .chatting_own {
+   background-color: #d1e7dd; /* 사용자의 채팅 배경색 */
+   margin-left: auto; /* 오른쪽 정렬 */
+}
+
+#chat-page .chat-window {
+   height: 350px;
    overflow-y: auto;
    border: 1px solid #ddd;
    padding: 10px;
 }
-.setUser{
-height: 52px;
+
+#chat-page .setUser {
+   height: 52px;
 }
-.message-not-read{
-    border: 1px solid #f00;
+
+#chat-page .message-not-read {
+   border: 1px solid #f00;
 }
-.chat-member-id{
-    list-style: none;
-    margin: 5px;
+
+#chat-page .chat-member-id {
+   list-style: none;
+   margin: 5px;
    padding: 5px;
 }
-.chat-box{
-width : 229.633px;
+
+#chat-page #conversation {
+   display: flex;
+   width : 278px;
 }
-#conversation{
-display:flex;
+
+#chat-page #room-info-box {
+   height: 40px;
 }
-#room-info-box{
-height: 88px;
+
+#chat-page {
+   width: 429px;
+   height: 488px;
+}
+.chat-room-list{
+
+}
+#chat-page .fruite{
+ height: 434px;
+ overflow: scroll;
+}
+.SettingView-module__layer_setting___JwfQs {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 50;
+}
+#home-chat{
+    position: fixed;
+    right: 24px;
+    bottom: 94px;
+    z-index: 50;
+    background-color : white;
+}
+#chat-page #chat-member-icon{
+    width: 24px;
+   height: 24px;
+}
+#room-member{
+    width: 50px;
+}
+#chat-page .nav{
+    padding-left: 12px;
 }

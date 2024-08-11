@@ -146,7 +146,13 @@
                 // 필요시 성공 메시지 표시 등
             },
             error: function (xhr, status, error) {
-                $('#storePassword').addClass('is-invalid');
+                if(xhr.status == 401){
+                    $('#storePassword').addClass('is-invalid');
+                    alert('매장 로그인 필요: 이전 페이지로 돌아갑니다.');
+                    window.history.back();
+                }else{
+                    console.error()
+                }
             }
         });
     }

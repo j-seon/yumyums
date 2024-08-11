@@ -40,30 +40,21 @@ public class ChatController {
     //페이지 호출
     @GetMapping("")
     public String showChatPage(Model model, TemplateData templateData,HttpSession session) {
-        SessionUtil sessionUtil =new SessionUtil();
-        MemberDTO memberDTO = new MemberDTO();
-
-        if(sessionUtil.isLoginAsMember(session)) {
-            memberDTO= (MemberDTO) session.getAttribute("loginUser");
-
-            List<HashMap<String, Object>> chatRoomHashList =  chatMemberService.findChatRoomInfoByMemberId(memberDTO.getMemberId());
-            model.addAttribute("chatRoomHashList", chatRoomHashList);
 
             templateData.setViewPath("chat/chat");
             model.addAttribute("templateData", templateData);
             return "template";
-        }else{
-            templateData.setMessage("로그인이 필요한 서비스입니다.");
-            templateData.setUrl("/login");
-            model.addAttribute("templateData", templateData);
-            return "/inc/alert";
-        }
 
     }
     //페이지 호출
     @GetMapping("/test")
     public String test(Model model, TemplateData templateData,HttpSession session) {
-            return "/chat/test";
+        SessionUtil sessionUtil =new SessionUtil();
+        MemberDTO memberDTO = new MemberDTO();
+
+        templateData.setViewPath("chat/test");
+        model.addAttribute("templateData", templateData);
+        return "template";
 
     }
 
@@ -109,6 +100,7 @@ public class ChatController {
                     chatMember.setChat(chat);
                     chatMember.setMemberSavedRoomName(roomName);
                     chatMemberService.saveChatMember(chatMember);
+                    System.out.println("memberId"+memberId);
                 }
                 //원격으로 체팅방 생성
                 // 0: c(생성), d(삭제) 1:roomName 2:memberId 3:chatId 4:member count 5:chat Member Id
@@ -128,6 +120,8 @@ public class ChatController {
     public String delRoom(@RequestParam("chatId") String strChatId,@RequestParam("memberId") String memberId, HttpSession session) {
         int chatId = Integer.parseInt(strChatId);
         try {
+            System.out.println("chatId : "+chatId);
+            System.out.println("memberId : "+memberId);
             //해당 멤버 삭제
             chatMemberService.deleteByChatIdAndMemberId(chatId,memberId);
             //적용 시킬 멤버 불러옴
@@ -190,6 +184,10 @@ public class ChatController {
     @MessageMapping("/{roomId}") //여기로 전송되면 메서드 호출 -> WebSocketConfig prefixes 에서 적용한건 앞에 생략
     @SendTo("/chat/room/{roomId}")   //구독하고 있는 장소로 메시지 전송 (목적지)  -> WebSocketConfig Broker 에서 적용한건 앞에 붙어줘야됨
     public ChatMessageDTO chat(@DestinationVariable Long roomId, ChatMessageDTO chatMessageDTO) {
+        System.out.println("chatMessageDTO : "+chatMessageDTO);
+
+        MemberDTO memberDTO = memberService.findById(chatMessageDTO.getMember().getMemberId());
+        chatMessageDTO.setMember(memberDTO);
         chatMessageService.save(chatMessageDTO);
         return chatMessageDTO;
     }
