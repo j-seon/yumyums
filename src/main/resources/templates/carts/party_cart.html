@@ -21,7 +21,8 @@
 			<div class="col-lg-8 col-md-12">
 				<h3 class="fw-bold mb-3" th:text="${storeName}">식당이름</h3>
 				<!-- 파티원 목록 받아와서 for문 돌기, 파티원 장바구니 목록 -->
-				<div th:each="partyMember : ${partyDTO.partyMemberDTOs}">
+				<div th:each="partyMember : ${partyDTO.partyMemberDTOs}" class="cart-items"
+					 th:data-member-name="${partyMember.memberDTO.name}">
 					<div class="p-4 border rounded shadow-sm mt-3">
 						<!-- 회원 닉네임 출력 -->
 						<h4 th:text="${partyMember.memberDTO.name}">회원 닉네임</h4>
@@ -115,4 +116,10 @@
 </div>
 
 <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
+<script>
+	const partyId = "[[${partyId}]]";
+</script>
+<script src="../../js/chat/sockjs.js"></script>
+<script src="../../js/chat/stomp.js"></script>
 <script defer src="../../js/cart/cart.js"></script>
+<script defer src="../../js/cart/partyCart.js"></script>

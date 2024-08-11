@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 import static com.yum.yumyums.util.SessionUtil.MEMBER_DTO_SESSION_ATTRIBUTE_NAME;
+import static com.yum.yumyums.util.SessionUtil.isLoginAsMember;
 
 @Controller
 @RequestMapping("/partyCart")
@@ -30,15 +31,22 @@ public class PartyCartController {
 	// 파티 카트 조회
 	@GetMapping("/{encryptedPartyId}")
 	public String getPartyCartPage(final HttpSession session, Model model, TemplateData templateData, @PathVariable String encryptedPartyId, @RequestParam String joinPage) {
+
 		//== 유효성 검사 ==//
-		// 파티 경로를 통해 접근한게 아니라면
-		if (joinPage.equals("none")) {
+		//소비자 회원으로 로그인중이지 않다면
+		if (!isLoginAsMember(session)) {
+			return "redirect:/login"; // 로그인 페이지로 이동
+		}
+
+		//회원 정보값 가져오기
+		MemberDTO memberDTO = (MemberDTO) session.getAttribute(MEMBER_DTO_SESSION_ATTRIBUTE_NAME);
+
+		//해당 파티의 파티원이 아니거나 잘못된 경로로 접근한거라면
+		if(!partyService.isThisPartyMember(encryptedPartyId, memberDTO) || joinPage.equals("none")) {
 			return "redirect:/party";
 		}
 
 		//== 비즈니스 로직 ==//
-		MemberDTO memberDTO = (MemberDTO) session.getAttribute(MEMBER_DTO_SESSION_ATTRIBUTE_NAME);
-
 		// 파티, 파티 카트 정보값 가져오기
 		PartyDTO partyDTO = partyService.findParty(encryptedPartyId);
 		List<CartDTO> partyCartItems = cartService.getPartyCartItems(encryptedPartyId);
@@ -50,6 +58,7 @@ public class PartyCartController {
 		}
 
 		// 데이터 넣고 이동
+		model.addAttribute("partyId", encryptedPartyId);
 		model.addAttribute("partyDTO", partyDTO);
 		model.addAttribute("partyCartItems", partyCartItems);
 		model.addAttribute("storeName", storeName);

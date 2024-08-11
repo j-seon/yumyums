@@ -138,7 +138,6 @@ public class CartServiceImpl implements CartService {
         cartDTO.setMenuDTO(menu.entityToDto());
 
         PartyCart partyCart = cartDTO.dtoToPartyCartEntity();
-        System.out.println("create partyCart : " + partyCart);
 
         // 이미 카트에 추가된 메뉴라면
         Optional<PartyCart> existingPartyCartItem = partyCartRepository.findByMemberIdAndMenuId(member.getId(), menu.getId());
@@ -150,8 +149,6 @@ public class CartServiceImpl implements CartService {
             // entity 기존 값으로 덮어씌우고 개수 증가
             partyCart = existingPartyCartItemEntity;
             partyCart.setMenuCount(existingMenuCount + cartDTO.getMenuCount());
-
-            System.out.println("inside partyCart : " + partyCart);
         }
 
         // PartyCart 상태 검증
@@ -163,7 +160,6 @@ public class CartServiceImpl implements CartService {
         partyCartRepository.save(partyCart);
         partyCartRepository.flush(); // 즉시 반영
 
-        System.out.println("saved partyCart : " + partyCart);
         // 웹소켓을 이용해 업데이트 내역 쏴주기 TODO 아직 미완
         String encryptedPartyId = SecureUtil.calcEncrypt(partyCart.getParty().getId());
         messagingTemplate.convertAndSend("/topic/partyCart/" + encryptedPartyId, partyCart.entityToDto());
