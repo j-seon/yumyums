@@ -82,3 +82,9 @@ $(".vegetable-carousel1").owlCarousel({
     }
 });
 
+
+function submitPartyMenu() {
+    const url = `/partyCart/${encodeURIComponent(partyId)}?joinPage=${encodeURIComponent(joinPage)}`;
+    // TODO 웹소켓을 통해 회원ID "준비완료" 값 전달하기
+    window.location.href = url;
+}

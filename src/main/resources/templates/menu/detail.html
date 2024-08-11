@@ -174,7 +174,7 @@
 <!-- 파티 장바구니 보기, 선택완료 -->
 <div class="fixed-bottom row justify-content-center" th:classappend="${joinPage != 'party'} ? 'd-none'">
     <button type="button" class="btn btn-secondary col-2 m-4">선택한 메뉴 보기</button>
-    <button type="button" class="btn btn-primary col-2 m-4" th:onclick="'location.href=\'/partyCart\''" data-bs-dismiss="modal">선택완료</button>
+    <button type="button" class="btn btn-primary col-2 m-4" th:onclick="submitPartyMenu()" data-bs-dismiss="modal">선택완료</button>
 </div>
 <!-- //파티 장바구니 보기, 선택완료 -->
 

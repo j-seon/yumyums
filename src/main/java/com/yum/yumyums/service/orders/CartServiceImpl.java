@@ -10,13 +10,16 @@ import com.yum.yumyums.repository.orders.CartRepository;
 import com.yum.yumyums.repository.orders.PartyCartRepository;
 import com.yum.yumyums.repository.seller.MenuRepository;
 import com.yum.yumyums.repository.user.MemberRepository;
+import com.yum.yumyums.util.SecureUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -26,6 +29,7 @@ public class CartServiceImpl implements CartService {
     private final PartyCartRepository partyCartRepository;
     private final MemberRepository memberRepository;
     private final MenuRepository menuRepository;
+    private final SimpMessagingTemplate messagingTemplate;
 
     @Override
     public List<CartDTO> getCartItems(String memberId) {
@@ -116,6 +120,11 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public void addMenuToPartyCart(CartDTO cartDTO) {
+        // DTO 유효성 검증
+        if (cartDTO.getMemberDTO() == null || cartDTO.getMenuDTO() == null) {
+            throw new RuntimeException("MemberDTO 또는 MenuDTO는 null일 수 없습니다");
+        }
+
         // 회원 정보 가져오기
         Member member = memberRepository.findById(cartDTO.getMemberDTO().getMemberId())
                 .orElseThrow(() -> new RuntimeException("멤버 없음: " + cartDTO.getMemberDTO().getMemberId()));
@@ -124,17 +133,16 @@ public class CartServiceImpl implements CartService {
         Menu menu = menuRepository.findById(cartDTO.getMenuDTO().getId())
                 .orElseThrow(() -> new RuntimeException("메뉴 없음: " + cartDTO.getMenuDTO().getId()));
 
-
         // DTO를 엔티티로 변환
         cartDTO.setMemberDTO(MemberDTO.toMemberDTO(member));
         cartDTO.setMenuDTO(menu.entityToDto());
 
         PartyCart partyCart = cartDTO.dtoToPartyCartEntity();
+        System.out.println("create partyCart : " + partyCart);
 
-        //이미 카트에 추가된 메뉴라면
+        // 이미 카트에 추가된 메뉴라면
         Optional<PartyCart> existingPartyCartItem = partyCartRepository.findByMemberIdAndMenuId(member.getId(), menu.getId());
         if (existingPartyCartItem.isPresent()) {
-
             // 기존 메뉴의 갯수에 추가된 개수 가져옴
             PartyCart existingPartyCartItemEntity = existingPartyCartItem.get();
             int existingMenuCount = existingPartyCartItemEntity.getMenuCount();
@@ -142,15 +150,44 @@ public class CartServiceImpl implements CartService {
             // entity 기존 값으로 덮어씌우고 개수 증가
             partyCart = existingPartyCartItemEntity;
             partyCart.setMenuCount(existingMenuCount + cartDTO.getMenuCount());
+
+            System.out.println("inside partyCart : " + partyCart);
         }
 
         // PartyCart 상태 검증
-        if (partyCart.getParty() == null || partyCart.getMember() == null || partyCart.getMenu() == null) {
-            throw new RuntimeException("Party, Member 또는 Menu는 null일 수 없습니다");
+        if (partyCart == null || partyCart.getParty() == null || partyCart.getMember() == null || partyCart.getMenu() == null) {
+            throw new RuntimeException("PartyCart는 null일 수 없습니다");
         }
 
         // PartyCart 저장
         partyCartRepository.save(partyCart);
         partyCartRepository.flush(); // 즉시 반영
+
+        System.out.println("saved partyCart : " + partyCart);
+        // 웹소켓을 이용해 업데이트 내역 쏴주기 TODO 아직 미완
+        String encryptedPartyId = SecureUtil.calcEncrypt(partyCart.getParty().getId());
+        messagingTemplate.convertAndSend("/topic/partyCart/" + encryptedPartyId, partyCart.entityToDto());
+    }
+
+    @Override
+    public List<CartDTO> getPartyCartItems(MemberDTO memberDTO) {
+        List<PartyCart> partyCarts = partyCartRepository.findByMemberId(memberDTO.getMemberId());
+        return partyCarts.stream()
+                .map(partyCart -> {
+                    CartDTO cartDTO = partyCart.entityToDto();
+                    cartDTO.setJoinPage("party");
+                    return cartDTO; // 변환된 dto 반환
+                })
+                .toList();
+    }
+
+
+    @Transactional
+    @Override
+    public void deleteAllPartyCartsByPartyIdAndMemberId(MemberDTO memberDTO, String partyId) {
+        partyCartRepository.deleteAllByMemberIdAndPartyId(memberDTO.getMemberId(), partyId);
+
+        // 캐시 문제 해결을 위해 flush를 호출
+        partyCartRepository.flush();
     }
 }

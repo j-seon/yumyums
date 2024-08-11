@@ -21,46 +21,60 @@
 			<div class="col-lg-8 col-md-12">
 				<h3 class="fw-bold mb-3" th:text="${storeName}">식당이름</h3>
 				<!-- 파티원 목록 받아와서 for문 돌기, 파티원 장바구니 목록 -->
-				<div class="p-4 border rounded shadow-sm m-3" th:each="partyMember : ${partyDTO.partyMemberDTOs}">
-					<h4 th:value="${partyMember.memberDTO.name}">회원 닉네임</h4>
-					<div class="table-responsive">
-						<table class="table">
-							<!-- 테이블 명 -->
-							<thead class="text-center">
-							<tr>
-								<th scope="col">메뉴</th>
-								<th scope="col">가격</th>
-								<th scope="col">수량</th>
-								<th scope="col">합계</th>
-							</tr>
-							</thead>
-							<!-- //테이블 명 -->
+				<div th:each="partyMember : ${partyDTO.partyMemberDTOs}">
+					<div class="p-4 border rounded shadow-sm mt-3">
+						<!-- 회원 닉네임 출력 -->
+						<h4 th:text="${partyMember.memberDTO.name}">회원 닉네임</h4>
+						<div class="table-responsive">
+							<table class="table">
+								<thead class="text-center">
+								<tr>
+									<th scope="col">메뉴</th>
+									<th scope="col">가격</th>
+									<th scope="col">수량</th>
+									<th scope="col">합계</th>
+								</tr>
+								</thead>
 
-							<!-- 테이블 내용 (하나의 아이템 값) -->
-							<tbody class="text-center">
-							<tr th:each="partyCartItem : ${partyMember.cartDTOs}">
-								<td class="align-middle">
-									<p class="mb-0" th:text="${partyCartItem.menuDTO.name}"></p>
-								</td>
-								<td class="align-middle">
-									<p class="mb-0" th:text="${partyCartItem.menuDTO.price} + '원'" th:attr="data-price=${partyCartItem.menuDTO.price}"></p>
-								</td>
-								<td class="align-middle">
-									<input type="number" name="menuCount" min="1" th:value="${partyCartItem.menuCount}" class="form-control text-center border-0" data-price="${partyCartItem.menuDTO.price}" data-menu-id="${partyCartItem.menuDTO.id}" oninput="updateTotalPrice(this)">
-								</td>
-								<td class="align-middle">
-									<p class="mb-0 total-price" th:text="${partyCartItem.menuDTO.price * partyCartItem.menuCount} + '원'"></p>
-								</td>
-							</tr>
-							</tbody>
-							<!-- //테이블 내용 (하나의 아이템 값) -->
-						</table>
+								<tbody class="text-center">
+								<!-- 장바구니에 담은 메뉴를 파티원별로 나열 -->
+								<tr th:each="partyCartItem : ${partyCartItems}"
+									th:if="${partyCartItem.memberDTO.name} == ${partyMember.memberDTO.name}">
+									<td class="align-middle">
+										<p class="mb-0" th:text="${partyCartItem.menuDTO.name}"></p>
+									</td>
+									<td class="align-middle">
+										<p class="mb-0" th:text="${partyCartItem.menuDTO.price} + '원'"
+										   th:attr="data-price=${partyCartItem.menuDTO.price}"></p>
+									</td>
+									<td class="align-middle">
+										<input type="number" name="menuCount" min="1"
+											   th:value="${partyCartItem.menuCount}"
+											   class="form-control text-center border-0"
+											   data-price="${partyCartItem.menuDTO.price}"
+											   data-menu-id="${partyCartItem.menuDTO.id}"
+											   oninput="updateTotalPrice(this)"
+											   style="background-color: white;"
+											   readonly>
+									</td>
+									<td class="align-middle">
+										<p class="mb-0 total-price"
+										   th:text="${partyCartItem.menuDTO.price * partyCartItem.menuCount} + '원'"></p>
+									</td>
+								</tr>
+								<!-- 장바구니에 담은 메뉴 하나가 없을 경우 -->
+								<tr th:if="${#lists.isEmpty(partyCartItems)}">
+									<td colspan="4" class="text-center">장바구니에 담긴 메뉴가 없습니다.</td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
-				<!-- //파티원 장바구니 목록 -->
+				<!-- 장바구니 목록 -->
 			</div>
 			<div class="col-lg-4 col-md-12">
-				<div class="rounded shadow-sm">
+				<div class="rounded shadow-sm border mt-5">
 					<div class="p-4">
 						<h2 class="mb-5">결제예정금액</h2>
 						<div class="d-flex justify-content-between mb-3">
