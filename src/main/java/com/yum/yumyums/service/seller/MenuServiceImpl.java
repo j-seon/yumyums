@@ -5,6 +5,7 @@ import com.yum.yumyums.entity.Images;
 import com.yum.yumyums.entity.review.Review;
 import com.yum.yumyums.entity.seller.Menu;
 import com.yum.yumyums.enums.FoodCategory;
+import com.yum.yumyums.repository.orders.OrdersDetailRepository;
 import com.yum.yumyums.repository.review.ReviewRepository;
 import com.yum.yumyums.repository.seller.MenuRepository;
 import com.yum.yumyums.service.ImagesService;
@@ -21,6 +22,7 @@ public class MenuServiceImpl implements MenuService {
     private final MenuRepository menuRepository;
     private final ReviewRepository reviewRepository;
     private final ImagesService imagesService;
+    private final OrdersDetailRepository ordersDetailRepository;
 
     @Override
     public Optional<MenuDTO> findById(int id) {
@@ -59,6 +61,12 @@ public class MenuServiceImpl implements MenuService {
                 .average();
 
         return averageRate.isPresent() ? Math.round(averageRate.getAsDouble() * 10) / 10.0 : 0.0;
+    }
+
+    @Override
+    public int getMenuOrderCount(int menuId) {
+        Integer orderCount = ordersDetailRepository.findTotalOrdersByMenuId(menuId);
+        return (orderCount != null) ? orderCount : 0;
     }
 
     @Override
