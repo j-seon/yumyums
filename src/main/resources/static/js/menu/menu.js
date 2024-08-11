@@ -33,19 +33,3 @@ function addToCart(menuId) {
     });
 }
 
-function updateCartCount() {
-    $.get("/cart/count", function (count) {
-        $("#cart-count").text("장바구니에 " + count + "개의 메뉴가 담겨 있습니다");
-    });
-}
-
-$(document).ready(function () {
-    updateCartCount();
-
-    // 이벤트 위임을 사용하여 장바구니 버튼 클릭 시 addToCart 함수 호출
-    $(document).on("click", "a[th\\:onclick^='addToCart(']", function (e) {
-        e.preventDefault(); // 기본 동작 막기
-        const menuId = $(this).attr('th:onclick').match(/\d+/)[0]; // 메뉴 ID 추출
-        addToCart(menuId);
-    });
-});

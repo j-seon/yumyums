@@ -1,7 +1,6 @@
 $(document).ready(function() {
     var srcFaq=[]
 
-
     $('#src-faq').on('click', function(e) {
         $.ajax({
            url: "http://192.168.0.106:5000/list",
