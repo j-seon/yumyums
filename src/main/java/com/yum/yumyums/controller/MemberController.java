@@ -9,6 +9,7 @@ import com.yum.yumyums.service.ImagesService;
 import com.yum.yumyums.service.user.MarkStationService;
 import com.yum.yumyums.service.user.MemberService;
 import com.yum.yumyums.util.ImageDefaultUrl;
+import com.yum.yumyums.util.SessionUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +38,11 @@ public class MemberController extends ImageDefaultUrl {
     private final ImagesService imagesService;
 
     @GetMapping("")
-    public String memberSaveForm(Model model, TemplateData templateData){
+    public String memberSaveForm(Model model, TemplateData templateData, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if(SessionUtil.isLogin(session)){
+            return "redirect:/";
+        }
         templateData.setViewPath("user/memberSave");
         model.addAttribute("templateData",templateData);
         return "template";
