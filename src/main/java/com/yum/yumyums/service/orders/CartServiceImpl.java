@@ -178,11 +178,24 @@ public class CartServiceImpl implements CartService {
                 .toList();
     }
 
+    @Override
+    public List<CartDTO> getPartyCartItemsByMemberId(String encryptedPartyId, MemberDTO memberDTO) {
+        String partyId = SecureUtil.calcDecrypt(encryptedPartyId);
+        List<PartyCart> partyCarts = partyCartRepository.findByPartyIdAndMemberId(partyId, memberDTO.getMemberId());
+        return partyCarts.stream()
+                .map(partyCart -> {
+                    CartDTO cartDTO = partyCart.entityToDto();
+                    cartDTO.setJoinPage("party");
+                    return cartDTO; // 변환된 dto 반환
+                })
+                .toList();
+    }
+
 
     @Transactional
     @Override
-    public void deleteAllPartyCartsByPartyIdAndMemberId(MemberDTO memberDTO, String partyId) {
-        partyCartRepository.deleteAllByMemberIdAndPartyId(memberDTO.getMemberId(), partyId);
+    public void deleteAllPartyCartsByPartyIdAndMemberId(MemberDTO memberDTO, String encryptedPartyId) {
+        partyCartRepository.deleteAllByMemberIdAndPartyId(memberDTO.getMemberId(), encryptedPartyId);
 
         // 캐시 문제 해결을 위해 flush를 호출
         partyCartRepository.flush();

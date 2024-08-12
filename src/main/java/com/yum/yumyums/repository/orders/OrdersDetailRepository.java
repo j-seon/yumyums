@@ -15,6 +15,4 @@ public interface OrdersDetailRepository extends JpaRepository<OrdersDetail, Inte
     @Query("SELECT SUM(od.menuCount) FROM OrdersDetail od WHERE od.menu.id = :menuId")
     Integer findTotalOrdersByMenuId(@Param("menuId") int menuId);
 
-    List<OrdersDetail> findByOrdersId(String ordersId);
-
 }

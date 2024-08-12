@@ -20,8 +20,8 @@
                             <h5 class="mb-1" th:text="'가게: ' + ${order.storeDTO.name}"></h5>
                             <h5 class="mb-1" th:text="'주문시간: ' + ${formattedOrderTime}"></h5>
                             <h5 class="mb-1" th:text="'대기번호: ' + ${order.waitingNum}"></h5>
-                            <h5 class="mb-1" th:text="'예상 대기시간: ' + ${estimatedWaitTime} + '분'"></h5>
                             <h5 class="mb-1" th:text="'결제방식: ' + ${order.paymentMethod}"></h5>
+                            <h5 class="mb-1"> 예상 대기 시간</h5>
                         </div>
                     </li>
                 </ul>
