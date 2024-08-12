@@ -39,7 +39,7 @@
 
             </div>
 
-            <div class="modal-footer d-none">
+            <div id="station-footer" class="modal-footer d-none">
                 <button type="button" class="btn btn-secondary" onclick="resetSearch()">재검색</button>
                 <button type="button" class="btn btn-primary" onclick="addStation();" data-bs-dismiss="modal">추가하기</button>
             </div>
@@ -97,7 +97,7 @@
         e.preventDefault();
         document.querySelector('.searchContent').classList.add('d-none');
         document.querySelector('.stationInfo').classList.remove('d-none');
-        document.querySelector('.modal-footer').classList.remove('d-none');
+        document.querySelector('#.modal-footer').classList.remove('d-none');
 
         const dataItems = ['stline', 'stname', 'stnum'];
         const values = {};
@@ -115,7 +115,7 @@
         $('.stationList').empty();
         document.querySelector('.searchContent').classList.remove('d-none');
         document.querySelector('.stationInfo').classList.add('d-none');
-        document.querySelector('.modal-footer').classList.add('d-none');
+        document.querySelector('#station-footer').classList.add('d-none');
 
         const fieldsToClear = ['keyword', 'stline', 'stname', 'stnum', 'stmemo'];
 
