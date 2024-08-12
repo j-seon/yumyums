@@ -18,7 +18,7 @@
 		<form th:action="@{/party}" th:object="${partyDTO}" th:with="storeName=${storeName}" method="post">
 			<!-- 파티 가게 설정 -->
 			<div class="position-relative mx-auto">
-				<input class="form-control border-0 w-100 py-3 px-4 rounded-pill bg-light" th:name="storeName" th:value="${storeName}"  type="text" placeholder="주문할 가게" id="store_name" readonly>
+				<input class="form-control border-0 w-100 py-3 px-4 rounded-pill bg-light" th:name="storeName" th:value="${storeName}"  type="text" placeholder="찾아보기를 눌러 주문할 가게를 선택해주세요" id="store_name" readonly>
 				<input type="button" class="btn btn-primary border-0 border-secondary py-3 px-4 position-absolute rounded-pill text-white" style="top: 0; right: 0;" onclick="openFindStoreForm()" value="찾아보기">
 			</div>
 			<!-- //파티 가게 설정 -->
@@ -94,8 +94,10 @@
 					</div>
 				</div>
 
-
-				<button type="submit" id="submitBtn">방만들기</button>
+				<div class="d-flex d-flex justify-content-end">
+					<button class="btn-light me-2" onclick="window.location.href='/party'" type="button">취소</button>
+					<button type="submit" id="submitBtn" class="btn-primary text-white">방만들기</button>
+				</div>
 			</div>
 			<!-- //파티 옵션 설정 -->
 		</form>

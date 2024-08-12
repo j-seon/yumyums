@@ -1,49 +1,96 @@
+<link rel="stylesheet" href="../../css/party/party_main.css" xmlns:th="http://www.w3.org/1999/xhtml">
 
-<link rel="stylesheet" href="../../css/party/party_main.css">
+<!-- Single Page Header start -->
+<div class="container-fluid page-header py-5">
+	<h1 class="text-center text-white display-6"><a href="/party" class="text-white">파티 주문</a></h1>
+	<ol class="breadcrumb justify-content-center mb-0">
+		<li class="breadcrumb-item active text-white"><a href="/party" class="text-white">Party</a></li>
+	</ol>
+</div>
+<!-- Single Page Header End -->
 
 
 <div class="party-container">
-	<div class="party-form" id="party-container">
+	<div class="party-form">
 		<div class="party-form-header">
-			<img src="header_image.png" alt="Party Header" style="margin-right: 10px;">
-			<span>초대된 파티 정보</span>
+			<svg xmlns="http://www.w3.org/2000/svg" width="60" height="40" fill="currentColor" class="bi bi-people mb-2" viewBox="0 0 16 16">
+				<path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"></path>
+			</svg>
+			<h2>초대된 파티 정보</h2>
 		</div>
+
 		<form th:action="@{/party/{id}(id=${encryptedPartyId})}" th:object="${partyDTO}" method="post">
 			<!-- 파티 가게 설정 -->
 			<div class="party-form-find-store">
-				<span>주문할 가게: </span>
-				<input type="text" class="store-name" th:name="storeName" th:value="${partyDTO.storeDTO.name}" id="store_name" readonly>
+				<input type="text" class="form-control border-0 w-100 py-3 px-4 rounded-pill bg-light" th:name="storeName" th:value="${partyDTO.storeDTO.name}" id="store_name" readonly>
+			</div>
+			<div>
+				<div th:each="partyMember : ${partyDTO.partyMemberDTOs}" >
+					<span>파티장 : </span> <span th:if="${partyMember.isPartyLeader}" th:text="${partyMember.memberDTO.name}"></span><p></p>
+				</div>
+				<span>매장주소 : </span> <span th:text="${partyDTO.storeDTO.address}"></span><p></p>
+				<span>카테고리 : </span> <span th:text="${partyDTO.storeDTO.categoryKorName}"></span>
 			</div>
 			<!-- //파티 가게 설정 -->
 
 			<!-- 파티 옵션 설정 -->
 			<div class="party-option">
-				<div class="party-option-header">
-					<img src="option_header_image.png" alt="Option Header" style="margin-right: 10px;">
-					<span>방 설정 (Option)</span>
+				<div class="party-option-header mt-4 mb-4 pt-2">
+					<svg xmlns="http://www.w3.org/2000/svg" width="40" height="25" fill="currentColor" class="bi bi-gear mb-2" viewBox="0 0 16 16">
+						<path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0"></path>
+						<path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z"></path>
+					</svg>
+					<h4>방 설정 (Option)</h4>
 				</div>
 
-				<div class="party-option-item">
-					<span>결제방식: </span>
-					<div th:each="payType : ${payTypes}" class="radio-container">
-						<input type="radio" name="pay_type" th:field="*{payType}" th:value="${payType.name()}"
-							   th:checked="${partyDTO.payType.name() == payType.name()}" disabled >
-						<span th:text="${payType.getKorName()}"></span>
-					</div>
-				</div>
+				<div class="container mt-4">
 
-				<th:block th:if="partyDTO.payTypeKorName == '랜덤 일괄결제'">
-					<div class="party-option-item">
-						<span>선택방법: </span>
-						<div th:each="randomType : ${randomTypes}" class="radio-container">
-							<input type="radio" name="random_type" th:field="*{randomType}" th:value="${randomType.name()}"
-								   th:checked="${partyDTO.randomType != null && partyDTO.randomType.name() == randomType.name()}" disabled >
-							<span th:text="${randomType.getKorName()}"></span>
+					<div class="party-option-item mb-3">
+						<label class="form-label">모집방식:</label>
+						<div class="d-flex">
+							<div class="form-check me-3">
+								<input class="form-check-input" type="radio" name="join_type" th:field="*{matching}" value="false" id="inviteOption"
+									   th:checked="${!partyDTO.matching}" disabled>
+								<label class="form-check-label" for="inviteOption">초대하기</label>
+							</div>
+							<div class="form-check">
+								<input class="form-check-input" type="radio" name="join_type" th:field="*{matching}" value="true" id="randomOption"
+									   th:checked="${!partyDTO.matching}" disabled>
+								<label class="form-check-label" for="randomOption">랜덤모집</label>
+							</div>
 						</div>
 					</div>
-				</th:block>
 
-				<button type="submit">파티 가입하기</button>
+					<div class="party-option-item mb-3">
+						<label class="form-label">결제방식:</label>
+						<div class="d-flex">
+							<div th:each="payType : ${payTypes}" class="radio-container form-check me-3 invite" >
+								<input type="radio" name="pay_type" class="form-check-input" th:field="*{payType}" th:value="${payType.name()}"
+									   th:checked="${partyDTO.payType.name() == payType.name()}" disabled >
+								<span class="form-check-label" th:text="${payType.getKorName()}"></span>
+							</div>
+						</div>
+					</div>
+
+					<th:block th:if="partyDTO.payTypeKorName == '랜덤 일괄결제'">
+						<div class="party-option-item">
+							<label class="form-label">선택방법:</label>
+							<div th:each="randomType : ${randomTypes}" class="radio-container form-check me-3">
+								<input class="form-check-input random-type" type="radio" name="random_type" th:field="*{randomType}" th:value="${randomType.name()}"
+									   th:checked="${partyDTO.randomType != null && partyDTO.randomType.name() == randomType.name()}" disabled >
+								<label class="form-check-label random-type" th:for="${randomType.name()}">
+									<span th:text="${randomType.getKorName()}"></span>
+								</label>
+							</div>
+						</div>
+					</th:block>
+				</div>
+
+
+				<div class="d-flex d-flex justify-content-end">
+					<button class="btn-light me-2" onclick="window.location.href='/party'" type="button">취소</button>
+					<button type="submit" id="submitBtn" class="btn-primary text-white">파티가입</button>
+				</div>
 			</div>
 			<!-- //파티 옵션 설정 -->
 		</form>
