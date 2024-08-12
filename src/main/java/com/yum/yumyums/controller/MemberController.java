@@ -144,6 +144,7 @@ public class MemberController extends ImageDefaultUrl {
         MemberDTO memberDTO = (MemberDTO)session.getAttribute("loginUser");
         String memberId = memberDTO.getMemberId();
         int pageSize = 8;
+
         Page<OrdersDTO> myOrdersPage = ordersService.getOrdersByMemberId(memberId, page, pageSize);
 
         for(OrdersDTO myOrders : myOrdersPage.getContent()){

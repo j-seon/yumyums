@@ -21,16 +21,20 @@
                                 <div class="fruite-img w-100 d-flex justify-content-center align-items-center" style="height:300px;">
                                     <img th:src="|/img/${order.storeDTO.imagesDTO.imgUrl}|" class="d-block w-100 h-100" style="object-fit:contain;">
                                 </div>
-                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;" th:text="${order.statekorName}"/>
+                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;" th:text="${order.ordersStatusDTO != null && order.ordersStatusDTO.stateKorName != null ? order.ordersStatusDTO.stateKorName : '알수없음'}"></div>
                                 <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                                     <h4 th:text="${order.storeDTO.name}"></h4>
-                                    <p class="" th:each="detail : order.orderDetails" th:text="${order.orderDetails[0]} 포함 총 ${detailStat.size}개 주문">
-
-                                    </p>
+                                    <th:block th:if="${not #lists.isEmpty(order.ordersDetails)}">
+                                        <p th:text="${order.ordersDetails[0].menuName} + ' 포함 총 ' + ${order.totalQty} + '개 주문'"></p>
+                                    </th:block>
+                                    <th:block th:if="${#lists.isEmpty(order.ordersDetails)}">
+                                        <p>주문 내역이 없습니다.</p>
+                                    </th:block>
                                     <div class="d-flex justify-content-between flex-lg-wrap align-items-center">
-                                        <p class="text-dark fs-6 fw-bold mb-0"><i class="fa fa-heart text-danger"></i> <span th:text="|${#numbers.formatInteger(order.likes, 0, 'COMMA')}|"></span></p>
+                                        <p class="text-dark fs-6 fw-bold mb-0"><i class="fas fa-won-sign text-dark"></i> <span th:text="|${#numbers.formatInteger(order.totalPrice, 0, 'COMMA')} 원|"></span></p>
                                         <!-- Button trigger modal -->
-                                        <button type="button" class="btn border border-secondary rounded-pill px-3 text-primary" data-bs-toggle="modal" data-bs-target="#enterStoreModal" th:attr="data-bs-whatever=${order.name}"><i class="fa fa-store me-2 text-primary"></i>주문 상세</button>
+                                        <button type="button" class="btn border border-secondary rounded-pill px-3 text-primary" data-bs-toggle="modal" data-bs-target="#myOrdersModal" th:attr="data-bs-whatever=${order.id}"><i class="fas fa-file-invoice-dollar me-2 text-primary"></i>주문 상세</button>
+                                        <i class="col-12 text-end mt-3" th:text="${#temporals.format(order.ordersTime, 'yyyy-MM-dd HH:mm')}"></i>
                                     </div>
                                 </div>
                             </div>

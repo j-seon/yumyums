@@ -2,9 +2,11 @@ package com.yum.yumyums.entity.orders;
 
 
 import com.yum.yumyums.dto.orders.OrdersDTO;
+import com.yum.yumyums.dto.orders.OrdersStatusDTO;
 import com.yum.yumyums.dto.user.MemberDTO;
 import com.yum.yumyums.entity.seller.Store;
 import com.yum.yumyums.entity.user.Member;
+import com.yum.yumyums.enums.FoodState;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -50,6 +52,9 @@ public class Orders {
     @Column(name = "payment_method")
     private String paymentMethod;
 
+    @OneToOne(mappedBy = "orders", cascade = CascadeType.ALL)
+    private OrdersStatus ordersStatus;
+
 
     public OrdersDTO entityToDto() {
         OrdersDTO ordersDTO = new OrdersDTO();
@@ -60,7 +65,14 @@ public class Orders {
         ordersDTO.setDiscount(this.getDiscount());
         ordersDTO.setWaitingNum(this.getWaitingNum());
         ordersDTO.setTotalPrice(this.getTotalPrice());
+        if (this.getOrdersStatus() != null) {
+            ordersDTO.setOrdersStatusDTO(this.getOrdersStatus().entityToDto());
+        } else {
+            OrdersStatus defaultOrdersStatus = new OrdersStatus();
 
+            defaultOrdersStatus.setState(FoodState.COOKING);
+            ordersDTO.setOrdersStatusDTO(defaultOrdersStatus.entityToDto()); // 또는 기본값 설정
+        }
         ordersDTO.setPaymentMethod(this.getPaymentMethod());
         ordersDTO.setMemberDTO(MemberDTO.entityToDto(this.member));
 

@@ -8,6 +8,7 @@ import com.yum.yumyums.dto.review.ReviewDTO;
 import com.yum.yumyums.entity.orders.Cart;
 import com.yum.yumyums.entity.orders.Orders;
 import com.yum.yumyums.entity.orders.OrdersDetail;
+import com.yum.yumyums.entity.orders.OrdersStatus;
 import com.yum.yumyums.entity.review.Review;
 import com.yum.yumyums.entity.seller.Store;
 import com.yum.yumyums.entity.user.Member;
@@ -24,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -97,12 +99,22 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public Page<OrdersDTO> getOrdersByMemberId(String memberId, int page, int pageSize) {
-        Page<Orders> ordersPage = orderRepository.findByMemberId(memberId, PageRequest.of(page, pageSize));
+        Sort sort = Sort.by(Sort.Direction.DESC, "ordersTime");
+        Page<Orders> ordersPage = orderRepository.findByMemberId(memberId, PageRequest.of(page, pageSize, sort));
         List<OrdersDTO> ordersDTOs = ordersPage.getContent().stream()
                 .map(orders -> {
                     OrdersDTO ordersDTO = orders.entityToDto();
-                    FoodState state = ordersStatusRepository.findStateByOrdersId(ordersDTO.getId()).getState();
-                    ordersDTO.setState(state);
+                    System.out.println("OrderDTO.getId: " + ordersDTO.getId());
+
+                    OrdersStatus ordersStatus = ordersStatusRepository.findStateByOrdersId(ordersDTO.getId());
+                    OrdersStatusDTO ordersStatusDTO = null;
+
+                    if (ordersStatus != null) {
+                        ordersStatusDTO = ordersStatus.entityToDto();
+                    } else {
+                        System.out.println("No OrdersStatus found for Order ID: " + ordersDTO.getId());
+                    }
+                    ordersDTO.setOrdersStatusDTO(ordersStatusDTO);
 
                     List<OrdersDetailDTO> ordersDetails = orderDetailRepository.findAllByOrdersId(ordersDTO.getId()).stream()
                             .map(ordersDetail ->{
@@ -112,7 +124,15 @@ public class OrdersServiceImpl implements OrdersService {
                                 return ordersDetailDTO;
                             })
                             .collect(Collectors.toList());
+
+                    // totalQty 계산
+                    int totalQty = ordersDetails.stream()
+                            .mapToInt(OrdersDetailDTO::getMenuCount)
+                            .sum();
+
                     ordersDTO.setOrdersDetails(ordersDetails);
+                    ordersDTO.setTotalQty(totalQty);
+
 
                     return ordersDTO;
                 })
