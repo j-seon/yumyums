@@ -1,6 +1,7 @@
 package com.yum.yumyums.service.seller;
 
 import com.yum.yumyums.dto.seller.StoreDTO;
+import com.yum.yumyums.dto.seller.StoreLikeDTO;
 import com.yum.yumyums.entity.seller.Store;
 import org.springframework.data.domain.Page;
 
@@ -24,4 +25,6 @@ public interface StoreService {
 	List<StoreDTO> findStoresWithinRadius(double lat, double lon, int radius);
 
     void update(Store store);
+
+	Page<StoreLikeDTO> getStoreLikesByMemberId(String memberId, int page, int pageSize);
 }

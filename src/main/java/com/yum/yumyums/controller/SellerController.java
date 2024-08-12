@@ -3,6 +3,7 @@ package com.yum.yumyums.controller;
 import com.yum.yumyums.dto.TemplateData;
 import com.yum.yumyums.dto.seller.SellerDTO;
 import com.yum.yumyums.service.seller.SellerService;
+import com.yum.yumyums.util.SessionUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,11 @@ public class SellerController {
     private final SellerService sellerService;
 
     @GetMapping("")
-    public String sellerSaveForm(Model model, TemplateData templateData){
+    public String sellerSaveForm(Model model, TemplateData templateData, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if(SessionUtil.isLogin(session)){
+            return "redirect:/";
+        }
         templateData.setViewPath("user/sellerSave");
         model.addAttribute("templateData",templateData);
         return "template";

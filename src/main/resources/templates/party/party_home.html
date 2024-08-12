@@ -1,17 +1,51 @@
 
 
-<div class="container" id="party-container">
-	<ui class="party-list">
-		<li class="party-item">
-			<span class="service-name">파티생성</span>
-		</li>
-		<li class="party-item">
-			<span class="service-name">파티입장</span>
-		</li>
-		<li class="party-item">
-			<a href="#" class="service-name" id="partyMatchLink">파티매칭</a>
-		</li>
-	</ui>
+
+<!-- Single Page Header start -->
+<div class="container-fluid page-header py-5">
+	<h1 class="text-center text-white display-6">파티 주문</h1>
+	<ol class="breadcrumb justify-content-center mb-0">
+		<li class="breadcrumb-item active text-white">Party</li>
+	</ol>
 </div>
+<!-- Single Page Header End -->
+<!-- Featurs Section Start -->
+<div id="party-container" class="container-fluid featurs py-5 my-5">
+	<div class="container py-5 party-list">
+		<div class="row g-4">
+			<div class="col-md-4 party-item" role="button">
+				<div class="featurs-item text-center rounded bg-light p-4">
+					<div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
+						<i class="fas fa-users fa-3x text-white"></i>
+					</div>
+					<div class="featurs-content text-center">
+						<h4>파티생성</h4>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4 party-item" role="button">
+				<div class="featurs-item text-center rounded bg-light p-4">
+					<div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
+						<i class="fas fa-walking fa-3x text-white"></i>
+					</div>
+					<div class="featurs-content text-center">
+						<h4>파티입장</h4>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4 party-item" id="partyMatchLink" role="button">
+				<div class="featurs-item text-center rounded bg-light p-4">
+					<div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
+						<i class="fas fa-people-arrows fa-3x text-white"></i>
+					</div>
+					<div class="featurs-content text-center">
+						<h4>파티매칭</h4>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Featurs Section End -->
 
 <script src="/js/party/main.js"></script>

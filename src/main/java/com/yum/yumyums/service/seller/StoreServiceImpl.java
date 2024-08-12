@@ -1,8 +1,10 @@
 package com.yum.yumyums.service.seller;
 
 import com.yum.yumyums.dto.seller.StoreDTO;
+import com.yum.yumyums.dto.seller.StoreLikeDTO;
 import com.yum.yumyums.entity.Images;
 import com.yum.yumyums.entity.seller.Store;
+import com.yum.yumyums.entity.seller.StoreLike;
 import com.yum.yumyums.repository.seller.StoreRepository;
 import com.yum.yumyums.service.ImagesService;
 import jakarta.transaction.Transactional;
@@ -21,10 +23,9 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class StoreServiceImpl implements StoreService {
-    private final StoreLikeRepository storeLikeRepository;
-
     private final StoreRepository storeRepository;
     private final ImagesService imagesService;
+    private final StoreLikeRepository storeLikeRepository;
 
 	@Override
 	public StoreDTO findByName(String storeName) {
@@ -140,6 +141,23 @@ public class StoreServiceImpl implements StoreService {
     public void update(Store store) {
         System.out.println("update store : "+store.entityToDto());
         storeRepository.save(store);
+    }
+
+    @Override
+    public Page<StoreLikeDTO> getStoreLikesByMemberId(String memberId, int page, int pageSize) {
+        Page<StoreLike> storeLikesPage = storeLikeRepository.findByMemberId(memberId, PageRequest.of(page, pageSize));
+
+        List<StoreLikeDTO> storeLikeDTOs = storeLikesPage.getContent().stream()
+                .map(storeLike -> {
+                    StoreLikeDTO storeLikeDTO = storeLike.entityToDto();
+                    StoreDTO storeDTO = storeLikeDTO.getStoreDTO();
+                    int likes = getLikesForStore(storeDTO.getStoreId());
+                    storeDTO.setLikes(likes);
+                    storeLikeDTO.setStoreDTO(storeDTO);
+                    return storeLikeDTO;
+                })
+                .collect(Collectors.toList());
+        return new PageImpl<>(storeLikeDTOs, storeLikesPage.getPageable(), storeLikesPage.getTotalElements());
     }
 
 }
