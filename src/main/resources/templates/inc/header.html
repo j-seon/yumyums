@@ -7,11 +7,11 @@
                 <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">yumyums@yumyums.com</a></small>
             </div>
             <div class="top-link pe-2">
-                <!--세션에 loginUser가 null이 아니라면 (값이 있다면) -->
+                <!--로그인 상태 -->
                 <th:block th:if="${session.loginUser != null}">
                     <a href="/logout" class="text-white"><small class="text-white ms-2">로그아웃</small></a>
                 </th:block>
-                <!--세션에 loginUser가 null이 아닌게 아니라면 (값이 없다면)-->
+                <!--비로그인 상태-->
                 <th:block th:unless="${session.loginUser != null}">
                     <a href="/join" class="text-white"><small class="text-white mx-2">회원가입</small>/</a>
                     <a href="/login" class="text-white"><small class="text-white mx-2">로그인</small></a>
@@ -19,6 +19,7 @@
             </div>
         </div>
     </div>
+
     <div class="container px-0">
         <nav class="navbar navbar-light bg-white navbar-expand-xl">
             <a href="/" class="navbar-brand">
@@ -29,6 +30,9 @@
             </button>
             <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                 <div class="navbar-nav mx-auto">
+                <!--비회원 or 일반회원의 메뉴-->
+                <th:block th:if="${session.loginType eq 'm' || session.loginUser == null}">
+
                     <!-- 주변탐색 -->
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">주변 탐색</a>
@@ -40,7 +44,7 @@
                     <!-- //주변탐색 -->
 
                     <!-- 파티 -->
-                    <a href="/party" class="nav-item nav-link active">파티 생성</a>
+                    <a href="/party" class="nav-item nav-link">파티 생성</a>
                     <!-- //파티 -->
 
                     <!-- 마이페이지 -->
@@ -48,24 +52,84 @@
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">마이페이지</a>
                         <div class="dropdown-menu m-0 bg-secondary rounded-0" data-bs-auto-close="false">
                             <a href="#" class="dropdown-item">내정보</a>
-                            <a href="#" class="dropdown-item">단골식당</a>
-                            <a href="#" class="dropdown-item">리뷰내역</a>
+                            <a href="/member/favorites" class="dropdown-item">단골식당</a>
+                            <!--<a href="#" class="dropdown-item">리뷰내역</a>-->
                             <a href="#" class="dropdown-item">결제내역</a>
                         </div>
                     </div>
                     <!-- //마이페이지 -->
-                </div>
-                <div class="d-flex m-3 me-0">
+                </th:block>
+                <!-- //비회원 or 일반회원의 메뉴-->
 
-                    <!--<button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>-->
-                    <a href="/cart" class="position-relative me-4 my-auto">
+                <!--판매자 회원의 메뉴-->
+                <th:block th:if="${session.loginType} eq 's'">
+                    <!-- 매장관리 -->
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">매장 관리</a>
+                        <div class="dropdown-menu m-0 bg-secondary rounded-0" data-bs-auto-close="false">
+                            <a href="/stores" class="dropdown-item">매장 목록</a>
+                            <a href="/stores/form" class="dropdown-item">매장 추가</a>
+                        </div>
+                    </div>
+                    <!-- //매장관리 -->
+
+                    <!-- 마이페이지 -->
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">마이페이지</a>
+                        <div class="dropdown-menu m-0 bg-secondary rounded-0" data-bs-auto-close="false">
+                            <a href="#" class="dropdown-item">판매자 정보</a>
+                        </div>
+                    </div>
+                    <!-- //마이페이지 -->
+                </th:block>
+                <!-- //판매자 회원의 메뉴-->
+                </div>
+
+                <!--비회원의 아이콘 메뉴-->
+                <th:block th:if="${session.loginUser} == null">
+                <div class="d-flex m-3 me-0">
+                    <!--cart icon 숨김-->
+                    <a href="/cart" class="position-relative me-4 my-auto" style="visibility:hidden;">
                         <i class="fa fa-shopping-bag fa-2x"></i>
-                        <span id="cart-count" class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;"></span>
+                        <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;"></span>
                     </a>
-                    <a href="#" class="my-auto">
+                    <!--login 페이지로 링크-->
+                    <a href="/login" class="my-auto">
                         <i class="fas fa-user fa-2x"></i>
                     </a>
                 </div>
+                </th:block>
+                <!-- //비회원의 아이콘 메뉴-->
+
+                <!--일반회원의 아이콘 메뉴-->
+                <th:block  th:if="${session.loginType} eq 'm'">
+                    <div class="d-flex m-3 me-0">
+                        <a href="/cart" class="position-relative me-4 my-auto">
+                            <i class="fa fa-shopping-bag fa-2x"></i>
+                            <span id="cart-count" class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;"></span>
+                        </a>
+                        <!--마이페이지-내정보 페이지 링크 -->
+                        <a href="#" class="my-auto">
+                            <i class="fas fa-user fa-2x"></i>
+                        </a>
+                    </div>
+                </th:block>
+                <!-- //일반회원의 아이콘 메뉴-->
+
+                <!--판매자회원의 아이콘 메뉴-->
+                <th:block  th:if="${session.loginType} eq 's'">
+                    <div class="d-flex m-3 me-0">
+                        <a href="/cart" class="position-relative me-4 my-auto" style="visibility:hidden;">
+                            <i class="fa fa-shopping-bag fa-2x"></i>
+                            <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;"></span>
+                        </a>
+                        <!--마이페이지-판매자 정보 페이지 링크-->
+                        <a href="#" class="my-auto">
+                            <i class="fas fa-user fa-2x"></i>
+                        </a>
+                    </div>
+                </th:block>
+                <!-- //판매자회원의 아이콘 메뉴-->
             </div>
         </nav>
     </div>

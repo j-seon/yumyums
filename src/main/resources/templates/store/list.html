@@ -148,8 +148,7 @@
             error: function (xhr, status, error) {
                 if(xhr.status == 401){
                     $('#storePassword').addClass('is-invalid');
-                    alert('매장 로그인 필요: 이전 페이지로 돌아갑니다.');
-                    window.history.back();
+                    alert('매장 비밀번호를 확인해주세요.');
                 }else{
                     console.error()
                 }
