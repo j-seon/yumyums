@@ -1,8 +1,15 @@
+//장바구니에 상품 추가
 function addToCart(menuId) {
     const row = $("div[data-menu-id='" + menuId + "']");
-    console.log('row:',row);
+    console.log('row:', row);
     const quantity = row.find('input[name="quantity"]').val();
-    console.log('quantity:',quantity);
+    console.log('quantity:', quantity);
+
+    // 수량이 1보다 작을 경우 에러 메시지
+    if (isNaN(quantity) || quantity <= 0) {
+        alert("수량은 1 이상이어야 합니다.");
+        return;
+    }
 
     $.ajax({
         url: "/cart/add",
@@ -13,7 +20,7 @@ function addToCart(menuId) {
             menuCount: quantity
         }),
         success: function (response) {
-            console.log('response:',response);
+            console.log('response:', response);
             alert(response); // 성공 메시지
             updateCartCount(); // 장바구니 카운트 업데이트
         },
