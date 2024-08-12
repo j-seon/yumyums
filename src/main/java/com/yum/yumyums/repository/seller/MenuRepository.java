@@ -25,6 +25,7 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
                                     @Param("priceRanges") List<String> priceRanges,
                                     @Param("isAlone") Boolean isAlone);
 
+
         @Query("SELECT m FROM Menu m " +
                 "LEFT JOIN m.store s " +
                 "LEFT JOIN StoreLike sl ON sl.store.id = s.id " +
@@ -50,16 +51,42 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
                 "AND (:isAlone IS NULL OR m.isAlone = :isAlone) " +
                 "ORDER BY " +
                 "CASE s.busy " +
-                "WHEN 'SPACIOUS' THEN 1 " +
-                "WHEN 'NOMAL' THEN 2 " +
-                "WHEN 'CROWDED' THEN 3 " +
-                "WHEN 'FULL' THEN 4 " +
+                "WHEN com.yum.yumyums.enums.Busy.SPACIOUS THEN 1 " +
+                "WHEN com.yum.yumyums.enums.Busy.NOMAL THEN 2 " +
+                "WHEN com.yum.yumyums.enums.Busy.CROWDED THEN 3 " +
+                "WHEN com.yum.yumyums.enums.Busy.FULL THEN 4 " +
                 "END, " +
                 "m.cookingTime ASC")
         List<Menu> findAllOrderedByStoreBusyAndCookingTime(@Param("categories") List<FoodCategory> categories,
                                                            @Param("priceRanges") List<String> priceRanges,
                                                            @Param("isAlone") Boolean isAlone);
 
+        @Query("SELECT m FROM Menu m WHERE m.isActive = true " +
+                "AND (:categories IS NULL OR m.category IN :categories) " +
+                "AND (:priceRanges IS NULL OR " +
+                "(m.price <= 10000 AND 'below_10000' IN :priceRanges) OR " +
+                "(m.price > 10000 AND m.price <= 20000 AND '10000_20000' IN :priceRanges) OR " +
+                "(m.price > 20000 AND 'above_20000' IN :priceRanges)) " +
+                "AND (:isAlone IS NULL OR m.isAlone = :isAlone) " +
+                "ORDER BY m.price ASC")
+        List<Menu> findAllOrderedByPrice(@Param("categories") List<FoodCategory> categories,
+                                         @Param("priceRanges") List<String> priceRanges,
+                                         @Param("isAlone") Boolean isAlone);
+
+        @Query("SELECT m FROM Menu m " +
+                "LEFT JOIN OrdersDetail od ON od.menu.id = m.id " +
+                "WHERE m.isActive = true " +
+                "AND (:categories IS NULL OR m.category IN :categories) " +
+                "AND (:priceRanges IS NULL OR " +
+                "(m.price <= 10000 AND 'below_10000' IN :priceRanges) OR " +
+                "(m.price > 10000 AND m.price <= 20000 AND '10000_20000' IN :priceRanges) OR " +
+                "(m.price > 20000 AND 'above_20000' IN :priceRanges)) " +
+                "AND (:isAlone IS NULL OR m.isAlone = :isAlone) " +
+                "GROUP BY m.id " +
+                "ORDER BY COUNT(od.id) DESC")
+        List<Menu> findAllOrderedByOrderCount(@Param("categories") List<FoodCategory> categories,
+                                              @Param("priceRanges") List<String> priceRanges,
+                                              @Param("isAlone") Boolean isAlone);
 
 
 
