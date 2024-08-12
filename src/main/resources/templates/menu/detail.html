@@ -169,10 +169,92 @@
 
 <!-- 파티 장바구니 보기, 선택완료 -->
 <div class="fixed-bottom row justify-content-center" th:classappend="${joinPage != 'party'} ? 'd-none'">
-    <button type="button" class="btn btn-secondary col-2 m-4">선택한 메뉴 보기</button>
+    <button type="button" class="btn btn-secondary col-2 m-4" data-bs-toggle="modal" data-bs-target="#myCartModal">선택한 메뉴 보기</button>
     <button type="button" class="btn btn-primary col-2 m-4" th:onclick="submitPartyMenu()" data-bs-dismiss="modal">선택완료</button>
 </div>
 <!-- //파티 장바구니 보기, 선택완료 -->
+
+
+<!-- 내가 담은 파티 장바구니 보기 -->
+<div class="modal fade" id="myCartModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="container-fluid">
+                <div class="container py-5">
+                    <div class="row">
+                        <!-- 장바구니 내용물 -->
+                        <div class="col-lg-8 col-md-12">
+                            <h3 class="fw-bold mb-3" th:text="${storeName}">식당이름</h3>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead class="text-center">
+                                    <tr>
+                                        <th scope="col">메뉴</th>
+                                        <th scope="col">가격</th>
+                                        <th scope="col">수량</th>
+                                        <th scope="col">합계</th>
+                                        <th scope="col">삭제</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="text-center">
+                                    <tr th:each="cartItem : ${cartItems}">
+                                        <td class="align-middle">
+                                            <p class="mb-0" th:text="${cartItem.menuDTO.name}"></p>
+                                        </td>
+                                        <td class="align-middle">
+                                            <p class="mb-0" th:text="${cartItem.menuDTO.price} + '원'" th:attr="data-price=${cartItem.menuDTO.price}"></p>
+                                        </td>
+                                        <td class="align-middle">
+                                            <input type="number" name="menuCount" min="1" th:value="${cartItem.menuCount}" class="form-control text-center border-0" data-price="${cartItem.menuDTO.price}" data-menu-id="${cartItem.menuDTO.id}" oninput="updateTotalPrice(this)">
+                                        </td>
+                                        <td class="align-middle">
+                                            <p class="mb-0 total-price" th:text="${cartItem.menuDTO.price * cartItem.menuCount} + '원'"></p>
+                                        </td>
+                                        <td class="align-middle">
+                                            <form th:action="@{/cart/remove}" method="post" class="mb-0" onsubmit="return confirmDeletion(event)">
+                                                <input type="hidden" name="menuId" th:value="${cartItem.menuDTO.id}"/>
+                                                <button class="btn btn-md rounded-circle bg-light border" type="submit">
+                                                    <i class="fa fa-times text-danger"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- //장바구니 내용물 -->
+                        <div class="col-lg-4 col-md-12">
+                            <div class="mt-5 rounded shadow-sm">
+                                <div class="p-4">
+                                    <h2 class="mb-5">결제예정금액</h2>
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <h5 class="mb-0">담은 금액:</h5>
+                                        <p class="mb-0" id="totalOrderAmount">0 원</p>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <h5 class="mb-0">할인금액:</h5>
+                                        <p class="mb-0 text-secondary">0 원</p>
+                                    </div>
+
+                                    <div class="py-4 border-top d-flex justify-content-between">
+                                        <h5 class="mb-0">최종 결제예정금액</h5>
+                                        <h3 class="mb-0 text-danger" id="totalAmount" >0 원</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- //내가 담은 파티장바구니 보기 -->
+
+
+
 
 
 <script src="../../js/alert.js"></script>

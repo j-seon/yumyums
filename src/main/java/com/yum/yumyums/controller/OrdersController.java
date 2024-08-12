@@ -104,7 +104,7 @@ public class OrdersController {
     }
 
 
-    // 일반결제 결제완료 페이지
+    // [파티] 결제 결제완료 페이지
     @PostMapping("/{encryptedPartyId}")
     public String savePartyOrder(@RequestParam("paymentMethod") String paymentMethod,
                                  HttpSession session, Model model, TemplateData templateData,
