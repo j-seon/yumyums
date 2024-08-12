@@ -16,6 +16,8 @@ public interface CartService {
 
     //[Party] 파티 장바구니에 추가
     void addMenuToPartyCart(CartDTO cartDTO);
-    List<CartDTO> getPartyCartItems(String partyId);
+    List<CartDTO> getPartyCartItems(String encryptedPartyId);
+    List<CartDTO> getPartyCartItemsByMemberId(String encryptedPartyId, MemberDTO memberDTO);
+
     void deleteAllPartyCartsByPartyIdAndMemberId(MemberDTO memberDTO, String PartyId);
 }

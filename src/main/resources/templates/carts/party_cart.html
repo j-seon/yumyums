@@ -63,10 +63,6 @@
 										   th:text="${partyCartItem.menuDTO.price * partyCartItem.menuCount} + '원'"></p>
 									</td>
 								</tr>
-								<!-- 장바구니에 담은 메뉴 하나가 없을 경우 -->
-								<tr th:if="${#lists.isEmpty(partyCartItems)}">
-									<td colspan="4" class="text-center">장바구니에 담긴 메뉴가 없습니다.</td>
-								</tr>
 								</tbody>
 							</table>
 						</div>
@@ -91,7 +87,7 @@
 							<h5 class="mb-0">최종 결제예정금액</h5>
 							<h3 class="mb-0 text-danger" id="totalAmount" >0 원</h3>
 						</div>
-						<form th:action="@{/orders/checkout}" method="get">
+						<form th:action="|/orders/${partyId}|" method="get">
 							<button id="orderButton" class="btn btn-secondary text-white w-100 rounded mt-4" type="submit">총 0개 주문하기</button>
 						</form>
 					</div>
