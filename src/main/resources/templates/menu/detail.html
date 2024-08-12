@@ -1,8 +1,6 @@
 <div class="container-fluid page-header py-5">
     <h1 class="text-center text-white display-6">식당 상세정보</h1>
     <ol class="breadcrumb justify-content-center mb-0">
-        <li class="breadcrumb-item"><a href="#">Home</a></li>
-        <li class="breadcrumb-item"><a href="#">Pages</a></li>
         <li class="breadcrumb-item active text-white">Shop Detail</li>
     </ol>
 </div>
@@ -21,18 +19,11 @@
                     </div>
                     <div class="col-lg-6">
                         <h3 class="fw-bold mb-3"  th:text="${store.name}"></h3>
-                        <p class="mb-3" th:text="${store.categoryKorName}"></p>
-                        <div class="d-flex mb-4" id="starRating">
-                            <i class="fa fa-star text-secondary"></i>
-                            <i class="fa fa-star text-secondary"></i>
-                            <i class="fa fa-star text-secondary"></i>
-                            <i class="fa fa-star text-secondary"></i>
-                            <i class="fa fa-star text-secondary"></i>
-                        </div>
-                        <h4><i class="fa fa-heart text-danger"></i><span class="text-danger" th:text="${likeCount}"></span></h4>
+                        <p class="fw-bold mb-3" th:text="${store.categoryKorName}"></p>
+                        <h4><i class="fa fa-heart text-danger"></i><span class="text-danger" th:text="' '+ ${likeCount}"></span></h4>
                         <div class="row">
                             <div class="col-lg-12">
-                                <a th:href="@{/menu}" class="btn btn-primary">처음으로</a>
+                                <a th:href="@{/menu}" class="btn border border-secondary align-middle rounded-pill py-1 mb-4 text-primary mt-3">처음으로</a>
                             </div>
                         </div>
                     </div>
@@ -49,10 +40,10 @@
                         </nav>
                         <div class="tab-content mb-5">
                             <div class="tab-pane active" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
-                                <p>주소: <span th:text="${store.address}"></span></p>
-                                <p>영업 시간: <span th:text="${store.openTime}"></span> - <span th:text="${store.closeTime}"></span></p>
-                                <p>혼잡도: <span th:text="${store.busyKorName}"></span></p>
-                                <p class="mb-1" th:text="${store.content}"></p>
+                                <p class="text-dark fw-bold">주소: <span th:text="${store.address}"></span></p>
+                                <p class="text-dark fw-bold">영업 시간: <span th:text="${store.openTime}"></span> - <span th:text="${store.closeTime}"></span></p>
+                                <p class="text-dark fw-bold">혼잡도: <span th:text="${store.busyKorName}"></span></p>
+                                <p class="mb-1 fw-bold" th:text="${store.content}"></p>
                             </div>
                             <div class="tab-pane" id="nav-mission" role="tabpanel" aria-labelledby="nav-mission-tab">
                                 <div class="d-flex">
