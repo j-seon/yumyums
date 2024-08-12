@@ -124,10 +124,11 @@ public class OrdersController {
         }
 
         //== 비즈니스 로직 ==//
-        // 주문한거 DB에 넣기
+        // 주문 관련된 값들 가져오기
         List<CartDTO> cartDTO = cartService.getPartyCartItems(encryptedPartyId);
         int storeId = cartDTO.get(0).getMenuDTO().getStoreDTO().getStoreId();
 
+        // Order 제작
         OrdersDTO order = new OrdersDTO();
         order.setId(UUID.randomUUID().toString());
         order.setMemberDTO(memberDTO);
@@ -137,11 +138,16 @@ public class OrdersController {
         order.setWaitingNum(ordersService.generateWaitingNum(storeId));
         order.setPaymentMethod(paymentMethod);
 
-        // 주문시각 형태변환
+        // 예상 대기시간
+        int estimatedWaitTime = ordersService.calculateEstimatedWaitTime(order);
+
+        // 주문시각 형태변환ㅁ언ㄴ
         String formattedOrderTime = order.getOrdersTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
 
         templateData.setViewPath("orders/success");
         model.addAttribute("order", order);
+        model.addAttribute("estimatedWaitTime", estimatedWaitTime); // 추가된 부분
         model.addAttribute("formattedOrderTime", formattedOrderTime);
         return "template";
     }
