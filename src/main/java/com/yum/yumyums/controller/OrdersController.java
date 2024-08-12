@@ -138,16 +138,15 @@ public class OrdersController {
         order.setWaitingNum(ordersService.generateWaitingNum(storeId));
         order.setPaymentMethod(paymentMethod);
 
-        // 예상 대기시간
-        int estimatedWaitTime = ordersService.calculateEstimatedWaitTime(order);
-
-        // 주문시각 형태변환ㅁ언ㄴ
+        // 주문시각 형태변환
         String formattedOrderTime = order.getOrdersTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
+        // 예상 대기시간 TODO orderService.calculateEstimatedWaitTime가 다시 머지되면 주석 해제할 것
+//        int estimatedWaitTime = ordersService.calculateEstimatedWaitTime(order);
+//        model.addAttribute("estimatedWaitTime", estimatedWaitTime);
 
         templateData.setViewPath("orders/success");
         model.addAttribute("order", order);
-        model.addAttribute("estimatedWaitTime", estimatedWaitTime); // 추가된 부분
         model.addAttribute("formattedOrderTime", formattedOrderTime);
         return "template";
     }

@@ -1,0 +1,48 @@
+
+<script>
+    const encryptedPartyId = "[[${partyId}]]";
+
+    function goMyParty() {
+        const baseUrl = window.location.origin;
+        const url = `${baseUrl}/party/${encryptedPartyId}`;
+
+        window.location.href = url;
+    }
+</script>
+
+<!-- Single Page Header start -->
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6"><a href="/party" class="text-white">파티 주문</a></h1>
+    <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item active text-white"><a href="/party" class="text-white">Party</a></li>
+    </ol>
+</div>
+<!-- Single Page Header End -->
+
+
+<div id="party-container" class="container-fluid featurs py-5 my-5">
+    <div class="container py-5 party-list ">
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-4 party-item" role="button" onclick="goMyParty()">
+                <div class="featurs-item text-center rounded bg-light p-4" >
+                    <div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
+                        <i class="fas fa-walking fa-3x text-white"></i>
+                    </div>
+                    <div class="featurs-content text-center">
+                        <h4>내 파티 보기</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-center mx-auto" style="max-width: 700px;">
+    <h4 class="text-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="25" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
+            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2"></path>
+        </svg>
+        참고 사항
+    </h4>
+    <p class="mb-4">새로운 파티 가입은 기존 파티를 탈퇴해야지만 가능합니다.</p>
+</div>
