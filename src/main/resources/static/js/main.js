@@ -154,12 +154,6 @@
 function updateCartCount() {
     $.get("/cart/count", function (count) {
         $("#cart-count").text(count);
-
-        if (count > 0) {
-            $("#cart-count").removeClass("d-none");  // 수량이 0보다 크면 아이콘 표시
-        } else {
-            $("#cart-count").addClass("d-none");  // 수량이 0이면 아이콘 숨기기
-        }
     });
 }
 
