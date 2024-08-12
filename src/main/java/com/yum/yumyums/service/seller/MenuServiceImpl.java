@@ -45,6 +45,10 @@ public class MenuServiceImpl implements MenuService {
             menus = menuRepository.findAllByFiltersAndSortByLikes(categories, priceRanges, isAlone);
         } else if ("busy".equals(sort)) {
             menus = menuRepository.findAllOrderedByStoreBusyAndCookingTime(categories, priceRanges, isAlone);
+        } else if ("price".equals(sort)) {
+            menus = menuRepository.findAllOrderedByPrice(categories, priceRanges, isAlone);
+        } else if ("orderCount".equals(sort)) {
+            menus = menuRepository.findAllOrderedByOrderCount(categories, priceRanges, isAlone);
         }
 
         for (Menu menu : menus) {

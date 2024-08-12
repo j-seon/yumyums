@@ -36,10 +36,10 @@ public class RecommendController {
         // 필터링된 메뉴 목록 가져오기
         List<MenuDTO> menus = menuService.getMenusByFilters(categories, priceRanges, isAlone, sort);
 
-        // 좋아요 수 및 평점 관련 데이터 준비
+        // 좋아요 수 및 평점, 주문건수 관련 데이터 준비
         Map<Integer, Integer> likeCounts = new HashMap<>();
         Map<Integer, Double> averageRatings = new HashMap<>();
-        Map<Integer, Integer> orderCounts = new HashMap<>(); // 주문 횟수를 저장할 맵
+        Map<Integer, Integer> orderCounts = new HashMap<>();
 
         for (MenuDTO menu : menus) {
             int storeId = menu.getStoreDTO().getStoreId();
@@ -54,14 +54,14 @@ public class RecommendController {
 
             likeCounts.put(storeId, likeCount);
             averageRatings.put(menuId, averageRating);
-            orderCounts.put(menuId, orderCount); // 주문 횟수를 맵에 저장
+            orderCounts.put(menuId, orderCount);
         }
 
         // 모델에 데이터 추가
         model.addAttribute("menus", menus);
         model.addAttribute("likeCounts", likeCounts);
         model.addAttribute("averageRatings", averageRatings);
-        model.addAttribute("orderCounts", orderCounts); // 주문 횟수를 모델에 추가
+        model.addAttribute("orderCounts", orderCounts);
         model.addAttribute("templateData", templateData);
 
         return "template";
