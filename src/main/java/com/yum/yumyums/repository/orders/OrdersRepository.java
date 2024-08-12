@@ -1,6 +1,9 @@
 package com.yum.yumyums.repository.orders;
 
 import com.yum.yumyums.entity.orders.Orders;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -69,4 +72,5 @@ public interface OrdersRepository extends JpaRepository<Orders, String> {
             nativeQuery = true)
     List<Map<String, Object>> findYearlySumsByStoreId(@Param("storeId") int storeId);
 
+    Page<Orders> findByMemberId(String memberId, Pageable pageable);
 }

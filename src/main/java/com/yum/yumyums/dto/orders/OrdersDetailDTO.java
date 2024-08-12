@@ -15,5 +15,6 @@ public class OrdersDetailDTO {
     private String menuName;
     private int menuPrice;
     private int menuCount;
+    private boolean reviewed;
 
 }

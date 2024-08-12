@@ -2,26 +2,34 @@ package com.yum.yumyums.service.orders;
 
 import com.yum.yumyums.dto.orders.CartDTO;
 import com.yum.yumyums.dto.orders.OrdersDTO;
+import com.yum.yumyums.dto.orders.OrdersDetailDTO;
+import com.yum.yumyums.dto.orders.OrdersStatusDTO;
+import com.yum.yumyums.dto.review.ReviewDTO;
 import com.yum.yumyums.entity.orders.Cart;
 import com.yum.yumyums.entity.orders.Orders;
 import com.yum.yumyums.entity.orders.OrdersDetail;
+import com.yum.yumyums.entity.review.Review;
 import com.yum.yumyums.entity.seller.Store;
 import com.yum.yumyums.entity.user.Member;
+import com.yum.yumyums.enums.FoodState;
 import com.yum.yumyums.repository.orders.CartRepository;
 import com.yum.yumyums.repository.orders.OrdersDetailRepository;
 import com.yum.yumyums.repository.orders.OrdersRepository;
 
+import com.yum.yumyums.repository.orders.OrdersStatusRepository;
+import com.yum.yumyums.repository.review.ReviewRepository;
 import com.yum.yumyums.repository.user.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
-import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +38,8 @@ public class OrdersServiceImpl implements OrdersService {
     private final OrdersRepository orderRepository;
     private final OrdersDetailRepository orderDetailRepository;
     private final MemberRepository memberRepository;
+    private final ReviewRepository reviewRepository;
+    private final OrdersStatusRepository ordersStatusRepository;
 
     @Override
     public List<CartDTO> getCartItems(String memberId) {
@@ -83,5 +93,30 @@ public class OrdersServiceImpl implements OrdersService {
 
     public int generateWaitingNum(int storeId) {
         return (int) (Math.random() * 1000);
+    }
+
+    @Override
+    public Page<OrdersDTO> getOrdersByMemberId(String memberId, int page, int pageSize) {
+        Page<Orders> ordersPage = orderRepository.findByMemberId(memberId, PageRequest.of(page, pageSize));
+        List<OrdersDTO> ordersDTOs = ordersPage.getContent().stream()
+                .map(orders -> {
+                    OrdersDTO ordersDTO = orders.entityToDto();
+                    FoodState state = ordersStatusRepository.findStateByOrdersId(ordersDTO.getId()).getState();
+                    ordersDTO.setState(state);
+
+                    List<OrdersDetailDTO> ordersDetails = orderDetailRepository.findAllByOrdersId(ordersDTO.getId()).stream()
+                            .map(ordersDetail ->{
+                                OrdersDetailDTO ordersDetailDTO = ordersDetail.entityToDto();
+                                Optional<Review> review = Optional.ofNullable(reviewRepository.findByOrdersDetailId(ordersDetailDTO.getId()));
+                                ordersDetailDTO.setReviewed(review.isPresent());
+                                return ordersDetailDTO;
+                            })
+                            .collect(Collectors.toList());
+                    ordersDTO.setOrdersDetails(ordersDetails);
+
+                    return ordersDTO;
+                })
+                .collect(Collectors.toList());
+        return new PageImpl<>(ordersDTOs, ordersPage.getPageable(), ordersPage.getTotalElements());
     }
 }
