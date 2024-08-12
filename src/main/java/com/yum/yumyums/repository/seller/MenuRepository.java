@@ -50,15 +50,16 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
                 "AND (:isAlone IS NULL OR m.isAlone = :isAlone) " +
                 "ORDER BY " +
                 "CASE s.busy " +
-                "WHEN com.yum.yumyums.enums.Busy.SPACIOUS THEN 1 " +
-                "WHEN com.yum.yumyums.enums.Busy.NOMAL THEN 2 " +
-                "WHEN com.yum.yumyums.enums.Busy.CROWDED THEN 3 " +
-                "WHEN com.yum.yumyums.enums.Busy.FULL THEN 4 " +
+                "WHEN 'SPACIOUS' THEN 1 " +
+                "WHEN 'NOMAL' THEN 2 " +
+                "WHEN 'CROWDED' THEN 3 " +
+                "WHEN 'FULL' THEN 4 " +
                 "END, " +
                 "m.cookingTime ASC")
         List<Menu> findAllOrderedByStoreBusyAndCookingTime(@Param("categories") List<FoodCategory> categories,
                                                            @Param("priceRanges") List<String> priceRanges,
                                                            @Param("isAlone") Boolean isAlone);
+
 
 
 

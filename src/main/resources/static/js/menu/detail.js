@@ -45,8 +45,88 @@ $(document).ready(function () {
         const menuId = $(this).attr('th:onclick').match(/\d+/)[0]; // 메뉴 ID 추출
         addToCart(menuId);
     });
+
+	var myCartModal = document.getElementById('myCartModal');
+
+	// 모달이 열릴 때 Ajax 요청을 보냄
+	myCartModal.addEventListener('show.bs.modal', function () {
+		// Ajax 요청
+		$.ajax({
+			url: '/api/v1/partyCartItems',
+			method: 'GET',
+            data: { encryptedPartyId: partyId },
+			dataType: 'json',
+			success: function (data) {
+				// 기존 내용 초기화
+				var tableBody = myCartModal.querySelector('tbody');
+				tableBody.innerHTML = '';
+
+				// 받아온 데이터를 이용해 테이블을 채움
+				data.forEach(function (cartItem) {
+					var row = `
+						<tr>
+							<td class="align-middle">
+								<p class="mb-0">${cartItem.menuDTO.name}</p>
+							</td>
+							<td class="align-middle">
+								<p class="mb-0" data-price="${cartItem.menuDTO.price}">${cartItem.menuDTO.price} 원</p>
+							</td>
+							<td class="align-middle">
+								<input type="number" name="menuCount" min="1" value="${cartItem.menuCount}" class="form-control text-center border-0" data-price="${cartItem.menuDTO.price}" data-menu-id="${cartItem.menuDTO.id}" oninput="updateTotalPrice(this)">
+							</td>
+							<td class="align-middle">
+								<p class="mb-0 total-price">${cartItem.menuDTO.price * cartItem.menuCount} 원</p>
+							</td>
+							<td class="align-middle">
+								<form action="/cart/remove" method="post" class="mb-0" onsubmit="return confirmDeletion(event)">
+									<input type="hidden" name="menuId" value="${cartItem.menuDTO.id}" />
+									<button class="btn btn-md rounded-circle bg-light border" type="submit">
+										<i class="fa fa-times text-danger"></i>
+									</button>
+								</form>
+							</td>
+						</tr>
+					`;
+					tableBody.insertAdjacentHTML('beforeend', row); // 새로운 행을 추가
+				});
+
+				// 총 금액 업데이트
+				updateTotalOrderAmount();
+			},
+			error: function (xhr, status, error) {
+				console.error('Failed to fetch data:', status, error);
+			}
+		});
+	});
 });
 
+// 총 금액 업데이트 함수
+function updateTotalOrderAmount() {
+	var totalAmount = 0;
+	$('#myCartModal').find('tbody tr').each(function () {
+		var price = parseInt($(this).find('[data-price]').attr('data-price'));
+		var quantity = parseInt($(this).find('input[name="menuCount"]').val());
+		totalAmount += price * quantity;
+	});
+
+	$('#totalOrderAmount').text(totalAmount + ' 원');
+	$('#totalAmount').text(totalAmount + ' 원');
+}
+
+// 삭제 확인 함수
+function confirmDeletion(event) {
+	return confirm('정말 삭제하시겠습니까?');
+}
+
+// 개별 항목의 총 가격 업데이트 함수
+function updateTotalPrice(element) {
+	var price = $(element).attr('data-price');
+	var quantity = $(element).val();
+	var totalPrice = price * quantity;
+	$(element).closest('tr').find('.total-price').text(totalPrice + ' 원');
+
+	updateTotalOrderAmount();
+}
 
 $(".vegetable-carousel1").owlCarousel({
     autoplay: true,
@@ -86,3 +166,5 @@ function submitPartyMenu() {
     // TODO 웹소켓을 통해 회원ID "준비완료" 값 전달하기
     window.location.href = url;
 }
+
+
