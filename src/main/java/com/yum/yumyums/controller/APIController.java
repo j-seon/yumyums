@@ -134,7 +134,7 @@ public class APIController {
     }
 
     @GetMapping("/partyCartItems")
-    public List<CartDTO> getPartyCartItems(@RequestParam String encryptedPartyId, HttpSession session) {
+    public List<CartDTO> getPartyCartItemsByMemberId(@RequestParam String encryptedPartyId, HttpSession session) {
         MemberDTO memberDTO = (MemberDTO) session.getAttribute("loginUser");
 
         List<CartDTO> carts = cartService.getPartyCartItemsByMemberId(encryptedPartyId, memberDTO);

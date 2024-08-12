@@ -22,7 +22,7 @@ public class MemberInterConfig implements WebMvcConfigurer {
                 .addPathPatterns("/menu")
                 .addPathPatterns("/orders/**")
                 /*.addPathPatterns("/chat/**")*/
-                .addPathPatterns("/party")
+//                .addPathPatterns("/party")
                 .excludePathPatterns("/member")
                 .excludePathPatterns("/member/login");
     }
