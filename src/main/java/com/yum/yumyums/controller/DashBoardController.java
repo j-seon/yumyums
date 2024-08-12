@@ -105,5 +105,12 @@ public class DashBoardController {
             return  "fail";
         }
     }
+
+    @GetMapping("/out")
+    public String dashboardOut(Model model, TemplateData templateData, HttpServletRequest request){
+        HttpSession session = request.getSession();
+        session.removeAttribute("storeId");
+        return "redirect:/stores";
+    }
 }
 

@@ -1,0 +1,107 @@
+
+
+<div class="container-fluid page-header py-5">
+	<h1 class="text-center text-white display-6">주문확인</h1>
+	<ol class="breadcrumb justify-content-center mb-0">
+		<li class="breadcrumb-item"><a href="#">Home</a></li>
+		<li class="breadcrumb-item"><a href="#">Pages</a></li>
+		<li class="breadcrumb-item active text-white">Shop</li>
+	</ol>
+</div>
+
+<div class="container my-5">
+	<div class="row">
+		<div class="col-lg-8">
+			<div class="rounded shadow-sm p-4">
+				<h4 class="mb-4">주문 메뉴 정보</h4>
+				<ul class="list-group mb-5" th:each="partyMember : ${partyDTO.partyMemberDTOs}">
+					<h5 th:text="${partyMember.memberDTO.name}">회원 닉네임</h5>
+					<li class="list-group-item d-flex justify-content-between align-items-center p-3"
+						th:each="partyCartItem : ${partyCartItems}" th:if="${partyCartItem.memberDTO.name} == ${partyMember.memberDTO.name}">
+
+						<div class="d-flex align-items-center">
+							<img src="img/sundaeguk.jpg" alt="" class="img-fluid m-2" style="width: 60px;">
+							<div>
+								<h5 class="mb-1" th:text="${partyCartItem.menuDTO.name}"></h5>
+								<p class="mb-0" th:text="${partyCartItem.menuDTO.price + ' x ' + partyCartItem.menuCount + '개 = ' + (partyCartItem.menuDTO.price * partyCartItem.menuCount) + '원'}"></p>
+							</div>
+						</div>
+					</li>
+				</ul>
+
+				<h4 class="mb-4">결제자 정보</h4>
+				<ul class="list-group mb-5">
+					<li class="list-group-item d-flex justify-content-between align-items-center p-3">
+						<div>
+							<p class="mb-1" th:text="'이름: ' + ${memberDTO.name}"></p>
+							<p class="mb-1" th:text="'연락처: ' + ${memberDTO.phone}"></p>
+						</div>
+					</li>
+				</ul>
+
+				<h4 class="mb-4">판매자 정보</h4>
+				<ul class="list-group mb-5">
+					<li class="list-group-item d-flex justify-content-between align-items-center p-3">
+						<div>
+							<p class="mb-1" th:text="'상호명: ' + ${partyCartItems[0].menuDTO.storeDTO.name}"></p>
+							<p class="mb-1" th:text="'주소: ' + ${partyCartItems[0].menuDTO.storeDTO.address}"></p>
+							<p class="mb-1" th:text="'전화번호: ' + ${partyCartItems[0].menuDTO.storeDTO.sellerDTO.phone}"></p>
+						</div>
+					</li>
+				</ul>
+			</div>
+
+			<div class="payment-methods">
+				<div class="p-4">
+					<h4 class="mt-4 mb-4">결제 방법</h4>
+					<div class="btn-group btn-group-toggle" data-toggle="buttons">
+						<label class="btn btn-warning active">
+							<input type="radio" name="paymentMethod" id="option1" value="card"> 신용, 체크카드
+						</label>
+						<label class="btn btn-outline-secondary">
+							<input type="radio" name="paymentMethod" id="option2" value="cash"> 계좌이체
+						</label>
+						<label class="btn btn-outline-secondary">
+							<input type="radio" name="paymentMethod" id="option3" value="meet"> 만나서 결제
+						</label>
+						<label class="btn btn-outline-success">
+							<input type="radio" name="paymentMethod" id="option4" value="pay"> N Pay
+						</label>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 총 결제 금액 -->
+		<div class="col-lg-4 col-md-12">
+			<div class="sticky-top">
+				<div class="rounded shadow-sm">
+					<div class="p-4">
+						<h2 class="mb-5">총 결제 금액</h2>
+						<div class="d-flex justify-content-between mb-3">
+							<h5 class="mb-0">총 주문금액:</h5>
+							<p class="mb-0" th:text="${totalPrice} + '원'"></p>
+						</div>
+						<div class="d-flex justify-content-between mb-3">
+							<h5 class="mb-0">할인금액:</h5>
+							<p class="mb-0 text-secondary">-0 원</p>
+						</div>
+
+						<div class="py-4 border-top d-flex justify-content-between">
+							<h5 class="mb-0">최종 결제예정금액</h5>
+							<h3 class="mb-0 text-danger" id="totalAmount" th:text="${totalPrice} + '원'"></h3>
+						</div>
+
+						<form id="orderForm" th:action="|/orders/${partyId}|" method="post">
+							<input type="hidden" id="hiddenPaymentMethod" name="paymentMethod" value="">
+							<button class="btn btn-secondary text-white w-100 rounded mt-4" type="submit">전체상품 주문하기</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script defer src="../../js/orders/orders.js"></script>

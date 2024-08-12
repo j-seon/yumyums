@@ -9,6 +9,6 @@ public interface OrdersService {
     List<CartDTO> getCartItems(String memberId);
     OrdersDTO placeOrder(String memberId, String paymentMethod);
     int generateWaitingNum(int storeId);
-
     Page<OrdersDTO> getOrdersByMemberId(String memberId, int page, int pageSize);
+    int calculateEstimatedWaitTime(OrdersDTO ordersDTO);
 }

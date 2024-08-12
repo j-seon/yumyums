@@ -98,7 +98,6 @@ public class StoreController extends ImageDefaultUrl {
         System.out.println("로그인 성공? "+loginStore == null+ "="+loginStore);
 
         if(loginStore == null){
-            System.out.println("loginStore : null 이니????????????????????");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패");
         }
 

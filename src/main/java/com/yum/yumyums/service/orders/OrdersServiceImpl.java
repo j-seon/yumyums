@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 public class OrdersServiceImpl implements OrdersService {
     private final CartRepository cartRepository;
     private final OrdersRepository orderRepository;
-    private final OrdersDetailRepository orderDetailRepository;
+    private final OrdersDetailRepository ordersDetailRepository;
     private final MemberRepository memberRepository;
     private final ReviewRepository reviewRepository;
     private final OrdersStatusRepository ordersStatusRepository;
@@ -60,10 +60,8 @@ public class OrdersServiceImpl implements OrdersService {
         if (carts.isEmpty()) {
             throw new IllegalStateException("장바구니가 비어 있습니다.");
         }
-
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 사용자입니다."));
-
         Orders order = new Orders();
         order.setId(UUID.randomUUID().toString());
         order.setMember(member);
@@ -73,7 +71,6 @@ public class OrdersServiceImpl implements OrdersService {
         order.setOrdersTime(LocalDateTime.now());
         order.setWaitingNum(generateWaitingNum(order.getStore().getId()));
         order.setPaymentMethod(paymentMethod);
-
         orderRepository.save(order);
 
         for (Cart cart : carts) {
@@ -85,16 +82,46 @@ public class OrdersServiceImpl implements OrdersService {
             orderDetail.setMenuPrice(cart.getMenu().getPrice());
             orderDetail.setMenuCount(cart.getMenuCount());
 
-            orderDetailRepository.save(orderDetail);
+            ordersDetailRepository.save(orderDetail);
         }
 
         cartRepository.deleteAllByMemberId(memberId);
-
         return order.entityToDto(); // DTO 반환
     }
 
+    @Override
     public int generateWaitingNum(int storeId) {
-        return (int) (Math.random() * 1000);
+        return (int) (Math.random() * 100);
+    }
+
+    @Override
+    public int calculateEstimatedWaitTime(OrdersDTO ordersDTO) {
+        int additionalTime = 0;
+
+        switch (ordersDTO.getStoreDTO().getBusy()) {
+            case SPACIOUS:
+                additionalTime = 0;
+                break;
+            case NOMAL:
+                additionalTime = 10;
+                break;
+            case CROWDED:
+                additionalTime = 20;
+                break;
+            case FULL:
+                additionalTime = 30;
+                break;
+        }
+
+        List<OrdersDetail> ordersDetails = ordersDetailRepository.findByOrdersId(ordersDTO.getId());
+
+        int finalAdditionalTime = additionalTime;
+        int maxCookingTime = ordersDetails.stream()
+                .mapToInt(detail -> detail.getMenu().getCookingTime() + finalAdditionalTime)
+                .max()
+                .orElse(0);
+
+        return maxCookingTime;
     }
 
     @Override
