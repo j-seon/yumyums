@@ -59,15 +59,18 @@ $('#filterForm').on('submit', function (e) {
 
 // 필터 선택 글씨 색깔 변경 유지
 $('input[type="checkbox"], input[type="radio"]').on('change', function () {
-    const label = $(this).next('label');
-    if (this.checked) {
-        label.css('color', 'var(--bs-secondary)');
-    } else {
-        label.css('color', 'var(--bs-primary)');
-    }
+    const name = $(this).attr('name');
+    $(`input[name="${name}"]`).each(function () {
+        const label = $(this).closest('div').find('label');
+        if (this.checked) {
+            label.css('color', 'var(--bs-secondary)');
+        } else {
+            label.css('color', 'var(--bs-primary)');
+        }
+    });
 });
 
 // 체크된 항목에 대해 색상 변경 처리
 $('input[type="checkbox"]:checked, input[type="radio"]:checked').each(function () {
-    $(this).next('label').css('color', 'var(--bs-secondary)');
+    $(this).closest('div').find('label').css('color', 'var(--bs-secondary)');
 });
