@@ -165,13 +165,13 @@ public class OrdersController {
         // 주문시각 형태변환
         String formattedOrderTime = order.getOrdersTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
-        // 예상 대기시간 TODO orderService.calculateEstimatedWaitTime가 다시 머지되면 주석 해제할 것
-//        int estimatedWaitTime = ordersService.calculateEstimatedWaitTime(order);
-//        model.addAttribute("estimatedWaitTime", estimatedWaitTime);
+        // 예상 대기시간
+        int estimatedWaitTime = ordersService.calculateEstimatedWaitTimeForParty(order, cartDTO.get(0).getPartyDTO().getId());
 
         templateData.setViewPath("orders/success");
         model.addAttribute("order", order);
         model.addAttribute("formattedOrderTime", formattedOrderTime);
+        model.addAttribute("estimatedWaitTime", estimatedWaitTime);
         return "template";
     }
 }
