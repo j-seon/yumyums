@@ -163,7 +163,10 @@ public class PartyController {
 
 			//초대를 받기위한 값들을 모델에 추가
 			model.addAttribute("encryptedPartyId", encryptedPartyId);
-			return "party/join_party"; //파티 초대받기 페이지로 이동
+
+			templateData.setViewPath("party/join_party");
+			model.addAttribute("templateData",templateData);
+			return "template";
 		}
 
 		// 파티초대 링크저장
@@ -172,7 +175,10 @@ public class PartyController {
 		model.addAttribute("joinPartyKey", encryptedPartyId);
 
 		// 페이지 이동
-		return "party/party_detail"; //파티상세 페이지로 이동
+
+		templateData.setViewPath("party/party_detail");
+		model.addAttribute("templateData",templateData);
+		return "template";
 	}
 
 
