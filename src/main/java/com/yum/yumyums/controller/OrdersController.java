@@ -30,6 +30,32 @@ public class OrdersController {
     private final PartyService partyService;
     private final CartService cartService;
 
+    // 일반결제 체크아웃 페이지
+    @GetMapping("/checkout")
+    public String checkout(Model model, HttpSession session, TemplateData templateData) {
+        templateData.setViewPath("orders/checkout");
+        MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return "redirect:/login";
+        }
+
+        List<CartDTO> cartItems = ordersService.getCartItems(loginUser.getMemberId());
+        if (cartItems.isEmpty()) {
+            return "redirect:/cart";
+        }
+
+        int totalPrice = cartItems.stream()
+                .mapToInt(item -> item.getMenuDTO().getPrice() * item.getMenuCount())
+                .sum();
+
+        model.addAttribute("loginUser", loginUser);
+        model.addAttribute("cartItems", cartItems);
+        model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("templateData", templateData);
+
+        return "template";
+    }
+
     // [파티] 파티주문 체크아웃 페이지
     @GetMapping("/{encryptedPartyId}")
     public String partyOrderCheckoutPage(Model model, HttpSession session, TemplateData templateData,  @PathVariable String encryptedPartyId) {
@@ -76,29 +102,27 @@ public class OrdersController {
     }
 
 
-
-    // 일반결제 체크아웃 페이지
-    @GetMapping("/checkout")
-    public String checkout(Model model, HttpSession session, TemplateData templateData) {
-        templateData.setViewPath("orders/checkout");
+    // 일반결제 결제완료 페이지
+    @PostMapping("/success")
+    public String confirmOrder(@RequestParam("paymentMethod") String paymentMethod,
+                               HttpSession session, Model model, TemplateData templateData) {
         MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
         if (loginUser == null) {
             return "redirect:/login";
         }
 
-        List<CartDTO> cartItems = ordersService.getCartItems(loginUser.getMemberId());
-        if (cartItems.isEmpty()) {
-            return "redirect:/cart";
-        }
+        templateData.setViewPath("orders/success");
+        OrdersDTO order = ordersService.placeOrder(loginUser.getMemberId(), paymentMethod);
 
-        int totalPrice = cartItems.stream()
-                .mapToInt(item -> item.getMenuDTO().getPrice() * item.getMenuCount())
-                .sum();
+        // 주문 시간
+        String formattedOrderTime = order.getOrdersTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
-        model.addAttribute("loginUser", loginUser);
-        model.addAttribute("cartItems", cartItems);
-        model.addAttribute("totalPrice", totalPrice);
-        model.addAttribute("templateData", templateData);
+        // 예상 대기시간
+        int estimatedWaitTime = ordersService.calculateEstimatedWaitTime(order);
+
+        model.addAttribute("order", order);
+        model.addAttribute("formattedOrderTime", formattedOrderTime);
+        model.addAttribute("estimatedWaitTime", estimatedWaitTime);
 
         return "template";
     }
@@ -145,23 +169,4 @@ public class OrdersController {
         model.addAttribute("formattedOrderTime", formattedOrderTime);
         return "template";
     }
-
-    // 일반결제 결제완료 페이지
-    @PostMapping("/success")
-    public String confirmOrder(@RequestParam("paymentMethod") String paymentMethod,
-                               HttpSession session, Model model, TemplateData templateData) {
-        MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
-        if (loginUser == null) {
-            return "redirect:/login";
-        }
-
-        templateData.setViewPath("orders/success");
-        // 주문한거 DB에 넣기
-        OrdersDTO order = ordersService.placeOrder(loginUser.getMemberId(), paymentMethod);
-        String formattedOrderTime = order.getOrdersTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        model.addAttribute("order", order);
-        model.addAttribute("formattedOrderTime", formattedOrderTime);
-        return "template";
-    }
-
 }
