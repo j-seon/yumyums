@@ -92,7 +92,7 @@
 							<h3 class="mb-0 text-danger" id="totalAmount" th:text="${totalPrice} + '원'"></h3>
 						</div>
 
-						<form id="orderForm" th:action="@{/orders/success}" method="post">
+						<form id="orderForm" th:action="|/orders/${partyId}|" method="post">
 							<input type="hidden" id="hiddenPaymentMethod" name="paymentMethod" value="">
 							<button class="btn btn-secondary text-white w-100 rounded mt-4" type="submit">전체상품 주문하기</button>
 						</form>

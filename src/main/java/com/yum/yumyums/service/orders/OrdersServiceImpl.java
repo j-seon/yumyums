@@ -82,6 +82,6 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     public int generateWaitingNum(int storeId) {
-        return (int) (Math.random() * 1000);
+        return (int) (Math.random() * 100);
     }
 }
