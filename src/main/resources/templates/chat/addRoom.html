@@ -1,0 +1,30 @@
+<!--모달-->
+<div class="modal fade z-3" id="chatBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="chatBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="chatBackdropLabel">채팅 추가</h1>
+                <button type="button" class="btn-close " data-bs-dismiss="modal" onclick="initModal()" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="info">
+                    <div class="form-item">
+                        <label class="form-label my-3" for="memo">방 이름</label>
+                        <input type="text" class="form-control" name="memo" id="memo">
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3" for="keyword">친구이름</label>
+                        <input id="keyword" class="form-control me-2" type="text" placeholder="친구 검색" aria-label="Search" oninput="searchFriend(event)">
+                        <ul class="userList list-group"></ul>
+                        <div class="setUser form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="initModal()">Close</button>
+                <button type="button" class="btn btn-primary add-room">채팅방 만들기</button>
+            </div>
+        </div>
+    </div>
+</div>

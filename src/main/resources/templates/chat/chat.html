@@ -1,13 +1,11 @@
 
-<body>
 <div id="chat-page">
     <h2>Chat Room</h2>
-
-    <div class="fruite inline-block">
+    <div class=" inline-block">
         <div class=" tab-class text-center">
             <div class="row ">
                 <ul class="nav nav-pills d-inline-flex text-center mb-5 chat-room-list">
-                    <button type="button" class="btn btn-secondary add-chat-room" onclick="initModal()"  data-bs-toggle="modal" data-bs-target="#staticBackdrop" disabled id="btn-add-chat">채팅방 추가</button>
+                    <button type="button" class="btn btn-secondary add-chat-room" onclick="initModal()"  data-bs-toggle="modal" data-bs-target="#chatBackdrop" disabled id="btn-add-chat">채팅방 추가</button>
                     <li class="nav-item" id="chat-bot-room">
                         <a class="d-flex m-2 py-2 bg-light rounded-pill " data-bs-toggle="pill" data-room-id="chat-bot" data-chat-member-id="-1"  >
                             <span class="text-dark" style="width: 125px;">
@@ -48,38 +46,7 @@
             </div>
         </form>
     </div>
-    <!--모달-->
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">채팅 추가</h1>
-                    <button type="button" class="btn-close " data-bs-dismiss="modal" onclick="initModal()" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="info">
-                        <div class="form-item">
-                            <label class="form-label my-3" for="memo">방 이름</label>
-                            <input type="text" class="form-control" name="memo" id="memo">
-                        </div>
-                        <div class="form-item">
-                            <label class="form-label my-3" for="keyword">친구이름</label>
-                            <input id="keyword" class="form-control me-2" type="text" placeholder="친구 검색" aria-label="Search" oninput="searchFriend(event)">
-                            <ul class="userList list-group"></ul>
-                            <div class="setUser form-control">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="initModal()">Close</button>
-                    <button type="button" class="btn btn-primary add-room">채팅방 만들기</button>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
-</body>
 <script src="../../js/common/jquery.js"></script>
 <script src="../../js/common/popper.js"></script>
 <script src="../../js/chat/sockjs.js"></script>
