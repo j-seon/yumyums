@@ -45,7 +45,6 @@ public class OrdersController {
         return "template";
     }
 
-
     @PostMapping("/success")
     public String confirmOrder(@RequestParam("paymentMethod") String paymentMethod,
                                HttpSession session, Model model, TemplateData templateData) {
@@ -56,9 +55,18 @@ public class OrdersController {
 
         templateData.setViewPath("orders/success");
         OrdersDTO order = ordersService.placeOrder(loginUser.getMemberId(), paymentMethod);
+
+        // 주문 시간
         String formattedOrderTime = order.getOrdersTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+        // 예상 대기시간
+        int estimatedWaitTime = ordersService.calculateEstimatedWaitTime(order);
+
         model.addAttribute("order", order);
         model.addAttribute("formattedOrderTime", formattedOrderTime);
+        model.addAttribute("estimatedWaitTime", estimatedWaitTime); // 추가된 부분
+
         return "template";
     }
+
 }
