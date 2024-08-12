@@ -45,7 +45,7 @@
 		//검색창 없애고, 검색된 내용 출력
 		document.querySelector('.find-store-area').classList.add('d-none');
 		document.querySelector('.store-info').classList.remove('d-none');
-		document.querySelector('.modal-footer').classList.remove('d-none');
+		document.querySelector('#select-footer').classList.remove('d-none');
 
 		const dataItems = ['name', 'address', 'category'];
 		const values = {};
@@ -65,7 +65,7 @@
 		//검색된 내용 지우고, 검색창 재출력
 		document.querySelector('.find-store-area').classList.remove('d-none');
 		document.querySelector('.store-info').classList.add('d-none');
-		document.querySelector('.modal-footer').classList.add('d-none');
+		document.querySelector('#select-footer').classList.add('d-none');
 
 		//선택으로 입력된 필드값들 초기화
 		const fieldNameToClear = ['name', 'address', 'category'];

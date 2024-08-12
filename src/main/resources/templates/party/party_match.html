@@ -65,7 +65,10 @@
 					</select>
 				</div>
 
-				<button type="submit" id="submitBtn">매칭시작</button>
+				<div class="d-flex d-flex justify-content-end">
+					<button class="btn-light me-2" onclick="window.location.href='/party'" type="button">취소</button>
+					<button type="submit" id="submitBtn" class="btn-primary text-white">매칭시작</button>
+				</div>
 			</div>
 			<!-- //매칭 옵션 설정 -->
 		</form>
@@ -126,7 +129,7 @@
 				</div>
 
 				<!-- 재검색, 선택 버튼 -->
-				<div class="modal-footer d-none">
+				<div class="modal-footer d-none" id="select-footer">
 					<button type="button" class="btn btn-secondary" onclick="resetFindStores()">재검색</button>
 					<button type="button" class="btn btn-primary" onclick="selectStore();" data-bs-dismiss="modal">선택하기</button>
 				</div>
