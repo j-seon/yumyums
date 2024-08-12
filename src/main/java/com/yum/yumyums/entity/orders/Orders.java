@@ -60,12 +60,9 @@ public class Orders {
         ordersDTO.setDiscount(this.getDiscount());
         ordersDTO.setWaitingNum(this.getWaitingNum());
         ordersDTO.setTotalPrice(this.getTotalPrice());
-
         ordersDTO.setPaymentMethod(this.getPaymentMethod());
         ordersDTO.setMemberDTO(MemberDTO.entityToDto(this.member));
 
         return ordersDTO;
     }
-
-
 }

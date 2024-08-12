@@ -28,7 +28,7 @@ import java.util.Random;
 public class OrdersServiceImpl implements OrdersService {
     private final CartRepository cartRepository;
     private final OrdersRepository orderRepository;
-    private final OrdersDetailRepository orderDetailRepository;
+    private final OrdersDetailRepository ordersDetailRepository;
     private final MemberRepository memberRepository;
 
     @Override
@@ -73,7 +73,7 @@ public class OrdersServiceImpl implements OrdersService {
             orderDetail.setMenuPrice(cart.getMenu().getPrice());
             orderDetail.setMenuCount(cart.getMenuCount());
 
-            orderDetailRepository.save(orderDetail);
+            ordersDetailRepository.save(orderDetail);
         }
 
         cartRepository.deleteAllByMemberId(memberId);
@@ -82,6 +82,37 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     public int generateWaitingNum(int storeId) {
-        return (int) (Math.random() * 1000);
+        return (int) (Math.random() * 100);
     }
+
+    public int calculateEstimatedWaitTime(OrdersDTO ordersDTO) {
+        int additionalTime = 0;
+
+        switch (ordersDTO.getStoreDTO().getBusy()) {
+            case SPACIOUS:
+                additionalTime = 0;
+                break;
+            case NOMAL:
+                additionalTime = 10;
+                break;
+            case CROWDED:
+                additionalTime = 20;
+                break;
+            case FULL:
+                additionalTime = 30;
+                break;
+        }
+
+        List<OrdersDetail> ordersDetails = ordersDetailRepository.findByOrdersId(ordersDTO.getId());
+
+        int finalAdditionalTime = additionalTime;
+        int maxCookingTime = ordersDetails.stream()
+                .mapToInt(detail -> detail.getMenu().getCookingTime() + finalAdditionalTime)
+                .max()
+                .orElse(0);
+
+        return maxCookingTime;
+    }
+
+
 }
