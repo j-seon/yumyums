@@ -1,0 +1,58 @@
+<!-- Single Page Header start -->
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">단골식당</h1>
+    <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item active text-white">Favorites</li>
+    </ol>
+</div>
+<!-- Single Page Header End -->
+<div class="container-fluid fruite py-5">
+    <div class="container py-5">
+        <div class="row g-4">
+            <div th:if="${#lists.isEmpty(stores)}" class="col-12 text-center mt-5">
+                <p>아직 단골매장이 없습니다.</p>
+            </div>
+            <div class="col-lg-6 col-xl-4" th:each="store : ${stores}">
+                <div class="p-4 rounded bg-light">
+                    <div class="row align-items-center">
+                        <div class="col-6">
+                            <img th:src="|/img/${store.imagesDTO.imgUrl}|" class="img-fluid rounded-circle w-100" alt="" style="object-fit:contain;">
+                        </div>
+                        <div class="col-6">
+                            <h5 th:text="${store.name}"></h5>
+                            <p class=" text-truncate" th:text="${store.content}"></p>
+                            <div class="d-flex my-3 gap-1 align-items-center">
+                                <i class="fa fa-heart text-danger"></i>
+                                <span class="h4" th:text="|${#numbers.formatInteger(store.likes, 0, 'COMMA')}|"></span>
+                            </div>
+
+                            <a th:href="|/menu/${store.storeId}|" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-store me-2 text-primary"></i> 매장 보기</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Pagination 시작-->
+        <div class="col-12">
+            <div class="pagination d-flex justify-content-center mt-5" th:if="${totalPages > 0}">
+                <a th:href="@{/member/myStores(page=${currentPage - 1})}"
+                   th:class="${currentPage == 0} ? 'disabled' : ''"
+                   class="rounded"
+                   th:if="${currentPage > 0}">«</a>
+                <th:block th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+                    <a th:href="@{/member/myStores(page=${i})}"
+                       th:class="${i == currentPage} ? 'active rounded' : 'rounded'"
+                       th:text="${i+1}"
+                    >
+                    </a>
+                </th:block>
+
+                <a th:href="@{/member/myStores(page=${currentPage + 1})}"
+                   th:class="${currentPage == totalPages - 1} ? 'disabled' : ''"
+                   class="rounded"
+                   th:if="${currentPage < totalPages - 1}">»</a>
+            </div>
+        </div>
+        <!--Pagination 끝-->
+    </div>
+</div>

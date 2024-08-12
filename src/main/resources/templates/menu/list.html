@@ -1,3 +1,28 @@
+<style>
+    /* 체크박스 숨기기 */
+    input[type="checkbox"] {
+        display: none;
+    }
+
+    .fruite-name label {
+        cursor: pointer;
+        color: var(--bs-primary);
+    }
+
+    input[type="checkbox"]:checked + label {
+        color: var(--bs-secondary);
+    }
+
+    /* 라디오 버튼 숨기기 */
+    input[type="radio"] {
+        display: none;
+    }
+
+    /* 라디오 버튼 선택된 상태 글씨 색깔 변경 */
+    input[type="radio"]:checked + label {
+        color: var(--bs-secondary); /* 부트스트랩 secondary 색상 */
+    }
+</style>
 
 <div class="container-fluid page-header py-5">
     <h1 class="text-center text-white display-6">메뉴 추천 받기</h1>
@@ -8,125 +33,108 @@
     </ol>
 </div>
 
-<div id="cart-link">
-    <a href="/cart">장바구니로 이동</a>
-    <span id="cart-count">장바구니에 0개의 상품이 있습니다.</span>
-</div>
-
 <div class="container-fluid fruite py-5">
     <div class="container py-5">
         <div class="row g-4">
             <div class="col-lg-12">
                 <div class="row g-4">
-                    <div class="col-xl-3">
-                        <div class="input-group w-100 mx-auto d-flex">
-                            <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
-                            <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
-                        </div>
-                    </div>
-                    <div class="col-6"></div>
-                    <div class="col-xl-3">
-                        <div class="rounded shadow-sm ps-3 py-3 rounded d-flex justify-content-between mb-4">
-                            <label for="fruits" class="fw-bold">정렬 기준 선택</label>
-                            <select id="fruits" name="fruitlist" class="border-0 form-select-sm me-3" form="fruitform">
-                                <option value="volvo">Nothing</option>
-                                <option value="saab">평점순</option>
-                                <option value="opel">좋아요순</option>
-                                <option value="audi">혼잡도순</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row g-4">
                     <div class="col-lg-3">
-
                         <div class="row g-4">
-                            <form th:action="@{/menu}" method="get">
-                            <div class="col-lg-12">
-                                <div class="mb-3">
-                                    <h4>분류</h4>
-                                    <ul class="list-unstyled fruite-categorie">
-                                        <li>
-                                            <div class="d-flex justify-content-between fruite-name fw-bold">
-                                                <a href="#"><i class="fas fa-utensils me-2" ></i>한식</a>
-                                                <input type="checkbox" name="category" value="KOR">
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="d-flex justify-content-between fruite-name fw-bold">
-                                                <a href="#"><i class="fas fa-utensils me-2"></i>중식</a>
-                                                <input type="checkbox" name="category" value="CHN">
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="d-flex justify-content-between fruite-name fw-bold">
-                                                <a href="#"><i class="fas fa-utensils me-2"></i>일식</a>
-                                                <input type="checkbox" name="category" value="JPN">
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="d-flex justify-content-between fruite-name fw-bold">
-                                                <a href="#"><i class="fas fa-utensils me-2"></i>양식</a>
-                                                <input type="checkbox" name="category" value="WESTERN">
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="d-flex justify-content-between fruite-name fw-bold">
-                                                <a href="#"><i class="fas fa-utensils me-2"></i>분식</a>
-                                                <input type="checkbox" name="category" value="SNACK">
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-
-
-                            <div class="col-lg-12">
-                                <div class="mb-3">
-                                    <h4 class="mb-2">가격대</h4>
-                                    <ul class="list-unstyled fruite-categorie">
-                                        <li>
-                                            <div class="d-flex justify-content-between fruite-name fw-bold">
-                                                <a href="#"><i class="fas fa-utensils me-2"></i>만원 이하</a>
-                                                <input type="checkbox" name="priceRange" value="below_10000">
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="d-flex justify-content-between fruite-name fw-bold">
-                                                <a href="#"><i class="fas fa-utensils me-2"></i>1~2만원</a>
-                                                <input type="checkbox" name="priceRange" value="10000_20000">
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="d-flex justify-content-between fruite-name fw-bold">
-                                                <a href="#"><i class="fas fa-utensils me-2"></i>2만원 이상</a>
-                                                <input type="checkbox" name="priceRange" value="above_20000">
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="mb-3">
-                                    <h4>혼밥 가능여부</h4>
-                                    <div class="mb-2">
-                                        <input type="radio" name="isAlone" value="true"> 가능
-                                    </div>
-                                    <div class="mb-2">
-                                        <input type="radio" name="isAlone" value="false"> 불가능
+                            <form id="filterForm">
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <h4>분류</h4>
+                                        <ul class="list-unstyled fruite-categorie">
+                                            <li>
+                                                <div class="d-flex justify-content-between fruite-name fw-bold">
+                                                    <input type="checkbox" id="categoryKOR" name="categories" value="KOR">
+                                                    <label for="categoryKOR"><i class="fas fa-utensils me-2"></i>한식</label>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="d-flex justify-content-between fruite-name fw-bold">
+                                                    <input type="checkbox" id="categoryCHN" name="categories" value="CHN">
+                                                    <label for="categoryCHN"><i class="fas fa-utensils me-2"></i>중식</label>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="d-flex justify-content-between fruite-name fw-bold">
+                                                    <input type="checkbox" id="categoryJPN" name="categories" value="JPN">
+                                                    <label for="categoryJPN"><i class="fas fa-utensils me-2"></i>일식</label>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="d-flex justify-content-between fruite-name fw-bold">
+                                                    <input type="checkbox" id="categoryWESTERN" name="categories" value="WESTERN">
+                                                    <label for="categoryWESTERN"><i class="fas fa-utensils me-2"></i>양식</label>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="d-flex justify-content-between fruite-name fw-bold">
+                                                    <input type="checkbox" id="categorySNACK" name="categories" value="SNACK">
+                                                    <label for="categorySNACK"><i class="fas fa-utensils me-2"></i>분식</label>
+                                                </div>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
-                            </div>
-                                <button type="submit">조회</button>
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <h4 class="mb-2">가격대</h4>
+                                        <ul class="list-unstyled fruite-categorie">
+                                            <li>
+                                                <div class="d-flex justify-content-between fruite-name fw-bold">
+                                                    <input type="checkbox" id="priceBelow10000" name="priceRanges" value="below_10000">
+                                                    <label for="priceBelow10000"><i class="fas fa-utensils me-2"></i>만원 이하</label>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="d-flex justify-content-between fruite-name fw-bold">
+                                                    <input type="checkbox" id="price10000_20000" name="priceRanges" value="10000_20000">
+                                                    <label for="price10000_20000"><i class="fas fa-utensils me-2"></i>1~2만원</label>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="d-flex justify-content-between fruite-name fw-bold">
+                                                    <input type="checkbox" id="priceAbove20000" name="priceRanges" value="above_20000">
+                                                    <label for="priceAbove20000"><i class="fas fa-utensils me-2"></i>2만원 이상</label>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <h4 class="mb-3">혼밥 가능여부</h4>
+                                        <div class="mb-3 fw-bold text-primary">
+                                            <input type="radio" id="isAloneTrue" name="isAlone" value="true">
+                                            <label for="isAloneTrue"><i class="fas fa-utensils me-2"></i>가능</label>
+                                        </div>
+                                        <div class="mb-3 fw-bold text-primary">
+                                            <input type="radio" id="isAloneFalse" name="isAlone" value="false">
+                                            <label for="isAloneFalse"><i class="fas fa-utensils me-2"></i>불가능</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <div class="rounded shadow-sm ps-3 py-3 rounded d-flex justify-content-between mb-4">
+                                        <select name="sort" class="border-0 form-select-sm me-3">
+                                            <option value="rating">평점순</option>
+                                            <option value="busy">혼잡도순</option>
+                                            <option value="likes">좋아요순</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn border border-secondary align-middle rounded-pill py-1 mb-4 text-primary">조회</button>
                             </form>
                         </div>
                     </div>
                     <div class="col-lg-9">
-                        <div class="row g-4 justify-content-center">
+                        <div class="row g-4 justify-content-center" id="menuResults">
                             <div class="col-md-6 col-lg-6 col-xl-4" th:each="menu : ${menus}" th:attr="data-menu-id=${menu.id}">
                                 <div class="rounded position-relative fruite-item">
                                     <div class="border border-secondary fw-bold rounded-top border-bottom-0">
-                                        <img src="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" class="img-fluid w-100 rounded-top" alt="">
+                                        <img src="" alt="">
                                     </div>
                                     <div class="p-3 border border-secondary fw-bold border-top-0 rounded-bottom bg-white" >
                                         <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;" th:text="${menu.categoryKorName}">음식 분류</div>
@@ -138,6 +146,7 @@
                                                 <p class="mb-1 text-secondary fw-bold" th:text="${menu.storeDTO.name}"></p>
                                                 <p class="mb-1 text-dark small" th:text="${menu.price} + '원'"></p>
                                                 <p class="mb-1 text-dark small" th:text="'설명: '+ ${menu.content}"></p>
+                                                <p class="mb-1 text-dark small" th:text="'현재 혼잡도: '+ ${menu.storeDTO.busyKorName}"></p>
                                                 <p class="mb-1 text-dark small" th:text="'조리 시간: ' + ${menu.cookingTime} + '분'"></p>
                                                 <p class="mb-1 text-dark small" th:text="'혼밥 가능 여부: ' + (${menu.isAlone} ? '가능' : '불가능')"></p>
                                             </div>
@@ -147,29 +156,14 @@
                                         </div>
                                         <div class="d-flex justify-content-between">
                                             <div class="text-secondary small">
-                                                <span><i class="fa fa-eye me-1"></i>29,169</span>
+                                                <span><i class="fa fa-eye me-1"></i>주문: <span th:text="${orderCounts[menu.id]} +'건'"></span></span>
                                             </div>
                                             <input type="number" name="quantity" min="1" value="1" class="align-middle form-control text-center border-0" style="width: 80px; height: 30px;" />
                                             <a href="#" class="btn border border-secondary align-middle rounded-pill py-1 mb-4 text-primary" th:onclick="'addToCart(' + ${menu.id} + ')'">
                                                 <i class="fa fa-shopping-bag me-2"></i>담기
                                             </a>
-
                                         </div>
                                     </div>
-
-                                </div>
-                            </div>
-
-                            <div class="col-12">
-                                <div class="pagination d-flex justify-content-center mt-5">
-                                    <a href="#" class="rounded">&laquo;</a>
-                                    <a href="#" class="active rounded">1</a>
-                                    <a href="#" class="rounded">2</a>
-                                    <a href="#" class="rounded">3</a>
-                                    <a href="#" class="rounded">4</a>
-                                    <a href="#" class="rounded">5</a>
-                                    <a href="#" class="rounded">6</a>
-                                    <a href="#" class="rounded">&raquo;</a>
                                 </div>
                             </div>
                         </div>

@@ -5,6 +5,7 @@ import com.yum.yumyums.entity.Images;
 import com.yum.yumyums.entity.review.Review;
 import com.yum.yumyums.entity.seller.Menu;
 import com.yum.yumyums.enums.FoodCategory;
+import com.yum.yumyums.repository.orders.OrdersDetailRepository;
 import com.yum.yumyums.repository.review.ReviewRepository;
 import com.yum.yumyums.repository.seller.MenuRepository;
 import com.yum.yumyums.service.ImagesService;
@@ -21,6 +22,7 @@ public class MenuServiceImpl implements MenuService {
     private final MenuRepository menuRepository;
     private final ReviewRepository reviewRepository;
     private final ImagesService imagesService;
+    private final OrdersDetailRepository ordersDetailRepository;
 
     @Override
     public Optional<MenuDTO> findById(int id) {
@@ -28,11 +30,10 @@ public class MenuServiceImpl implements MenuService {
                 .map(Menu::entityToDto);
     }
 
-    //필터 선택후 정렬
     @Override
-    public List<MenuDTO> getMenusByFilters(FoodCategory category, String priceRange, Boolean isAlone, String sort) {
+    public List<MenuDTO> getMenusByFilters(List<FoodCategory> categories, List<String> priceRanges, Boolean isAlone, String sort) {
         List<MenuDTO> returnDto = new ArrayList<>();
-        List<Menu> menus = menuRepository.findAllByFilters(category, priceRange, isAlone);
+        List<Menu> menus = menuRepository.findAllByFilters(categories, priceRanges, isAlone);
 
         if ("rating".equals(sort)) {
             menus.sort((m1, m2) -> {
@@ -41,10 +42,9 @@ public class MenuServiceImpl implements MenuService {
                 return Double.compare(avgRating2, avgRating1);
             });
         } else if ("likes".equals(sort)) {
-            menus = menuRepository.findAllByFiltersAndSortByLikes(category, priceRange, isAlone);
-
+            menus = menuRepository.findAllByFiltersAndSortByLikes(categories, priceRanges, isAlone);
         } else if ("busy".equals(sort)) {
-            menus = menuRepository.findAllOrderedByStoreBusyAndCookingTime(category, priceRange, isAlone);
+            menus = menuRepository.findAllOrderedByStoreBusyAndCookingTime(categories, priceRanges, isAlone);
         }
 
         for (Menu menu : menus) {
@@ -53,9 +53,6 @@ public class MenuServiceImpl implements MenuService {
         return returnDto;
     }
 
-
-
-    //리뷰 평균 평점 계산하기
     @Override
     public double getAverageRateForMenu(int menuId) {
         var reviews = reviewRepository.findByMenuId(menuId);
@@ -66,6 +63,11 @@ public class MenuServiceImpl implements MenuService {
         return averageRate.isPresent() ? Math.round(averageRate.getAsDouble() * 10) / 10.0 : 0.0;
     }
 
+    @Override
+    public int getMenuOrderCount(int menuId) {
+        Integer orderCount = ordersDetailRepository.findTotalOrdersByMenuId(menuId);
+        return (orderCount != null) ? orderCount : 0;
+    }
 
     @Override
     public List<MenuDTO> getMenusByStoreId(int storeId) {

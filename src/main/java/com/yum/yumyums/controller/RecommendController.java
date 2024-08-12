@@ -23,36 +23,50 @@ import java.util.*;
 public class RecommendController {
     private final MenuService menuService;
     private final StoreService storeService;
-
     @GetMapping
     public String getMenusByFilters(
-            @RequestParam(required = false) FoodCategory category,
-            @RequestParam(required = false) String priceRange,
+            @RequestParam(required = false) List<FoodCategory> categories,
+            @RequestParam(required = false) List<String> priceRanges,
             @RequestParam(required = false) Boolean isAlone,
             @RequestParam(required = false) String sort,
             Model model, TemplateData templateData
     ) {
         templateData.setViewPath("menu/list");
-        List<MenuDTO> menus = menuService.getMenusByFilters(category, priceRange, isAlone, sort);
+
+        // 필터링된 메뉴 목록 가져오기
+        List<MenuDTO> menus = menuService.getMenusByFilters(categories, priceRanges, isAlone, sort);
+
+        // 좋아요 수 및 평점 관련 데이터 준비
         Map<Integer, Integer> likeCounts = new HashMap<>();
         Map<Integer, Double> averageRatings = new HashMap<>();
+        Map<Integer, Integer> orderCounts = new HashMap<>(); // 주문 횟수를 저장할 맵
 
         for (MenuDTO menu : menus) {
             int storeId = menu.getStoreDTO().getStoreId();
+            int menuId = menu.getId();
+
+            // 좋아요 수 및 평점 계산
             int likeCount = storeService.getLikesForStore(storeId);
-            double averageRating = menuService.getAverageRateForMenu(menu.getId());
+            double averageRating = menuService.getAverageRateForMenu(menuId);
+
+            // 주문 횟수 계산
+            int orderCount = menuService.getMenuOrderCount(menuId);
 
             likeCounts.put(storeId, likeCount);
-            averageRatings.put(menu.getId(), averageRating);
+            averageRatings.put(menuId, averageRating);
+            orderCounts.put(menuId, orderCount); // 주문 횟수를 맵에 저장
         }
 
+        // 모델에 데이터 추가
         model.addAttribute("menus", menus);
         model.addAttribute("likeCounts", likeCounts);
         model.addAttribute("averageRatings", averageRatings);
+        model.addAttribute("orderCounts", orderCounts); // 주문 횟수를 모델에 추가
         model.addAttribute("templateData", templateData);
 
         return "template";
     }
+
 
 
     @GetMapping("/{storeId}")

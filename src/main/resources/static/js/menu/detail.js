@@ -35,11 +35,6 @@ function addToCart(menuId) {
 	});
 }
 
-function updateCartCount() {
-    $.get("/cart/count", function (count) {
-        $("#cart-count").text("장바구니에 " + count + "개의 메뉴가 담겨 있습니다");
-    });
-}
 
 $(document).ready(function () {
     updateCartCount();
