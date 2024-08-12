@@ -19,7 +19,15 @@
                             <h5 class="mb-1" th:text="'주문시간: ' + ${formattedOrderTime}"></h5>
                             <h5 class="mb-1" th:text="'대기번호: ' + ${order.waitingNum}"></h5>
                             <h5 class="mb-1" th:text="'예상 대기시간: ' + ${estimatedWaitTime} + '분'"></h5>
-                            <h5 class="mb-1" th:text="'결제방식: ' + ${order.paymentMethod}"></h5>
+                            <!--TODO : db 글씨 반복 저장 오류 추후 수정 예정-->
+                            <h5 class="mb-1">
+                                결제방식:
+                                <span th:if="${order.paymentMethod == 'card,card'}">신용카드</span>
+                                <span th:if="${order.paymentMethod == 'cash,cash'}">계좌이체</span>
+                                <span th:if="${order.paymentMethod == 'meet,meet'}">만나서 결제</span>
+                                <span th:if="${order.paymentMethod == 'pay,pay'}">N Pay</span>
+                                <span th:unless="${order.paymentMethod == 'card,card' or order.paymentMethod == 'cash,cash' or order.paymentMethod == 'meet,meet' or order.paymentMethod == 'pay,pay'}">알 수 없는 결제 방법</span>
+                            </h5>
                         </div>
                     </li>
                 </ul>
