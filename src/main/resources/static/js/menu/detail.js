@@ -2,6 +2,12 @@ function addToCart(menuId) {
     const row = $("div[data-menu-id='" + menuId + "']");
     const quantity = row.find('input[name="quantity"]').val();
 
+	// 수량이 1보다 작을 경우 에러 메시지
+	if (isNaN(quantity) || quantity <= 0) {
+		alert("수량은 1 이상이어야 합니다.");
+		return;
+	}
+
 	$.ajax({
 		url: "/cart/add",
 		method: "POST",

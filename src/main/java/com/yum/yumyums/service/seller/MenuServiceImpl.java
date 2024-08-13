@@ -48,7 +48,11 @@ public class MenuServiceImpl implements MenuService {
         } else if ("price".equals(sort)) {
             menus = menuRepository.findAllOrderedByPrice(categories, priceRanges, isAlone);
         } else if ("orderCount".equals(sort)) {
-            menus = menuRepository.findAllOrderedByOrderCount(categories, priceRanges, isAlone);
+            menus.sort((m1, m2) -> {
+                int count1 = getMenuOrderCount(m1.getId());
+                int count2 = getMenuOrderCount(m2.getId());
+                return Integer.compare(count2, count1);
+            });
         }
 
         for (Menu menu : menus) {

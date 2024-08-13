@@ -1,9 +1,23 @@
+<style>
+    input[type="radio"] {
+        display: none;
+    }
+    .btn-group .btn {
+        cursor: pointer;
+        background-color: #f8f9fa; /* 기본 배경색 */
+        color: #000;
+    }
+
+    .btn-group .btn.active {
+        background-color: #ffc107;
+        color: white;
+    }
+
+</style>
 <div class="container-fluid page-header py-5">
     <h1 class="text-center text-white display-6">주문확인</h1>
     <ol class="breadcrumb justify-content-center mb-0">
-        <li class="breadcrumb-item"><a href="#">Home</a></li>
-        <li class="breadcrumb-item"><a href="#">Pages</a></li>
-        <li class="breadcrumb-item active text-white">Shop</li>
+        <li class="breadcrumb-item active text-white">Orders Check</li>
     </ol>
 </div>
 
@@ -46,23 +60,22 @@
                         </li>
                     </ul>
                 </div>
-
                 <!-- 결제 방법 -->
                 <div class="payment-methods">
                     <div class="p-4">
                         <h4 class="mt-4 mb-4">결제 방법</h4>
                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
                             <label class="btn btn-warning active">
-                                <input type="radio" name="paymentMethod" id="option1" value="card" checked> 신용, 체크카드
+                                <input type="radio" name="paymentMethod" value="card" checked> 신용, 체크카드
                             </label>
                             <label class="btn btn-outline-secondary">
-                                <input type="radio" name="paymentMethod" id="option2" value="cash"> 계좌이체
+                                <input type="radio" name="paymentMethod" value="cash"> 계좌이체
                             </label>
                             <label class="btn btn-outline-secondary">
-                                <input type="radio" name="paymentMethod" id="option3" value="meet"> 만나서 결제
+                                <input type="radio" name="paymentMethod" value="meet"> 만나서 결제
                             </label>
                             <label class="btn btn-outline-success">
-                                <input type="radio" name="paymentMethod" id="option4" value="pay"> N Pay
+                                <input type="radio" name="paymentMethod" value="pay"> N Pay
                             </label>
                         </div>
                     </div>
