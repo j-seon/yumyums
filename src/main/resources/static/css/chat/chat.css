@@ -113,6 +113,6 @@ width : 150px;
 #chat-page .nav{
     padding-left: 12px;
 }
-.nav-item a.active {
+#chat-page .nav-item a.active {
     background: var(--bs-secondary) !important;
 }
