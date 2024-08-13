@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import static com.yum.yumyums.util.ImageDefaultUrl.DEFAULT_IMAGE_FILENAME;
+import static com.yum.yumyums.util.ImageDefaultUrl.*;
 
 @Service
 @RequiredArgsConstructor
@@ -47,20 +47,28 @@ public class ImagesServiceImpl implements ImagesService{
         }
 
         //파일명 중복처리
-        String newImgUrl = imgUrl;
+        if(!imgUrl.equals(DEFAULT_IMAGE_FILENAME)
+                && !imgUrl.equals(DEFAULT_MEMBER_IMAGE)
+                && !imgUrl.equals(DEFAULT_STORE_IMAGE)
+                && !imgUrl.equals(DEFAULT_MENU_IMAGE)){
+
+            String newImgUrl = imgUrl;
             int count = 1;
             while (new File(uploadDir + newImgUrl).exists()) {
                 newImgUrl = dirPath + baseName + "(" + count + ")" + extension; // 파일경로 재설정
                 count++;
             }
 
-        try {
-            imgFile.transferTo(new File(uploadDir + newImgUrl));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            try {
+                imgFile.transferTo(new File(uploadDir + newImgUrl));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            // -----이미지 업로드 완료------
+            return newImgUrl;
         }
-        // -----이미지 업로드 완료------
-        return newImgUrl;
+
+        return imgUrl;
 
     }
 

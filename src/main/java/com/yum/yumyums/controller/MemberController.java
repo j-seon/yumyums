@@ -70,7 +70,7 @@ public class MemberController extends ImageDefaultUrl {
             station.setMemberId(memberDTO.getMemberId());
             System.out.println("station : "+station);
         }*/
-
+        imgUrl = DEFAULT_MEMBER_IMAGE;
         if(!imgFile.isEmpty()){
             imgUrl = "member/"+memberDTO.getMemberId()+"/"+imgFile.getOriginalFilename();
         }
