@@ -127,6 +127,7 @@ public class StoreController extends ImageDefaultUrl {
         HttpSession session = request.getSession();
         SellerDTO sellerDTO = (SellerDTO)session.getAttribute("loginUser");
         System.out.println(storeDTO);
+        imgUrl = DEFAULT_STORE_IMAGE;
         if(!imgFile.isEmpty()){
             imgUrl = "seller/"+sellerDTO.getSellerId()+"/"+imgFile.getOriginalFilename();
         }
@@ -191,6 +192,7 @@ public class StoreController extends ImageDefaultUrl {
         StoreDTO storeDTO = storeService.findById(storeId);
         System.out.println("menuDTO : " + menuDTO);
         System.out.println("stordId : " + storeId);
+        imgUrl=DEFAULT_MENU_IMAGE;
 
         if(!imgFile.isEmpty()){
             imgUrl = "seller/"+sellerDTO.getSellerId()+"/"+storeDTO.getName()+"/"+imgFile.getOriginalFilename();
