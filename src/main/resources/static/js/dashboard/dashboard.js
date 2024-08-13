@@ -15,11 +15,13 @@ function setReviewDifferRate() {
     if(differRate>0){
             differRate=" + " + differRate;
             $("#differ-rate").addClass("text-danger");
+            $("#differ-rate").text(differRate);
         }else if(differRate < 0){
             differRate=" - " + differRate
             $("#differ-rate").addClass("text-info");
+            $("#differ-rate").text(differRate);
         }
-        $("#differ-rate").text(differRate);
+
 }
 
 $(document).ready(function() {
