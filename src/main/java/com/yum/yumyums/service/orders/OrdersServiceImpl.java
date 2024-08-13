@@ -64,8 +64,10 @@ public class OrdersServiceImpl implements OrdersService {
         if (carts.isEmpty()) {
             throw new IllegalStateException("장바구니가 비어 있습니다.");
         }
+
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 사용자입니다."));
+
         Orders order = new Orders();
         order.setId(UUID.randomUUID().toString());
         order.setMember(member);
@@ -75,6 +77,12 @@ public class OrdersServiceImpl implements OrdersService {
         order.setOrdersTime(LocalDateTime.now());
         order.setWaitingNum(generateWaitingNum(order.getStore().getId()));
         order.setPaymentMethod(paymentMethod);
+
+        OrdersStatus ordersStatus = new OrdersStatus();
+        ordersStatus.setOrders(order);
+        ordersStatus.setState(FoodState.COOKING);
+        order.setOrdersStatus(ordersStatus);
+
         orderRepository.save(order);
 
         for (Cart cart : carts) {
@@ -90,8 +98,9 @@ public class OrdersServiceImpl implements OrdersService {
         }
 
         cartRepository.deleteAllByMemberId(memberId);
-        return order.entityToDto(); // DTO 반환
+        return order.entityToDto();
     }
+
 
     @Override
     public int generateWaitingNum(int storeId) {
