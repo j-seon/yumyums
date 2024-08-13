@@ -69,9 +69,7 @@ function sendChat() {
             "<div class='chat-box'><div class='chatting_own'><tr><td>" + messageContent + "</td></tr></div></div>"
         );
            $.ajax({
-               url: "http://192.168.0.3:5000/embedding",
-//               url: "http://192.168.0.106:5000/embedding",
-
+               url: "http://192.168.0.106:5000/embedding",
                method: "GET",
                data: { question: messageContent },
                success: function(response) {
