@@ -143,7 +143,7 @@ public class OrdersServiceImpl implements OrdersService {
                     }
                     ordersDTO.setOrdersStatusDTO(ordersStatusDTO);
 
-                    List<OrdersDetailDTO> ordersDetails = orderDetailRepository.findAllByOrdersId(ordersDTO.getId()).stream()
+                    List<OrdersDetailDTO> ordersDetails = ordersDetailRepository.findAllByOrdersId(ordersDTO.getId()).stream()
                             .map(ordersDetail ->{
                                 OrdersDetailDTO ordersDetailDTO = ordersDetail.entityToDto();
                                 Optional<Review> review = Optional.ofNullable(reviewRepository.findByOrdersDetailId(ordersDetailDTO.getId()));
