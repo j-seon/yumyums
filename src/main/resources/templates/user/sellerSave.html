@@ -69,6 +69,7 @@
     const businessNum = () => {
         const sellerNumInput = document.getElementById('sellerNum');
         const sellerNum = sellerNumInput.value.trim();
+        const busiNameInput = document.getElementById('businessName');
         console.log(sellerNum)
 
         $.ajax({
@@ -76,11 +77,16 @@
             url: 'http://192.168.0.106:5000/searchByCorpNo?docNo='+sellerNum,
             success: function(response){
                 alertSuccessMessage("사업자번호 조회 성공");
-                const busiNameInput = document.getElementById('businessName');
                 busiNameInput.value = response;
+                sellerNumInput.classList.remove('is-invalid');
+                sellerNumInput.classList.add('is-valid');
             },
             error: function(xhr, status, error){
                 alertErrorMessage("사업자번호 조회 실패")
+                busiNameInput.value = "";
+                sellerNumInput.classList.remove('is-valid');
+                sellerNumInput.classList.add('is-invalid');
+
             }
         })
     }
