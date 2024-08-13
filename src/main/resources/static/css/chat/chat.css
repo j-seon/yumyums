@@ -82,11 +82,12 @@
    width: 429px;
    height: 488px;
 }
-.chat-room-list{
-
+#room-info{
+width : 150px;
+   overflow: scroll;
 }
 #chat-page .fruite{
- height: 434px;
+ height: 394px;
  overflow: scroll;
 }
 .SettingView-module__layer_setting___JwfQs {
@@ -111,4 +112,7 @@
 }
 #chat-page .nav{
     padding-left: 12px;
+}
+#chat-page .nav-item a.active {
+    background: var(--bs-secondary) !important;
 }
