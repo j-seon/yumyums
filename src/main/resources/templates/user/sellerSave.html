@@ -32,9 +32,9 @@
                     </div>
                     <div class="form-item">
                         <label class="form-label my-3" for="sellerNum">사업자등록번호<sup>*</sup></label>
-                        <input type="text" class="form-control" id="businessName" placeholder="상호(법인명)">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <input type="text" class="form-control w-75" name="sellerNum" id="sellerNum">
+                        <input type="text" class="form-control" id="businessName" placeholder="상호(법인명)" readonly required>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <input type="text" class="form-control w-75" name="sellerNum" id="sellerNum" required>
                             <button type="button" id="businessNumBtn" class="btn btn-secondary py-1 px-2 w-20" onclick="businessNum();">조회하기</button>
                         </div>
                     </div>
@@ -63,6 +63,26 @@
     </div>
 </div>
 <!-- Checkout Page End -->
-
-
+<script src="js/alert.js"></script>
 <script src="js/user/emailVerification.js"></script>
+<script>
+    const businessNum = () => {
+        const sellerNumInput = document.getElementById('sellerNum');
+        const sellerNum = sellerNumInput.value.trim();
+        console.log(sellerNum)
+
+        $.ajax({
+            type: 'GET',
+            url: 'http://192.168.0.106:5000/searchByCorpNo?docNo='+sellerNum,
+            success: function(response){
+                alertSuccessMessage("사업자번호 조회 성공");
+                const busiNameInput = document.getElementById('businessName');
+                busiNameInput.value = response;
+            },
+            error: function(xhr, status, error){
+                alertErrorMessage("사업자번호 조회 실패")
+            }
+        })
+    }
+</script>
+
