@@ -3,9 +3,12 @@ package com.yum.yumyums.controller;
 import com.yum.yumyums.dto.TemplateData;
 import com.yum.yumyums.dto.seller.MenuDTO;
 import com.yum.yumyums.dto.seller.StoreDTO;
+import com.yum.yumyums.dto.user.MemberDTO;
 import com.yum.yumyums.enums.FoodCategory;
 import com.yum.yumyums.service.seller.MenuService;
 import com.yum.yumyums.service.seller.StoreService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 import java.util.*;
+
+import static com.yum.yumyums.util.SessionUtil.MEMBER_DTO_SESSION_ATTRIBUTE_NAME;
 
 @Controller
 @RequiredArgsConstructor
@@ -75,9 +80,18 @@ public class RecommendController {
 			Model model,
 			TemplateData templateData,
 			@RequestParam(name = "joinPage", required = false, defaultValue = "none") String joinPage,
-			@RequestParam(name = "partyId", required = false, defaultValue = "none") String encryptedPartyId
-
+			@RequestParam(name = "partyId", required = false, defaultValue = "none") String encryptedPartyId,
+            HttpServletRequest request
 	) {
+
+        HttpSession session = request.getSession();
+        MemberDTO memberDTO = (MemberDTO)session.getAttribute(MEMBER_DTO_SESSION_ATTRIBUTE_NAME);
+        String memberId = memberDTO.getMemberId();
+
+        // 클라이언트가 단골로 등록한 식당인지 확인하기
+        boolean isStoreLike = storeService.isStoreLikedByMember(memberId, storeId);
+        model.addAttribute("isStoreLike", isStoreLike);
+
         templateData.setViewPath("menu/detail");
         StoreDTO store = storeService.findById(storeId);
         model.addAttribute("store", store);

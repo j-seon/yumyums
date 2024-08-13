@@ -20,6 +20,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +47,7 @@ public class MemberController extends ImageDefaultUrl {
     private final ImagesService imagesService;
     private final StoreService storeService;
     private final OrdersService ordersService;
+
 
     @GetMapping("")
     public String memberSaveForm(Model model, TemplateData templateData, HttpServletRequest request) {
@@ -157,6 +159,24 @@ public class MemberController extends ImageDefaultUrl {
 
         templateData.setViewPath("myPage/myOrders");
         return "template";
+    }
+
+    @PostMapping("/storeLike/{storeId}")
+    public ResponseEntity<Void> saveStoreLike(@PathVariable int storeId, HttpServletRequest request){
+        HttpSession session = request.getSession();
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("loginUser");
+        String memberId = memberDTO.getMemberId();
+        storeService.saveStoreLike(memberId, storeId);
+        return ResponseEntity.ok().build(); // 성공적으로 처리된 경우 200 OK 응답
+    }
+
+    @DeleteMapping("/storeLike/{storeId}")
+    public ResponseEntity<Void> removeStoreLike(@PathVariable int storeId, HttpServletRequest request){
+        HttpSession session = request.getSession();
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("loginUser");
+        String memberId = memberDTO.getMemberId();
+        storeService.removeStoreLike(memberId, storeId);
+        return ResponseEntity.ok().build(); // 성공적으로 처리된 경우 200 OK 응답
     }
 
 }

@@ -20,6 +20,7 @@ public class MemberInterConfig implements WebMvcConfigurer {
                 .addPathPatterns("/cart")
                 .addPathPatterns("/maps/**")
                 .addPathPatterns("/menu")
+                .addPathPatterns("/menu/*")
                 .addPathPatterns("/orders/**")
                 /*.addPathPatterns("/chat/**")*/
 //                .addPathPatterns("/party")
