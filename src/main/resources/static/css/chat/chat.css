@@ -1,5 +1,5 @@
 #chat-page .row {
-   width: 165px;
+   width: 185px;
    overflow: auto;
 }
 
@@ -79,16 +79,18 @@
 }
 
 #chat-page {
-   width: 429px;
+   width: 500px;
    height: 488px;
 }
 #room-info{
 width : 150px;
-   overflow: scroll;
+
+   overflow: hidden;
 }
 #chat-page .fruite{
  height: 394px;
  overflow: scroll;
+ overflow-x: hidden;
 }
 .SettingView-module__layer_setting___JwfQs {
     position: fixed;
