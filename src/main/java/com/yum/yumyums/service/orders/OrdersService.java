@@ -11,4 +11,8 @@ public interface OrdersService {
     int generateWaitingNum(int storeId);
     Page<OrdersDTO> getOrdersByMemberId(String memberId, int page, int pageSize);
     int calculateEstimatedWaitTime(OrdersDTO ordersDTO);
+
+    // [파티] 웨이팅 시간을 구하는 함수
+    int calculateEstimatedWaitTimeForParty(OrdersDTO ordersDTO, String encryptedPartyId);
+
 }

@@ -1,8 +1,15 @@
+//장바구니에 상품 추가
 function addToCart(menuId) {
     const row = $("div[data-menu-id='" + menuId + "']");
-    console.log('row:',row);
+    console.log('row:', row);
     const quantity = row.find('input[name="quantity"]').val();
-    console.log('quantity:',quantity);
+    console.log('quantity:', quantity);
+
+    // 수량이 1보다 작을 경우 에러 메시지
+    if (isNaN(quantity) || quantity <= 0) {
+        alert("수량은 1 이상이어야 합니다.");
+        return;
+    }
 
     $.ajax({
         url: "/cart/add",
@@ -13,7 +20,7 @@ function addToCart(menuId) {
             menuCount: quantity
         }),
         success: function (response) {
-            console.log('response:',response);
+            console.log('response:', response);
             alert(response); // 성공 메시지
             updateCartCount(); // 장바구니 카운트 업데이트
         },
@@ -59,15 +66,18 @@ $('#filterForm').on('submit', function (e) {
 
 // 필터 선택 글씨 색깔 변경 유지
 $('input[type="checkbox"], input[type="radio"]').on('change', function () {
-    const label = $(this).next('label');
-    if (this.checked) {
-        label.css('color', 'var(--bs-secondary)');
-    } else {
-        label.css('color', 'var(--bs-primary)');
-    }
+    const name = $(this).attr('name');
+    $(`input[name="${name}"]`).each(function () {
+        const label = $(this).closest('div').find('label');
+        if (this.checked) {
+            label.css('color', 'var(--bs-secondary)');
+        } else {
+            label.css('color', 'var(--bs-primary)');
+        }
+    });
 });
 
 // 체크된 항목에 대해 색상 변경 처리
 $('input[type="checkbox"]:checked, input[type="radio"]:checked').each(function () {
-    $(this).next('label').css('color', 'var(--bs-secondary)');
+    $(this).closest('div').find('label').css('color', 'var(--bs-secondary)');
 });

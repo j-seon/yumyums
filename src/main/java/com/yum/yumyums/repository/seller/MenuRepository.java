@@ -73,23 +73,6 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
                                          @Param("priceRanges") List<String> priceRanges,
                                          @Param("isAlone") Boolean isAlone);
 
-        @Query("SELECT m FROM Menu m " +
-                "LEFT JOIN OrdersDetail od ON od.menu.id = m.id " +
-                "WHERE m.isActive = true " +
-                "AND (:categories IS NULL OR m.category IN :categories) " +
-                "AND (:priceRanges IS NULL OR " +
-                "(m.price <= 10000 AND 'below_10000' IN :priceRanges) OR " +
-                "(m.price > 10000 AND m.price <= 20000 AND '10000_20000' IN :priceRanges) OR " +
-                "(m.price > 20000 AND 'above_20000' IN :priceRanges)) " +
-                "AND (:isAlone IS NULL OR m.isAlone = :isAlone) " +
-                "GROUP BY m.id " +
-                "ORDER BY COUNT(od.id) DESC")
-        List<Menu> findAllOrderedByOrderCount(@Param("categories") List<FoodCategory> categories,
-                                              @Param("priceRanges") List<String> priceRanges,
-                                              @Param("isAlone") Boolean isAlone);
-
-
-
         @Query("SELECT m.id AS id, " +
                 "m.store.id AS storeId, " +
                 "m.category AS category, " +
