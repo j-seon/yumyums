@@ -148,7 +148,7 @@ public class OrdersServiceImpl implements OrdersService {
                     ordersDTO.setOrdersStatusDTO(ordersStatusDTO);
 
                     List<OrdersDetailDTO> ordersDetails = ordersDetailRepository.findAllByOrdersId(ordersDTO.getId()).stream()
-                            .map(ordersDetail ->{
+                            .map(ordersDetail -> {
                                 OrdersDetailDTO ordersDetailDTO = ordersDetail.entityToDto();
                                 Optional<Review> review = Optional.ofNullable(reviewRepository.findByOrdersDetailId(ordersDetailDTO.getId()));
                                 ordersDetailDTO.setReviewed(review.isPresent());
@@ -169,6 +169,7 @@ public class OrdersServiceImpl implements OrdersService {
                 })
                 .collect(Collectors.toList());
         return new PageImpl<>(ordersDTOs, ordersPage.getPageable(), ordersPage.getTotalElements());
+    }
 
     @Override
     public int calculateEstimatedWaitTimeForParty(OrdersDTO ordersDTO, String encryptedPartyId) {
