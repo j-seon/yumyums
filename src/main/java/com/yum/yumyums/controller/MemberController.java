@@ -2,12 +2,15 @@ package com.yum.yumyums.controller;
 
 import com.yum.yumyums.dto.ImagesDTO;
 import com.yum.yumyums.dto.TemplateData;
+import com.yum.yumyums.dto.orders.OrdersDTO;
 import com.yum.yumyums.dto.seller.StoreDTO;
 import com.yum.yumyums.dto.seller.StoreLikeDTO;
 import com.yum.yumyums.dto.user.MarkStationDTO;
 import com.yum.yumyums.dto.user.MemberDTO;
 import com.yum.yumyums.dto.user.MemberJoinRequest;
+import com.yum.yumyums.entity.orders.Orders;
 import com.yum.yumyums.service.ImagesService;
+import com.yum.yumyums.service.orders.OrdersService;
 import com.yum.yumyums.service.seller.StoreService;
 import com.yum.yumyums.service.user.MarkStationService;
 import com.yum.yumyums.service.user.MemberService;
@@ -42,6 +45,7 @@ public class MemberController extends ImageDefaultUrl {
     private final MarkStationService markStationService;
     private final ImagesService imagesService;
     private final StoreService storeService;
+    private final OrdersService ordersService;
 
     @GetMapping("")
     public String memberSaveForm(Model model, TemplateData templateData, HttpServletRequest request) {
@@ -128,6 +132,30 @@ public class MemberController extends ImageDefaultUrl {
         model.addAttribute("templateData", templateData);
 
         templateData.setViewPath("myPage/favorites");
+        return "template";
+    }
+
+    @GetMapping("/myOrders")
+    public String myOrders(@RequestParam(defaultValue = "0") int page,
+                           HttpServletRequest request,
+                           Model model,
+                           TemplateData templateData){
+        HttpSession session = request.getSession();
+        MemberDTO memberDTO = (MemberDTO)session.getAttribute("loginUser");
+        String memberId = memberDTO.getMemberId();
+        int pageSize = 8;
+
+        Page<OrdersDTO> myOrdersPage = ordersService.getOrdersByMemberId(memberId, page, pageSize);
+
+        for(OrdersDTO myOrders : myOrdersPage.getContent()){
+            System.out.println("myOrder : "+myOrders.toString());
+        }
+        model.addAttribute("orders", myOrdersPage.getContent());
+        model.addAttribute("totalPages", myOrdersPage.getTotalPages()); // 전체 페이지 수
+        model.addAttribute("currentPage", myOrdersPage.getNumber()); // 현재 페이지 번호
+        model.addAttribute("templateData", templateData);
+
+        templateData.setViewPath("myPage/myOrders");
         return "template";
     }
 

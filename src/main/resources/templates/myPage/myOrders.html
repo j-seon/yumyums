@@ -1,0 +1,70 @@
+<!-- Single Page Header start -->
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">주문내역</h1>
+    <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item active text-white">My Page</li>
+    </ol>
+</div>
+<!-- Single Page Header End -->
+
+<div class="container-fluid fruite py-5">
+    <div class="container py-5">
+        <div class="tab-class text-center">
+            <div class="row g-4">
+                <div th:if="${#lists.isEmpty(orders)}" class="col-12 text-center mt-5">
+                    <p>주문 내역이 없습니다.</p>
+                </div>
+                <div class="col-lg-12">
+                    <div class="row d-flex g-4 align-items-stretch">
+                        <div class="col-md-6 col-lg-4 col-xl-3" th:each="order : ${orders}">
+                            <div class="rounded position-relative fruite-item h-100">
+                                <div class="fruite-img w-100 d-flex justify-content-center align-items-center" style="height:300px;">
+                                    <img th:src="|/img/${order.storeDTO.imagesDTO.imgUrl}|" class="d-block w-100 h-100" style="object-fit:contain;">
+                                </div>
+                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;" th:text="${order.ordersStatusDTO != null && order.ordersStatusDTO.stateKorName != null ? order.ordersStatusDTO.stateKorName : '알수없음'}"></div>
+                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                    <h4 th:text="${order.storeDTO.name}"></h4>
+                                    <th:block th:if="${not #lists.isEmpty(order.ordersDetails)}">
+                                        <p th:text="${order.ordersDetails[0].menuName} + ' 포함 총 ' + ${order.totalQty} + '개 주문'"></p>
+                                    </th:block>
+                                    <th:block th:if="${#lists.isEmpty(order.ordersDetails)}">
+                                        <p>주문 내역이 없습니다.</p>
+                                    </th:block>
+                                    <div class="d-flex justify-content-between flex-lg-wrap align-items-center">
+                                        <p class="text-dark fs-6 fw-bold mb-0"><i class="fas fa-won-sign text-dark"></i> <span th:text="|${#numbers.formatInteger(order.totalPrice, 0, 'COMMA')} 원|"></span></p>
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn border border-secondary rounded-pill px-3 text-primary" data-bs-toggle="modal" data-bs-target="#myOrdersModal" th:attr="data-bs-whatever=${order.id}"><i class="fas fa-file-invoice-dollar me-2 text-primary"></i>주문 상세</button>
+                                        <i class="col-12 text-end mt-3" th:text="${#temporals.format(order.ordersTime, 'yyyy-MM-dd HH:mm')}"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Pagination 시작-->
+                    <div class="col-12">
+                        <div class="pagination d-flex justify-content-center mt-5" th:if="${totalPages > 0}">
+                            <a th:href="@{/member/myOrders(page=${currentPage - 1})}"
+                               th:class="${currentPage == 0} ? 'disabled' : ''"
+                               class="rounded"
+                               th:if="${currentPage > 0}">«</a>
+                            <th:block th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+                                <a th:href="@{/member/myOrders(page=${i})}"
+                                   th:class="${i == currentPage} ? 'active rounded' : 'rounded'"
+                                   th:text="${i+1}"
+                                >
+                                </a>
+                            </th:block>
+
+                            <a th:href="@{/member/myOrders(page=${currentPage + 1})}"
+                               th:class="${currentPage == totalPages - 1} ? 'disabled' : ''"
+                               class="rounded"
+                               th:if="${currentPage < totalPages - 1}">»</a>
+                        </div>
+                    </div>
+                    <!--Pagination 끝-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,6 @@
 package com.yum.yumyums.repository.review;
 
+import com.yum.yumyums.dto.review.ReviewDTO;
 import com.yum.yumyums.entity.review.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,4 +24,5 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
     @Query(value = "SELECT COALESCE(AVG(rate), 0) FROM review WHERE create_time < CURDATE() and store_id = :storeId", nativeQuery = true)
     Double findAverageRateBeforeTodayByStoreId(@Param("storeId") int storeId);
 
+    Review findByOrdersDetailId(int id);
 }

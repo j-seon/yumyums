@@ -1,6 +1,9 @@
 package com.yum.yumyums.repository.orders;
 
 import com.yum.yumyums.entity.orders.Orders;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -26,7 +29,7 @@ public interface OrdersRepository extends JpaRepository<Orders, String> {
                                       @Param("endOfDay") LocalDateTime endOfDay);
 
     //금일 주문
-    @Query("SELECT o FROM Orders o " +
+    /*@Query("SELECT o FROM Orders o " +
             "JOIN OrdersStatus s ON o.id = s.ordersId " +
             "WHERE s.state <> 'COMPLETE' " +
             "AND o.ordersTime >= :startOfDay " +
@@ -34,7 +37,9 @@ public interface OrdersRepository extends JpaRepository<Orders, String> {
             "AND o.store.id = :storeId")
     List<Orders> findByStoreIdAndDay(@Param("storeId") int storeId,
                                      @Param("startOfDay") LocalDateTime startOfDay,
-                                     @Param("endOfDay") LocalDateTime endOfDay);
+                                     @Param("endOfDay") LocalDateTime endOfDay);*/
+    @Query("SELECT o FROM Orders o JOIN o.ordersStatus s WHERE s.state <> 'COMPLETE' AND o.ordersTime >= :startOfDay AND o.ordersTime <= :endOfDay AND o.store.id = :storeId")
+    List<Orders> findByStoreIdAndDay(@Param("storeId") int storeId, @Param("startOfDay") LocalDateTime startOfDay, @Param("endOfDay") LocalDateTime endOfDay);
 
     // SQL 쿼리로 일별 매출액을 계산
     @Query(value = "SELECT DATE_FORMAT(orders_time, '%Y-%m-%d') AS date, " +
@@ -69,4 +74,5 @@ public interface OrdersRepository extends JpaRepository<Orders, String> {
             nativeQuery = true)
     List<Map<String, Object>> findYearlySumsByStoreId(@Param("storeId") int storeId);
 
+    Page<Orders> findByMemberId(String memberId, Pageable pageable);
 }
