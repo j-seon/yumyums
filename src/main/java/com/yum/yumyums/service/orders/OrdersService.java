@@ -8,4 +8,8 @@ public interface OrdersService {
     OrdersDTO placeOrder(String memberId, String paymentMethod);
     int generateWaitingNum(int storeId);
     int calculateEstimatedWaitTime(OrdersDTO ordersDTO);
+
+    // [파티] 웨이팅 시간을 구하는 함수
+    int calculateEstimatedWaitTimeForParty(OrdersDTO ordersDTO, String encryptedPartyId);
+
 }

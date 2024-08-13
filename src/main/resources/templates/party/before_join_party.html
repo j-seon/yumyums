@@ -1,24 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Title</title>
-	<script src="/js/party/beforeJoinParty.js"></script>
-</head>
-<body>
 
-<div class="container">
-	<div class="join-form">
-		<div class="join-header">
+<link rel="stylesheet" href="css/party/party_main.css">
+
+<script src="/js/party/beforeJoinParty.js"></script>
+
+
+<div class="party-container">
+	<div class="party-form">
+		<div class="party-form-header">
 			<h2>파티 가입하기</h2>
 		</div>
-		<div class="join-main">
-			<span>초대링크 입력 : </span>
-			<input type="text" name="초대 링크를 입력하세요" id="join-link">
-			<input type="button" value="입장" onclick="joinParty()">
+		<div class="join-main position-relative mx-auto">
+			<input class="form-control border-0 w-100 py-3 px-4 rounded-pill bg-light" type="text" placeholder="받으신 파티초대 링크를 입력해주세요" id="join-link">
+			<input type="button" class="btn btn-primary border-0 border-secondary py-3 px-4 position-absolute rounded-pill text-white" style="top: 0; right: 0;"  value="입장" onclick="joinParty()">
 		</div>
 	</div>
 </div>
-
-</body>
-</html>

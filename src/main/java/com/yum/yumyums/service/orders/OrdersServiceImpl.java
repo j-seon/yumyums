@@ -5,12 +5,13 @@ import com.yum.yumyums.dto.orders.OrdersDTO;
 import com.yum.yumyums.entity.orders.Cart;
 import com.yum.yumyums.entity.orders.Orders;
 import com.yum.yumyums.entity.orders.OrdersDetail;
-import com.yum.yumyums.entity.seller.Store;
+import com.yum.yumyums.entity.orders.PartyCart;
 import com.yum.yumyums.entity.user.Member;
 import com.yum.yumyums.repository.orders.CartRepository;
 import com.yum.yumyums.repository.orders.OrdersDetailRepository;
 import com.yum.yumyums.repository.orders.OrdersRepository;
 
+import com.yum.yumyums.repository.orders.PartyCartRepository;
 import com.yum.yumyums.repository.user.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class OrdersServiceImpl implements OrdersService {
     private final OrdersRepository orderRepository;
     private final OrdersDetailRepository ordersDetailRepository;
     private final MemberRepository memberRepository;
+    private final PartyCartRepository partyCartRepository;
 
     @Override
     public List<CartDTO> getCartItems(String memberId) {
@@ -106,6 +108,37 @@ public class OrdersServiceImpl implements OrdersService {
         int finalAdditionalTime = additionalTime;
         int maxCookingTime = ordersDetails.stream()
                 .mapToInt(detail -> detail.getMenu().getCookingTime() + finalAdditionalTime)
+                .max()
+                .orElse(0);
+
+        return maxCookingTime;
+    }
+
+
+    @Override
+    public int calculateEstimatedWaitTimeForParty(OrdersDTO ordersDTO, String encryptedPartyId) {
+        int additionalTime = 0;
+
+        switch (ordersDTO.getStoreDTO().getBusy()) {
+            case SPACIOUS:
+                additionalTime = 0;
+                break;
+            case NOMAL:
+                additionalTime = 10;
+                break;
+            case CROWDED:
+                additionalTime = 20;
+                break;
+            case FULL:
+                additionalTime = 30;
+                break;
+        }
+
+        List<PartyCart> carts = partyCartRepository.findByPartyId(encryptedPartyId);
+
+        int finalAdditionalTime = additionalTime;
+        int maxCookingTime = carts.stream()
+                .mapToInt(partyCart -> partyCart.getMenu().getCookingTime() + finalAdditionalTime)
                 .max()
                 .orElse(0);
 

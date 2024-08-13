@@ -50,6 +50,15 @@ public class PartyController {
 			return "redirect:/login"; // 로그인 페이지로 이동
 		}
 
+		// 이미 파티에 가입중이라면
+		String encryptedAlreadyJoinPartyID = partyService.findEncryptedPartyIdByMemberId(memberDTO);
+		if (!encryptedAlreadyJoinPartyID.isEmpty()) {
+			templateData.setViewPath("party/party_home_have_party");
+			model.addAttribute("partyId", encryptedAlreadyJoinPartyID);
+			model.addAttribute("templateData",templateData);
+			return "template"; // "내파티보기" 만 있는 파티 홈페이지로 이동
+		}
+
 		//== 유효성 검사 ajax ==//
 		//넘어가려는 페이지가 존재한다면 (인덱스에서 ajax로 넘어왔다면)
 		if(targetPage != null) {
@@ -116,7 +125,7 @@ public class PartyController {
 		String encryptedPartyId = partyService.createParty(partyDTO, memberDTO, storeName);
 
 		// 파티생성에 실패했다면
-		if(encryptedPartyId.equals("")) {
+		if(encryptedPartyId.isEmpty()) {
 			model.addAttribute("partyDTO", new PartyDTO());
 			return "redirect:/party";
 		}
@@ -148,7 +157,7 @@ public class PartyController {
 
 			//다른 파티에 소속돼있다면
 			String encryptedAlreadyJoinPartyId = partyService.findEncryptedPartyIdByMemberId(memberDTO);
-			if (!encryptedAlreadyJoinPartyId.equals("")) {
+			if (!encryptedAlreadyJoinPartyId.isEmpty()) {
 				// 해당 파티의 정보값을 저장해서 넘김
 				PartyDTO alreadyJoinPartyDTO = partyService.findParty(encryptedAlreadyJoinPartyId);
 				model.addAttribute("partyDTO", alreadyJoinPartyDTO);
@@ -196,7 +205,7 @@ public class PartyController {
 
 		//이미 가입중인 파티가 있다면
 		String encryptedAlreadyJoinPartyID = partyService.findEncryptedPartyIdByMemberId(memberDTO);
-		if (!encryptedAlreadyJoinPartyID.equals("")) {
+		if (!encryptedAlreadyJoinPartyID.isEmpty()) {
 			templateData.setUrl("/party/" + encryptedAlreadyJoinPartyID);
 			return "inc/redirect"; // 해당 파티 상세페이지로 이동
 		}
