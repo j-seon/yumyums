@@ -27,4 +27,10 @@ public interface StoreService {
     void update(Store store);
 
 	Page<StoreLikeDTO> getStoreLikesByMemberId(String memberId, int page, int pageSize);
+
+    boolean isStoreLikedByMember(String memberId, int storeId);
+
+	void saveStoreLike(String memberId, int storeId);
+
+	void removeStoreLike(String memberId, int storeId);
 }

@@ -5,8 +5,11 @@ import com.yum.yumyums.dto.seller.StoreLikeDTO;
 import com.yum.yumyums.entity.Images;
 import com.yum.yumyums.entity.seller.Store;
 import com.yum.yumyums.entity.seller.StoreLike;
+import com.yum.yumyums.entity.user.Member;
 import com.yum.yumyums.repository.seller.StoreRepository;
+import com.yum.yumyums.repository.user.MemberRepository;
 import com.yum.yumyums.service.ImagesService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,6 +29,7 @@ public class StoreServiceImpl implements StoreService {
     private final StoreRepository storeRepository;
     private final ImagesService imagesService;
     private final StoreLikeRepository storeLikeRepository;
+    private final MemberRepository memberRepository;
 
 	@Override
 	public StoreDTO findByName(String storeName) {
@@ -158,6 +162,46 @@ public class StoreServiceImpl implements StoreService {
                 })
                 .collect(Collectors.toList());
         return new PageImpl<>(storeLikeDTOs, storeLikesPage.getPageable(), storeLikesPage.getTotalElements());
+    }
+
+    @Override
+    public boolean isStoreLikedByMember(String memberId, int storeId) {
+            return storeLikeRepository.existsByMemberIdAndStoreId(memberId, storeId);
+    }
+
+    @Transactional
+    @Override
+    public void saveStoreLike(String memberId, int storeId) {
+        Optional<Member> member = memberRepository.findById(memberId);
+        Optional<Store> store = storeRepository.findById(storeId);
+
+        // 멤버와 매장이 존재하는지 확인
+        if (!member.isPresent()) {
+            throw new EntityNotFoundException("Member not found with id: " + memberId);
+        }
+
+        if (!store.isPresent()) {
+            throw new EntityNotFoundException("Store not found with id: " + storeId);
+        }
+
+        // StoreLike 객체 생성 및 설정
+        StoreLike storeLike = new StoreLike();
+        storeLike.setStore(store.get());
+        storeLike.setMember(member.get());
+
+        // 단골 등록 정보 저장
+        storeLikeRepository.save(storeLike);
+    }
+
+    @Override
+    public void removeStoreLike(String memberId, int storeId) {
+        // 해당 멤버와 매장에 해당하는 단골 정보를 찾아서 삭제
+        StoreLike storeLike = storeLikeRepository.findByMemberIdAndStoreId(memberId, storeId);
+        if (storeLike != null) {
+            storeLikeRepository.delete(storeLike);
+        } else {
+            throw new EntityNotFoundException("단골 정보가 존재하지 않습니다.");
+        }
     }
 
 }

@@ -51,3 +51,16 @@ function alertSuccessMessage (message) {
         confirmButtonText: 'OK'
     })
 }
+
+// 성공메세지 후 새로고침
+function alertSuccessRefresh (message) {
+    Swal.fire({
+        title: message,
+        icon: 'success',
+        confirmButtonColor: '#FFA62F',
+        confirmButtonText: 'OK',
+        closeOnClickOutside : false
+    }).then(function(){
+        location.reload();
+    })
+}
