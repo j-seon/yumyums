@@ -297,7 +297,7 @@ $(document).ready(function() {
           console.log(roomId);
           $(this).addClass('active');
           $('#room-member').empty();
-          $('.dropdown-menu').empty();
+          $('#chat-page .dropdown-menu').empty();
 
           if (roomId!="chat-bot"){
             // 채팅 불러오기
@@ -311,7 +311,7 @@ $(document).ready(function() {
                        $('#room-member').text(data.chatMemberList.length+" 명");
                        console.log(data.chatMemberList.length);
                        data.chatMemberList.forEach((member) => {
-                            $('.dropdown-menu').append(`
+                            $('#chat-page .dropdown-menu').append(`
                                  <a class="dropdown-item" href="#">${member.member.memberId} 님</a>
                             `);
 

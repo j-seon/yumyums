@@ -46,7 +46,7 @@ $(document).ready(function() {
 
     })
 
-    $('.nav-item a').on('click', function(e) {
+    $('.faq .nav-item a').on('click', function(e) {
         e.preventDefault();
         var categoryText = $(this).find('div').text();
         if(categoryText =='검색기록'){

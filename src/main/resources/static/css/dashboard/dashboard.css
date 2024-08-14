@@ -11,6 +11,6 @@
 }
 .order-detail-list{
     height :229px;
-    overflow: scroll;
+    overflow: auto;
 
 }
