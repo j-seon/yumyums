@@ -35,19 +35,19 @@
         <!--Pagination 시작-->
         <div class="col-12">
             <div class="pagination d-flex justify-content-center mt-5" th:if="${totalPages > 0}">
-                <a th:href="@{/member/myStores(page=${currentPage - 1})}"
+                <a th:href="@{/member/favorites(page=${currentPage - 1})}"
                    th:class="${currentPage == 0} ? 'disabled' : ''"
                    class="rounded"
                    th:if="${currentPage > 0}">«</a>
                 <th:block th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
-                    <a th:href="@{/member/myStores(page=${i})}"
+                    <a th:href="@{/member/favorites(page=${i})}"
                        th:class="${i == currentPage} ? 'active rounded' : 'rounded'"
                        th:text="${i+1}"
                     >
                     </a>
                 </th:block>
 
-                <a th:href="@{/member/myStores(page=${currentPage + 1})}"
+                <a th:href="@{/member/favorites(page=${currentPage + 1})}"
                    th:class="${currentPage == totalPages - 1} ? 'disabled' : ''"
                    class="rounded"
                    th:if="${currentPage < totalPages - 1}">»</a>
