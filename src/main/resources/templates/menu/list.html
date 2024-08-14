@@ -133,8 +133,8 @@
                         <div class="row g-4 justify-content-center" id="menuResults">
                             <div class="col-md-6 col-lg-6 col-xl-4" th:each="menu : ${menus}" th:attr="data-menu-id=${menu.id}">
                                 <div class="rounded position-relative fruite-item">
-                                    <div class="border border-secondary fw-bold rounded-top border-bottom-0">
-                                        <img src="" alt="">
+                                    <div class="border border-secondary fw-bold rounded-top border-bottom-0 w-100 " style="height:300px">
+                                        <img th:src="|/img/${menu.imagesDTO.imgUrl}|" class="d-block w-100 h-100" style="object-fit:cover" alt="">
                                     </div>
                                     <div class="p-3 border border-secondary fw-bold border-top-0 rounded-bottom bg-white" >
                                         <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;" th:text="${menu.categoryKorName}">음식 분류</div>
