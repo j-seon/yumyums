@@ -1,2 +1,76 @@
 spring:
-  profiles.include: data
+  application:
+    name: yumyums
+
+  #메일 API연동
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: kiju2912@gmail.com
+    password: lxojdholqhmydzez
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
+  #DB (MySQL)
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://yumyums.cv6i68mi2if1.ap-northeast-2.rds.amazonaws.com:3306/yumyums?useSSL=false&characterEncoding=UTF-8
+    username: root
+    password: yumyums1234
+
+  #JPA 설정
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        # sql 출력
+        show_sql: true
+        # 가독성 증가
+        format_sql: true
+        transaction:
+          jta:
+            platform: org.springframework.boot.orm.jpa.hibernate.SpringJtaPlatform
+    # 테이블 자동 생성 여부 (운영시엔 none으로 할 것)
+    hibernate:
+      ddl-auto: none
+
+  #Thymeleaf 설정
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    cache: false
+
+  #DevTools 설정
+  devtools:
+    add-properties: false
+
+
+#  #보안 설정
+#  security:
+#    user:
+#      name: your-username
+#      password: your-password
+
+#로그
+server.error:
+  include-message: always
+  include-stacktrace: always
+
+logging.level:
+  org.hibernate.SQL: debug
+  com.yum.yumyums: info
+
+#이미지 저장경로
+file:
+  upload-dir: C:Users/minha/OneDrive/1_Project/yumyums/240702_yumyums/yumyums/src/main/resources/static/img
+
+
