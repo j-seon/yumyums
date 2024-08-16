@@ -1,2 +1,86 @@
 spring:
-  profiles.include: data
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: kiju2912@gmail.com
+    password: lxojdholqhmydzez
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 1000
+          timeout: 1000
+          writetimeout: 1000
+  application:
+    name: yumyums
+
+
+  server:
+    servlet:
+      encoding:
+        charset: UTF-8
+        force: true
+
+
+  #DB (MySQL)
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://database-1.cxa4u86wmbdi.ap-northeast-2.rds.amazonaws.com:3306/yumyums?useSSL=false&characterEncoding=UTF-8
+    username: "root"
+    password: "00000000"
+
+  #JPA 설정
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        # sql 출력
+        show_sql: true
+        # 가독성 증가
+        format_sql: true
+        transaction:
+          jta:
+            platform: org.springframework.boot.orm.jpa.hibernate.SpringJtaPlatform
+    hibernate:
+      ddl-auto: update
+
+
+  #Thymeleaf 설정
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    cache: false
+
+  #DevTools 설정
+  devtools:
+    add-properties: false
+
+
+#  #보안 설정
+#  security:
+#    user:
+#      name: your-username
+#      password: your-password
+
+#로그
+server.error:
+  include-message: always
+  include-stacktrace: always
+
+#logging.level:
+#  org.hibernate.SQL: debug
+#
+#  com.yum.yumyums: debug
+
+logging:
+  level:
+    org.hibernate.orm.jdbc.bind: trace
+
+
+
+file:
+  upload-dir: /Users/kiju/Documents/project/yumyums/src/main/resources/static/src/img

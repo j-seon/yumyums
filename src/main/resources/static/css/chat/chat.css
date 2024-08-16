@@ -96,13 +96,13 @@ width : 150px;
     position: fixed;
     right: 24px;
     bottom: 24px;
-    z-index: 50;
+    z-index: 2050;
 }
 #home-chat{
     position: fixed;
     right: 24px;
     bottom: 94px;
-    z-index: 50;
+    z-index: 1050;
     background-color : white;
 }
 #chat-page #chat-member-icon{
