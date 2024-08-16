@@ -10,6 +10,7 @@ import com.yum.yumyums.service.DashBoardService;
 import com.yum.yumyums.service.StationService;
 import com.yum.yumyums.dto.seller.StoreDTO;
 import com.yum.yumyums.service.chat.ChatMemberService;
+import com.yum.yumyums.service.chat.PartyService;
 import com.yum.yumyums.service.orders.CartService;
 import com.yum.yumyums.service.seller.StoreService;
 import com.yum.yumyums.service.user.SearchService;
@@ -35,6 +36,7 @@ public class APIController {
     private final DashBoardService dashBoardService;
     private final ChatMemberService chatMemberService;
     private final CartService cartService;
+    private final PartyService partyService;
 
     @GetMapping("/stations")
     @ResponseBody

@@ -16,6 +16,8 @@ public interface PartyService {
 	String addMemberToParty(String encryptedPartyId, MemberDTO memberDTO, boolean isPartyLeader);
 	void deleteParty(String encryptedPartyId, MemberDTO memberDTO);
 	void deleteMemberToParty(String encryptedPartyId, MemberDTO memberDTO, boolean isPartyLeader);
+	// 전체삭제
+	void deletePartyAndAllMember(String encryptedPartyId);
 
 	//select
 	String findEncryptedPartyIdByMemberId(MemberDTO memberDTO);
@@ -31,4 +33,5 @@ public interface PartyService {
 
 	// 매칭
 	String addPartyMemberToOptionalPartyOrCreateParty(MatchRequestDTO matchRequestDTO);
+
 }

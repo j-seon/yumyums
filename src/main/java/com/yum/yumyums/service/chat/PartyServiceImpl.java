@@ -179,6 +179,24 @@ public class PartyServiceImpl implements PartyService {
 
 	}
 
+	// [관리] 파티 + 파티멤버 전체탈퇴
+	@Override
+	@Transactional
+	public void deletePartyAndAllMember(String encryptedPartyId) {
+		//복호화
+		String partyId = getPartyIdByInviteUrlParam(encryptedPartyId);
+
+		PartyDTO party = findParty(encryptedPartyId);
+		for (PartyMemberDTO partyMember : party.getPartyMemberDTOs()) {
+			MemberDTO memberDTO = partyMember.getMemberDTO();
+			apiGateway.deleteAllPartyCartsByPartyIdAndMemberId(memberDTO, partyId);
+			partyMemberRepository.deleteByMemberId(memberDTO.getMemberId());
+		}
+
+		partyRepository.deleteById(partyId);
+
+	}
+
 
 	// [select] 파티id로 파티 찾아주기
 	@Override

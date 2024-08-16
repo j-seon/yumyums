@@ -1,7 +1,7 @@
 package com.yum.yumyums.enums;
 
 public enum FixUrl {
-	SITE_LINK("http://localhost:8080/");
+	SITE_LINK("http://43.202.191.70:8080/");
 
 	private final String url;
 

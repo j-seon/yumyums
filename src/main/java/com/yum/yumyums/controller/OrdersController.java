@@ -139,6 +139,9 @@ public class OrdersController {
             return "redirect:/login"; // 로그인 페이지로 이동
         }
 
+        // 파티 탈퇴시키기
+        partyService.deletePartyAndAllMember(encryptedPartyId);
+
         //회원 정보값 가져오기
         MemberDTO memberDTO = (MemberDTO) session.getAttribute(MEMBER_DTO_SESSION_ATTRIBUTE_NAME);
 
