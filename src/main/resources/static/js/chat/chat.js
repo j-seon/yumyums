@@ -206,8 +206,6 @@ $(document).ready(function() {
                         }else if((receivedMessageList[0]=='d')){
                             $('a[data-room-id="' + receivedMessageList[3] + '"] div.room-member-count').text(receivedMessageList[4]);
                         }
-
-
                     });
 
                     // 연결이 설정된 후에 연결 메시지 전송
