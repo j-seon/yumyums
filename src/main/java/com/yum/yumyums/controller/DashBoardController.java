@@ -37,7 +37,7 @@ public class DashBoardController {
             templateData.setMessage("매장 로그인이 필요한 서비스입니다.");
             templateData.setUrl("/stores");
             model.addAttribute("templateData", templateData);
-            return "/inc/alert";
+            return "inc/alert";
         }else{
             int intStoreId = sessionStoreId;
             //금일 평점
@@ -78,7 +78,7 @@ public class DashBoardController {
             templateData.setMessage("매장 로그인이 필요한 서비스입니다.");
             templateData.setUrl("/stores");
             model.addAttribute("templateData", templateData);
-            return "/inc/alert";
+            return "inc/alert";
         }
         int intStoreId = sessionStoreId;
         List<OrdersDetailDTO> ordersDetailList = dashBoardService.findAllByStoreId(intStoreId);

@@ -76,7 +76,7 @@ logging.level:
 
 #이미지 저장경로
 file:
-  upload-dir: ./src/main/resources/static/img/
+  upload-dir: src/main/resources/static/img/
 
 logging:
   level:
