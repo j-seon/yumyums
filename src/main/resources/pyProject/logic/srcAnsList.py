@@ -9,7 +9,8 @@ import nltk
 # 사용자가 입력한 값
 # user_input = "정기구매 방식"ㄴ
 # OpenAI API 설정
-api_key = "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"
+
+api_key = ""
 url = "https://api.openai.com/v1/embeddings"
 headers = {
     "Content-Type": "application/json",
