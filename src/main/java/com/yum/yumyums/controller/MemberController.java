@@ -109,7 +109,7 @@ public class MemberController extends ImageDefaultUrl {
             templateData.setMessage("아이디 또는 비밀번호가 일치하지 않습니다.");
             templateData.setUrl("/login?redirect=" + redirectUrl);
             model.addAttribute("templateData", templateData);
-            return "/inc/alert";
+            return "inc/alert";
         }
 
     }

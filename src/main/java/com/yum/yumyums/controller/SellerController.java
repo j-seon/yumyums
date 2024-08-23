@@ -63,9 +63,9 @@ public class SellerController {
             return "redirect:" + redirectUrl;
         }else{
             templateData.setMessage("아이디 또는 비밀번호가 일치하지 않습니다.");
-            templateData.setUrl("/login?redirect=" + redirectUrl);
+            templateData.setUrl("/login?redirect=" + redirectUrl + "&msg=seller");
             model.addAttribute("templateData", templateData);
-            return "/inc/alert";
+            return "inc/alert";
         }
 
     }
